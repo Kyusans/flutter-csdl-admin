@@ -1,6 +1,6 @@
 # flutter_csdl_admin
 
-A new Flutter project.
+HK scholar monitoring system pero sa admin side
 
 ## Getting Started
 
