@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const LoginPage(),
+      debugShowCheckedModeBanner: false,
+      home: LoginPage(),
       theme: lightMode,
       darkTheme: darkMode,
     );
