@@ -39,22 +39,16 @@ class LoginPage extends StatelessWidget {
                     labelText: "UserId",
                     obscureText: false,
                     controller: userIdController,
-                    icon: Icon(
-                      Icons.person,
-                      color: Theme.of(context).colorScheme.inversePrimary,
-                    ),
+                    icon: null,
                   ),
                   SizedBox(
-                    height: 16,
+                    height: 12,
                   ),
                   MyTextField(
-                    labelText: "Login",
-                    obscureText: false,
+                    labelText: "Password",
+                    obscureText: true,
                     controller: userIdController,
-                    icon: Icon(
-                      Icons.lock,
-                      color: Theme.of(context).colorScheme.inversePrimary,
-                    ),
+                    icon: null,
                   ),
                 ],
               ),
