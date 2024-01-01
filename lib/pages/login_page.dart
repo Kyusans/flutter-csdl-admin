@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_csdl_admin/components/myButton.dart';
 import 'package:flutter_csdl_admin/components/my_textfield.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
   final TextEditingController userIdController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +20,14 @@ class LoginPage extends StatelessWidget {
               size: 80,
               color: Theme.of(context).colorScheme.inversePrimary,
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
-            Text(
+            const Text(
               "L O G I N",
               style: TextStyle(fontSize: 20),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
 
@@ -41,15 +43,24 @@ class LoginPage extends StatelessWidget {
                     controller: userIdController,
                     icon: null,
                   ),
-                  SizedBox(
-                    height: 12,
+                  const SizedBox(
+                    height: 16,
                   ),
                   MyTextField(
                     labelText: "Password",
                     obscureText: true,
-                    controller: userIdController,
+                    controller: passwordController,
                     icon: null,
                   ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  MyButton(
+                      buttonText: "Login",
+                      buttonSize: 24,
+                      onPressed: () {
+                        print("print mo to");
+                      })
                 ],
               ),
             ),
