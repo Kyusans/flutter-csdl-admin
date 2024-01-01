@@ -33,41 +33,42 @@ class _MyTextFieldState extends State<MyTextField> {
       controller: widget.controller,
       obscureText: _isObscure,
       decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.inversePrimary,
-            ),
-            borderRadius: const BorderRadius.all(
-              Radius.circular(7),
-            ),
+        border: const OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.secondary,
           ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            borderRadius: const BorderRadius.all(
-              Radius.circular(7),
-            ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(7),
           ),
-          labelText: widget.labelText,
-          labelStyle: TextStyle(
-            color: Theme.of(context).colorScheme.inversePrimary,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
           ),
-          prefixIcon: widget.icon,
-          suffixIcon: widget.obscureText
-              ? IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isObscure = !_isObscure;
-                    });
-                  },
-                  color: Theme.of(context).colorScheme.inversePrimary,
-                  icon: _isObscure
-                      ? const Icon(Icons.visibility)
-                      : const Icon(Icons.visibility_off),
-                )
-              : null),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(7),
+          ),
+        ),
+        labelText: widget.labelText,
+        labelStyle: TextStyle(
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+        prefixIcon: widget.icon,
+        suffixIcon: widget.obscureText
+            ? IconButton(
+                onPressed: () {
+                  setState(() {
+                    _isObscure = !_isObscure;
+                  });
+                },
+                color: Theme.of(context).colorScheme.secondary,
+                icon: _isObscure
+                    ? const Icon(Icons.visibility)
+                    : const Icon(Icons.visibility_off),
+              )
+            : null,
+      ),
     );
   }
 }
