@@ -22,11 +22,11 @@ class _MyButtonState extends State<MyButton> {
     return MaterialButton(
       color: Theme.of(context).colorScheme.inversePrimary,
       onPressed: widget.onPressed,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: Container(
         padding: EdgeInsets.all(widget.buttonSize),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50),
-        ),
         child: Center(
           child: Text(
             widget.buttonText,
