@@ -32,6 +32,9 @@ class _MyTextFieldState extends State<MyTextField> {
     return TextFormField(
       controller: widget.controller,
       obscureText: _isObscure,
+      style: TextStyle(
+        color: Colors.white,
+      ),
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         focusedBorder: OutlineInputBorder(
@@ -52,7 +55,7 @@ class _MyTextFieldState extends State<MyTextField> {
         ),
         labelText: widget.labelText,
         labelStyle: TextStyle(
-          color: Theme.of(context).colorScheme.secondary,
+          color: Colors.white,
         ),
         prefixIcon: widget.icon,
         suffixIcon: widget.obscureText

@@ -20,18 +20,19 @@ class _MyButtonState extends State<MyButton> {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-      color: Theme.of(context).colorScheme.secondary,
+      color: Theme.of(context).colorScheme.inversePrimary,
       onPressed: widget.onPressed,
       child: Container(
         padding: EdgeInsets.all(widget.buttonSize),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(50),
         ),
         child: Center(
           child: Text(
             widget.buttonText,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
           ),
         ),
