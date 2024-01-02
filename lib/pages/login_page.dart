@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/components/loading_spinner.dart';
 import 'package:flutter_csdl_admin/components/my_button.dart';
 import 'package:flutter_csdl_admin/components/my_textfield.dart';
+import 'package:flutter_csdl_admin/pages/dashboard.dart';
 import 'package:flutter_csdl_admin/session_storage.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController userIdController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   late ScaffoldMessengerState scaffoldMessenger = ScaffoldMessenger.of(context);
-  bool _isLoading = true;
+  bool _isLoading = false;
 
   void _login() async {
     setState(() {
@@ -41,7 +42,12 @@ class _LoginPageState extends State<LoginPage> {
       // print("res.body: " + res.body);
 
       if (res.body != "0") {
-        // go to dashboard
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const Dashboard(),
+          ),
+        );
       } else {
         scaffoldMessenger.showSnackBar(
           const SnackBar(

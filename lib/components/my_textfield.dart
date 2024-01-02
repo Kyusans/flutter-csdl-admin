@@ -32,7 +32,7 @@ class _MyTextFieldState extends State<MyTextField> {
     return TextFormField(
       controller: widget.controller,
       obscureText: _isObscure,
-      style: TextStyle(
+      style: const TextStyle(
         color: Colors.white,
       ),
       decoration: InputDecoration(
@@ -54,7 +54,7 @@ class _MyTextFieldState extends State<MyTextField> {
           ),
         ),
         labelText: widget.labelText,
-        labelStyle: TextStyle(
+        labelStyle: const TextStyle(
           color: Colors.white,
         ),
         prefixIcon: widget.icon,
