@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/components/my_drawer.dart';
+import 'package:flutter_csdl_admin/pages/add_scholar.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -9,22 +10,58 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  int _selectedIndex = 1;
+
+  void updateSelectedIndex(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  Widget selectedWidget() {
+    switch (_selectedIndex) {
+      case 0:
+        return DashboardMain();
+      case 1:
+        return AddScholar();
+      default:
+        return Container();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ),
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Column(
         children: [
-          Text("Dashboard mo to"),
+          Expanded(
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                MyDrawer(updateSelectedIndex),
+                Expanded(child: selectedWidget()),
+              ],
+            ),
+          )
         ],
       ),
-      drawer: const MyDrawer(),
     );
+  }
+}
+
+class DashboardMain extends StatefulWidget {
+  const DashboardMain({super.key});
+
+  @override
+  State<DashboardMain> createState() => _DashboardMainState();
+}
+
+class _DashboardMainState extends State<DashboardMain> {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
