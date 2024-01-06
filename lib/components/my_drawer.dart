@@ -1,13 +1,47 @@
 import 'package:flutter/material.dart';
 
 class MyDrawer extends StatefulWidget {
-  const MyDrawer({Key? key}) : super(key: key);
+  final Function(int) onItemTapped;
+  const MyDrawer(this.onItemTapped, {Key? key}) : super(key: key);
 
   @override
   _MyDrawerState createState() => _MyDrawerState();
+  int getSelectedTileIndex() {
+    return _MyDrawerState._selectedTileIndex;
+  }
 }
 
 class _MyDrawerState extends State<MyDrawer> {
+  static int _selectedTileIndex = 0;
+
+  final List<bool> _isSelectedTileList = [
+    // 0 dashboard
+    true,
+    // 1 add Scholar
+    false,
+    // 2 account
+    false,
+    // 3 notification
+    false,
+    // 4 messages
+    false,
+    // 5 qr code
+    false,
+    // 6 history
+    false,
+  ];
+
+  void updateSelectedIndex(index) {
+    setState(() {
+      _isSelectedTileList[_selectedTileIndex] =
+          !_isSelectedTileList[_selectedTileIndex];
+
+      _isSelectedTileList[index] = !_isSelectedTileList[index];
+      _selectedTileIndex = index;
+      widget.onItemTapped(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -64,110 +98,213 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
 
             // 0 dashboard
-            ListTile(
-              leading: const Icon(
-                Icons.dashboard_outlined,
-                color: Colors.white,
-              ),
-              title: const Text(
-                "Dashboard",
-                style: TextStyle(
-                  color: Colors.white,
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: _isSelectedTileList[0]
+                      ? Theme.of(context).colorScheme.inverseSurface
+                      : Colors.transparent,
+                  width: 3.0,
                 ),
               ),
-              onTap: () {},
+              child: ListTile(
+                selected: _isSelectedTileList[0],
+                selectedTileColor: Theme.of(context).colorScheme.inverseSurface,
+                leading: const Icon(
+                  Icons.dashboard_outlined,
+                  color: Colors.white,
+                ),
+                title: const Text(
+                  "Dashboard",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  updateSelectedIndex(0);
+                },
+              ),
             ),
 
             // 1 add scholar
-            ListTile(
-              leading: const Icon(
-                Icons.person_add_alt,
-                color: Colors.white,
-              ),
-              title: const Text(
-                "Add Scholar",
-                style: TextStyle(
-                  color: Colors.white,
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: _isSelectedTileList[1]
+                      ? Theme.of(context).colorScheme.inverseSurface
+                      : Colors.transparent,
+                  width: 6.0,
                 ),
               ),
-              onTap: () {
-                Navigator.of(context).pushNamed('/addScholar');
-              },
+              child: ListTile(
+                selected: _isSelectedTileList[1],
+                selectedTileColor: Theme.of(context).colorScheme.inverseSurface,
+                leading: const Icon(
+                  Icons.person_add_alt,
+                  color: Colors.white,
+                ),
+                title: const Text(
+                  "Add Scholar",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  updateSelectedIndex(1);
+                },
+              ),
             ),
 
             // 2 account
-            ListTile(
-              leading: const Icon(
-                Icons.person_outline,
-                color: Colors.white,
-              ),
-              title: const Text(
-                "Account",
-                style: TextStyle(
-                  color: Colors.white,
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: _isSelectedTileList[2]
+                      ? Theme.of(context).colorScheme.inverseSurface
+                      : Colors.transparent,
+                  width: 6.0,
                 ),
               ),
-              onTap: () {},
+              child: ListTile(
+                selected: _isSelectedTileList[2],
+                selectedTileColor: Theme.of(context).colorScheme.inverseSurface,
+                leading: const Icon(
+                  Icons.person_outline,
+                  color: Colors.white,
+                ),
+                title: const Text(
+                  "Account",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  updateSelectedIndex(2);
+                },
+              ),
             ),
 
             // 3 notification
-            ListTile(
-              leading: const Icon(
-                Icons.notifications_none,
-                color: Colors.white,
-              ),
-              title: const Text(
-                "Notification",
-                style: TextStyle(
-                  color: Colors.white,
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: _isSelectedTileList[3]
+                      ? Theme.of(context).colorScheme.inverseSurface
+                      : Colors.transparent,
+                  width: 6.0,
                 ),
               ),
-              onTap: () {},
+              child: ListTile(
+                selected: _isSelectedTileList[3],
+                selectedTileColor: Theme.of(context).colorScheme.inverseSurface,
+                leading: const Icon(
+                  Icons.notifications_none,
+                  color: Colors.white,
+                ),
+                title: const Text(
+                  "Notification",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  updateSelectedIndex(3);
+                },
+              ),
             ),
 
             // 4 messages
-            ListTile(
-              leading: const Icon(
-                Icons.message_outlined,
-                color: Colors.white,
-              ),
-              title: const Text(
-                "Messages",
-                style: TextStyle(
-                  color: Colors.white,
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: _isSelectedTileList[4]
+                      ? Theme.of(context).colorScheme.inverseSurface
+                      : Colors.transparent,
+                  width: 6.0,
                 ),
               ),
-              onTap: () {},
+              child: ListTile(
+                selected: _isSelectedTileList[4],
+                selectedTileColor: Theme.of(context).colorScheme.inverseSurface,
+                leading: const Icon(
+                  Icons.message_outlined,
+                  color: Colors.white,
+                ),
+                title: const Text(
+                  "Messages",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  updateSelectedIndex(4);
+                },
+              ),
             ),
 
             // 5 qr code
-            ListTile(
-              leading: const Icon(
-                Icons.qr_code_outlined,
-                color: Colors.white,
-              ),
-              title: const Text(
-                "QR Code",
-                style: TextStyle(
-                  color: Colors.white,
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: _isSelectedTileList[5]
+                      ? Theme.of(context).colorScheme.inverseSurface
+                      : Colors.transparent,
+                  width: 6.0,
                 ),
               ),
-              onTap: () {},
+              child: ListTile(
+                selected: _isSelectedTileList[5],
+                selectedTileColor: Theme.of(context).colorScheme.inverseSurface,
+                leading: const Icon(
+                  Icons.qr_code_outlined,
+                  color: Colors.white,
+                ),
+                title: const Text(
+                  "QR Code",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  updateSelectedIndex(5);
+                },
+              ),
             ),
 
             // 6 history
-            ListTile(
-              leading: const Icon(
-                Icons.history_outlined,
-                color: Colors.white,
-              ),
-              title: const Text(
-                "History",
-                style: TextStyle(
-                  color: Colors.white,
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: _isSelectedTileList[6]
+                      ? Theme.of(context).colorScheme.inverseSurface
+                      : Colors.transparent,
+                  width: 6.0,
                 ),
               ),
-              onTap: () {},
+              child: ListTile(
+                selected: _isSelectedTileList[6],
+                selectedTileColor: Theme.of(context).colorScheme.inverseSurface,
+                leading: const Icon(
+                  Icons.history_outlined,
+                  color: Colors.white,
+                ),
+                title: const Text(
+                  "History",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  updateSelectedIndex(6);
+                },
+              ),
             ),
           ],
         ),

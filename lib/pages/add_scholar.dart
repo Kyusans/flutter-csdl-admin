@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_csdl_admin/components/my_textfield.dart';
 
 class AddScholar extends StatefulWidget {
   const AddScholar({Key? key}) : super(key: key);
@@ -8,14 +9,112 @@ class AddScholar extends StatefulWidget {
 }
 
 class _AddScholarState extends State<AddScholar> {
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Title'),
+        backgroundColor: Theme.of(context).colorScheme.background,
       ),
-      body: Stack(
-        children: [],
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Card(
+            elevation: 4,
+            color: Theme.of(context).colorScheme.primary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Add Scholar',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 36,
+                    ),
+                  ),
+                  Text(
+                    'Enroll the scholar by completing the registration form.',
+                    style: TextStyle(
+                      color: Colors.grey[400],
+                      fontSize: 14,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    width: double.infinity,
+                    child: Card(
+                      elevation: 4,
+                      color: Theme.of(context).colorScheme.background,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(32.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Fill the Form',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 36,
+                              ),
+                            ),
+                            Text(
+                              'Fill out the form by the given below.',
+                              style: TextStyle(
+                                color: Colors.grey[400],
+                                fontSize: 14,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0,
+                                    ),
+                                    child: MyTextField(
+                                      labelText: "First name",
+                                      obscureText: false,
+                                      controller: _firstNameController,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0,
+                                    ),
+                                    child: MyTextField(
+                                      labelText: "Last name",
+                                      obscureText: false,
+                                      controller: _lastNameController,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
