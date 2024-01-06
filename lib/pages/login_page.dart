@@ -11,6 +11,7 @@ class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginPageState createState() => _LoginPageState();
 }
 
@@ -51,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         scaffoldMessenger.showSnackBar(
           const SnackBar(
+            backgroundColor: Colors.red,
             content: Text(
               "Invalid Id or password",
               style: TextStyle(fontSize: 20),
@@ -62,6 +64,7 @@ class _LoginPageState extends State<LoginPage> {
     } catch (e) {
       scaffoldMessenger.showSnackBar(
         SnackBar(
+          backgroundColor: Colors.red,
           content: Text(
             "There was an unexpected error: $e",
             style: const TextStyle(
@@ -152,7 +155,9 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(
+                  height: 8,
+                ),
                 const Text(
                   "Sign in your account",
                   style: TextStyle(
