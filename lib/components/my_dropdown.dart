@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
 class MyDropdown extends StatefulWidget {
@@ -21,37 +22,41 @@ class MyDropdown extends StatefulWidget {
 class _MyDropdownState extends State<MyDropdown> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Theme.of(context).colorScheme.primary,
-        ),
-        borderRadius: BorderRadius.circular(
-          5.0,
-        ),
-      ),
-      child: InputDecorator(
-        decoration: InputDecoration(
-          labelText: widget.labelText,
-          labelStyle: TextStyle(
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 12.0),
-        ),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            isExpanded: true,
-            value: widget.value,
-            items: widget.items.map((e) {
-              return DropdownMenuItem(
-                value: e,
-                child: Text(e),
-              );
-            }).toList(),
-            onChanged: widget.onChange,
-          ),
+    return DropdownButtonFormField2(
+      isExpanded: true,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(vertical: 24),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(5),
         ),
       ),
+      hint: Text(
+        widget.labelText,
+        style: const TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      dropdownStyleData: DropdownStyleData(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+      ),
+      value: widget.value,
+      onChanged: widget.onChange,
+      items: widget.items
+          .map(
+            (item) => DropdownMenuItem<String>(
+              value: item,
+              child: Text(
+                item,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          )
+          .toList(),
     );
   }
 }
