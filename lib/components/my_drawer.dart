@@ -45,7 +45,7 @@ class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: ListView(
@@ -103,14 +103,15 @@ class _MyDrawerState extends State<MyDrawer> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
                   color: _isSelectedTileList[0]
-                      ? Theme.of(context).colorScheme.inverseSurface
+                      ? Theme.of(context).colorScheme.onPrimaryContainer
                       : Colors.transparent,
                   width: 3.0,
                 ),
               ),
               child: ListTile(
                 selected: _isSelectedTileList[0],
-                selectedTileColor: Theme.of(context).colorScheme.inverseSurface,
+                selectedTileColor:
+                    Theme.of(context).colorScheme.onPrimaryContainer,
                 leading: const Icon(
                   Icons.dashboard_outlined,
                   color: Colors.white,
@@ -133,14 +134,15 @@ class _MyDrawerState extends State<MyDrawer> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
                   color: _isSelectedTileList[1]
-                      ? Theme.of(context).colorScheme.inverseSurface
+                      ? Theme.of(context).colorScheme.onPrimaryContainer
                       : Colors.transparent,
                   width: 6.0,
                 ),
               ),
               child: ListTile(
                 selected: _isSelectedTileList[1],
-                selectedTileColor: Theme.of(context).colorScheme.inverseSurface,
+                selectedTileColor:
+                    Theme.of(context).colorScheme.onPrimaryContainer,
                 leading: const Icon(
                   Icons.person_add_alt,
                   color: Colors.white,
@@ -163,14 +165,15 @@ class _MyDrawerState extends State<MyDrawer> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
                   color: _isSelectedTileList[2]
-                      ? Theme.of(context).colorScheme.inverseSurface
+                      ? Theme.of(context).colorScheme.onPrimaryContainer
                       : Colors.transparent,
                   width: 6.0,
                 ),
               ),
               child: ListTile(
                 selected: _isSelectedTileList[2],
-                selectedTileColor: Theme.of(context).colorScheme.inverseSurface,
+                selectedTileColor:
+                    Theme.of(context).colorScheme.onPrimaryContainer,
                 leading: const Icon(
                   Icons.person_outline,
                   color: Colors.white,
@@ -193,14 +196,15 @@ class _MyDrawerState extends State<MyDrawer> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
                   color: _isSelectedTileList[3]
-                      ? Theme.of(context).colorScheme.inverseSurface
+                      ? Theme.of(context).colorScheme.onPrimaryContainer
                       : Colors.transparent,
                   width: 6.0,
                 ),
               ),
               child: ListTile(
                 selected: _isSelectedTileList[3],
-                selectedTileColor: Theme.of(context).colorScheme.inverseSurface,
+                selectedTileColor:
+                    Theme.of(context).colorScheme.onPrimaryContainer,
                 leading: const Icon(
                   Icons.notifications_none,
                   color: Colors.white,
@@ -223,14 +227,15 @@ class _MyDrawerState extends State<MyDrawer> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
                   color: _isSelectedTileList[4]
-                      ? Theme.of(context).colorScheme.inverseSurface
+                      ? Theme.of(context).colorScheme.onPrimaryContainer
                       : Colors.transparent,
                   width: 6.0,
                 ),
               ),
               child: ListTile(
                 selected: _isSelectedTileList[4],
-                selectedTileColor: Theme.of(context).colorScheme.inverseSurface,
+                selectedTileColor:
+                    Theme.of(context).colorScheme.onPrimaryContainer,
                 leading: const Icon(
                   Icons.message_outlined,
                   color: Colors.white,
@@ -253,14 +258,15 @@ class _MyDrawerState extends State<MyDrawer> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
                   color: _isSelectedTileList[5]
-                      ? Theme.of(context).colorScheme.inverseSurface
+                      ? Theme.of(context).colorScheme.onPrimaryContainer
                       : Colors.transparent,
                   width: 6.0,
                 ),
               ),
               child: ListTile(
                 selected: _isSelectedTileList[5],
-                selectedTileColor: Theme.of(context).colorScheme.inverseSurface,
+                selectedTileColor:
+                    Theme.of(context).colorScheme.onPrimaryContainer,
                 leading: const Icon(
                   Icons.qr_code_outlined,
                   color: Colors.white,
@@ -283,14 +289,15 @@ class _MyDrawerState extends State<MyDrawer> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
                   color: _isSelectedTileList[6]
-                      ? Theme.of(context).colorScheme.inverseSurface
+                      ? Theme.of(context).colorScheme.onPrimaryContainer
                       : Colors.transparent,
                   width: 6.0,
                 ),
               ),
               child: ListTile(
                 selected: _isSelectedTileList[6],
-                selectedTileColor: Theme.of(context).colorScheme.inverseSurface,
+                selectedTileColor:
+                    Theme.of(context).colorScheme.onPrimaryContainer,
                 leading: const Icon(
                   Icons.history_outlined,
                   color: Colors.white,

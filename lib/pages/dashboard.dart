@@ -32,20 +32,31 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      body: Column(
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+      body: Row(
         children: [
+          MyDrawer(updateSelectedIndex),
           Expanded(
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.start,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                MyDrawer(updateSelectedIndex),
-                Expanded(child: selectedWidget()),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30.0,
+                    vertical: 150,
+                  ),
+                  child: Card(
+                    elevation: 4,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: selectedWidget(),
+                  ),
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
@@ -53,7 +64,7 @@ class _DashboardState extends State<Dashboard> {
 }
 
 class DashboardMain extends StatefulWidget {
-  const DashboardMain({super.key});
+  const DashboardMain({Key? key}) : super(key: key);
 
   @override
   State<DashboardMain> createState() => _DashboardMainState();

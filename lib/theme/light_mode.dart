@@ -8,6 +8,12 @@ ThemeData lightMode = ThemeData(
     secondary: Colors.grey.shade400,
     inversePrimary: const Color.fromARGB(255, 67, 224, 77),
     inverseSurface: Colors.blue[900],
+    // para sa lahi2 nga color
+    onPrimary: Colors.blue.shade900,
+    onSecondary: Colors.white,
+    onTertiary: Colors.black,
+    onInverseSurface: const Color.fromARGB(255, 16, 147, 21),
+    onPrimaryContainer: Colors.blue[900],
   ),
   textTheme: ThemeData.light().textTheme.apply(
         bodyColor: Colors.grey[800],
