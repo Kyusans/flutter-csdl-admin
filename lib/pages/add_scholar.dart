@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_csdl_admin/components/my_dropdown.dart';
 import 'package:flutter_csdl_admin/components/my_textfield.dart';
 
 class AddScholar extends StatefulWidget {
@@ -11,6 +12,20 @@ class AddScholar extends StatefulWidget {
 class _AddScholarState extends State<AddScholar> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
+  String _selectedYearLevel = "1st Year";
+  final List<String> yearLevel = [
+    "1st Year",
+    "2nd Year",
+    "3rd Year",
+    "4th Year",
+  ];
+  setYearLevel(String? selectedValue) {
+    setState(() {
+      _selectedYearLevel = selectedValue!;
+      print("Selected year level: " + _selectedYearLevel);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +90,7 @@ class _AddScholarState extends State<AddScholar> {
                               ),
                             ),
                             SizedBox(
-                              height: 16,
+                              height: 24,
                             ),
                             Row(
                               children: [
@@ -104,7 +119,38 @@ class _AddScholarState extends State<AddScholar> {
                                   ),
                                 ),
                               ],
-                            )
+                            ),
+                            SizedBox(
+                              height: 24,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0),
+                                    child: MyDropdown(
+                                      items: yearLevel,
+                                      labelText: "Select Year Level",
+                                      value: _selectedYearLevel,
+                                      onChange: setYearLevel,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0),
+                                    child: MyDropdown(
+                                      items: yearLevel,
+                                      labelText: "Select Year Level",
+                                      value: _selectedYearLevel,
+                                      onChange: setYearLevel,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
