@@ -173,6 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                       MyTextField(
                         labelText: "Id",
                         obscureText: false,
+                        willValidate: true,
                         controller: userIdController,
                         icon: null,
                       ),
@@ -180,6 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                       MyTextField(
                         labelText: "Password",
                         obscureText: true,
+                        willValidate: true,
                         controller: passwordController,
                         icon: null,
                       ),
@@ -192,6 +194,9 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () {
                                 _login();
                               },
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onPrimaryContainer,
                             ),
                     ],
                   ),

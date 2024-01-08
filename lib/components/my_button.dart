@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class MyButton extends StatefulWidget {
   final String buttonText;
   final double buttonSize;
+  final Color color;
   final void Function()? onPressed;
 
   const MyButton({
     Key? key,
     required this.buttonText,
     required this.buttonSize,
+    required this.color,
     required this.onPressed,
   }) : super(key: key);
 
@@ -20,7 +22,7 @@ class _MyButtonState extends State<MyButton> {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-      color: Theme.of(context).colorScheme.inversePrimary,
+      color: widget.color,
       onPressed: widget.onPressed,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),

@@ -39,12 +39,10 @@ class _DashboardState extends State<Dashboard> {
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 30.0,
-                    vertical: 150,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Card(
                     elevation: 4,
                     color: Theme.of(context).colorScheme.onSecondary,

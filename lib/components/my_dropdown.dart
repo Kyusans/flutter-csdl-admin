@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 
 class MyDropdown extends StatefulWidget {
   final List<String> items;
-  final String labelText;
   final String value;
   final void Function(String?)? onChange;
 
   const MyDropdown({
     Key? key,
     required this.items,
-    required this.labelText,
     required this.value,
     this.onChange,
   }) : super(key: key);
@@ -22,41 +20,51 @@ class MyDropdown extends StatefulWidget {
 class _MyDropdownState extends State<MyDropdown> {
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField2(
-      isExpanded: true,
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(vertical: 24),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.primary,
+          width: 1,
         ),
       ),
-      hint: Text(
-        widget.labelText,
-        style: const TextStyle(
-          color: Colors.white,
+      child: DropdownButtonFormField2<String>(
+        iconStyleData: const IconStyleData(
+          icon: Padding(
+            padding: EdgeInsets.only(right: 4.0),
+            child: Icon(
+              Icons.keyboard_arrow_down,
+              color: Colors.white,
+            ),
+          ),
         ),
-      ),
-      dropdownStyleData: DropdownStyleData(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onPrimary,
+        isExpanded: true,
+        decoration: const InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 24),
+          border: InputBorder.none,
         ),
-      ),
-      value: widget.value,
-      onChanged: widget.onChange,
-      items: widget.items
-          .map(
-            (item) => DropdownMenuItem<String>(
-              value: item,
-              child: Text(
-                item,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
+        dropdownStyleData: DropdownStyleData(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+        ),
+        value: widget.value,
+        onChanged: widget.onChange,
+        items: widget.items
+            .map(
+              (item) => DropdownMenuItem<String>(
+                value: item,
+                child: Text(
+                  item,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    color: Colors.white,
+                  ),
                 ),
               ),
-            ),
-          )
-          .toList(),
+            )
+            .toList(),
+      ),
     );
   }
 }
