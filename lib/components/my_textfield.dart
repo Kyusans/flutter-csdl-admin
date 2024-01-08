@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class MyTextField extends StatefulWidget {
   final String labelText;
   final bool obscureText;
+  final bool willValidate;
   final TextEditingController controller;
   final Icon? icon;
 
@@ -10,6 +11,7 @@ class MyTextField extends StatefulWidget {
     Key? key,
     required this.labelText,
     required this.obscureText,
+    required this.willValidate,
     required this.controller,
     this.icon,
   }) : super(key: key);
@@ -39,7 +41,7 @@ class _MyTextFieldState extends State<MyTextField> {
         border: const OutlineInputBorder(),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.primary,
           ),
           borderRadius: const BorderRadius.all(
             Radius.circular(7),
@@ -72,6 +74,12 @@ class _MyTextFieldState extends State<MyTextField> {
               )
             : null,
       ),
+      validator: (value) {
+        if (value == null || value.isEmpty && widget.willValidate) {
+          return "This field is required";
+        }
+        return null;
+      },
     );
   }
 }
