@@ -2,41 +2,21 @@ import 'package:flutter/material.dart';
 
 class MyDrawer extends StatefulWidget {
   final Function(int) onItemTapped;
-  const MyDrawer(this.onItemTapped, {Key? key}) : super(key: key);
+  final int selectedTileIndex;
+  const MyDrawer(this.onItemTapped, {required this.selectedTileIndex, Key? key})
+      : super(key: key);
 
   @override
-  _MyDrawerState createState() => _MyDrawerState();
-  int getSelectedTileIndex() {
-    return _MyDrawerState._selectedTileIndex;
-  }
+  _MyDrawerState createState() => _MyDrawerState(selectedTileIndex);
 }
 
 class _MyDrawerState extends State<MyDrawer> {
-  static int _selectedTileIndex = 0;
+  int _selectedTileIndex;
 
-  final List<bool> _isSelectedTileList = [
-    // 0 dashboard
-    true,
-    // 1 add Scholar
-    false,
-    // 2 account
-    false,
-    // 3 notification
-    false,
-    // 4 messages
-    false,
-    // 5 qr code
-    false,
-    // 6 history
-    false,
-  ];
+  _MyDrawerState(this._selectedTileIndex);
 
   void updateSelectedIndex(index) {
     setState(() {
-      _isSelectedTileList[_selectedTileIndex] =
-          !_isSelectedTileList[_selectedTileIndex];
-
-      _isSelectedTileList[index] = !_isSelectedTileList[index];
       _selectedTileIndex = index;
       widget.onItemTapped(index);
     });
@@ -102,14 +82,14 @@ class _MyDrawerState extends State<MyDrawer> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: _isSelectedTileList[0]
+                  color: _selectedTileIndex == 0
                       ? Theme.of(context).colorScheme.onPrimaryContainer
                       : Colors.transparent,
                   width: 3.0,
                 ),
               ),
               child: ListTile(
-                selected: _isSelectedTileList[0],
+                selected: _selectedTileIndex == 0,
                 selectedTileColor:
                     Theme.of(context).colorScheme.onPrimaryContainer,
                 leading: const Icon(
@@ -133,14 +113,14 @@ class _MyDrawerState extends State<MyDrawer> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: _isSelectedTileList[1]
+                  color: _selectedTileIndex == 1
                       ? Theme.of(context).colorScheme.onPrimaryContainer
                       : Colors.transparent,
                   width: 6.0,
                 ),
               ),
               child: ListTile(
-                selected: _isSelectedTileList[1],
+                selected: _selectedTileIndex == 1,
                 selectedTileColor:
                     Theme.of(context).colorScheme.onPrimaryContainer,
                 leading: const Icon(
@@ -164,14 +144,14 @@ class _MyDrawerState extends State<MyDrawer> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: _isSelectedTileList[2]
+                  color: _selectedTileIndex == 2
                       ? Theme.of(context).colorScheme.onPrimaryContainer
                       : Colors.transparent,
                   width: 6.0,
                 ),
               ),
               child: ListTile(
-                selected: _isSelectedTileList[2],
+                selected: _selectedTileIndex == 2,
                 selectedTileColor:
                     Theme.of(context).colorScheme.onPrimaryContainer,
                 leading: const Icon(
@@ -195,14 +175,14 @@ class _MyDrawerState extends State<MyDrawer> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: _isSelectedTileList[3]
+                  color: _selectedTileIndex == 3
                       ? Theme.of(context).colorScheme.onPrimaryContainer
                       : Colors.transparent,
                   width: 6.0,
                 ),
               ),
               child: ListTile(
-                selected: _isSelectedTileList[3],
+                selected: _selectedTileIndex == 3,
                 selectedTileColor:
                     Theme.of(context).colorScheme.onPrimaryContainer,
                 leading: const Icon(
@@ -226,14 +206,14 @@ class _MyDrawerState extends State<MyDrawer> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: _isSelectedTileList[4]
+                  color: _selectedTileIndex == 4
                       ? Theme.of(context).colorScheme.onPrimaryContainer
                       : Colors.transparent,
                   width: 6.0,
                 ),
               ),
               child: ListTile(
-                selected: _isSelectedTileList[4],
+                selected: _selectedTileIndex == 4,
                 selectedTileColor:
                     Theme.of(context).colorScheme.onPrimaryContainer,
                 leading: const Icon(
@@ -257,14 +237,14 @@ class _MyDrawerState extends State<MyDrawer> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: _isSelectedTileList[5]
+                  color: _selectedTileIndex == 5
                       ? Theme.of(context).colorScheme.onPrimaryContainer
                       : Colors.transparent,
                   width: 6.0,
                 ),
               ),
               child: ListTile(
-                selected: _isSelectedTileList[5],
+                selected: _selectedTileIndex == 5,
                 selectedTileColor:
                     Theme.of(context).colorScheme.onPrimaryContainer,
                 leading: const Icon(
@@ -288,14 +268,14 @@ class _MyDrawerState extends State<MyDrawer> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: _isSelectedTileList[6]
+                  color: _selectedTileIndex == 6
                       ? Theme.of(context).colorScheme.onPrimaryContainer
                       : Colors.transparent,
                   width: 6.0,
                 ),
               ),
               child: ListTile(
-                selected: _isSelectedTileList[6],
+                selected: _selectedTileIndex == 6,
                 selectedTileColor:
                     Theme.of(context).colorScheme.onPrimaryContainer,
                 leading: const Icon(
