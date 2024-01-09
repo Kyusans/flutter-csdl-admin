@@ -45,7 +45,7 @@ class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
+      backgroundColor: Theme.of(context).colorScheme.tertiary,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: ListView(
