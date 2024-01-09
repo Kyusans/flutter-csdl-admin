@@ -47,6 +47,8 @@ class _MyTextFieldState extends State<MyTextField> {
             Radius.circular(7),
           ),
         ),
+        filled: true,
+        fillColor: Theme.of(context).colorScheme.onInverseSurface,
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.primary,

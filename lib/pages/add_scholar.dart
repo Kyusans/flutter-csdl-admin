@@ -206,7 +206,16 @@ class _AddScholarState extends State<AddScholar> {
                           }
                           return null;
                         },
+                        icon: const Icon(
+                          Icons.keyboard_arrow_down_outlined,
+                          color: Colors.white,
+                        ),
+                        dropdownColor:
+                            Theme.of(context).colorScheme.onInverseSurface,
                         decoration: InputDecoration(
+                          filled: true,
+                          fillColor:
+                              Theme.of(context).colorScheme.onInverseSurface,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),
@@ -241,7 +250,12 @@ class _AddScholarState extends State<AddScholar> {
                           ...courseMap.entries.map((entry) {
                             return DropdownMenuItem<int>(
                               value: entry.key,
-                              child: Text(entry.value),
+                              child: Text(
+                                entry.value,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
                             );
                           }).toList(),
                         ],
@@ -256,7 +270,16 @@ class _AddScholarState extends State<AddScholar> {
                           }
                           return null;
                         },
+                        icon: const Icon(
+                          Icons.keyboard_arrow_down_outlined,
+                          color: Colors.white,
+                        ),
+                        dropdownColor:
+                            Theme.of(context).colorScheme.onInverseSurface,
                         decoration: InputDecoration(
+                          filled: true,
+                          fillColor:
+                              Theme.of(context).colorScheme.onInverseSurface,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),
@@ -305,7 +328,16 @@ class _AddScholarState extends State<AddScholar> {
                           }
                           return null;
                         },
+                        dropdownColor:
+                            Theme.of(context).colorScheme.onInverseSurface,
+                        icon: const Icon(
+                          Icons.keyboard_arrow_down_outlined,
+                          color: Colors.white,
+                        ),
                         decoration: InputDecoration(
+                          filled: true,
+                          fillColor:
+                              Theme.of(context).colorScheme.onInverseSurface,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),
