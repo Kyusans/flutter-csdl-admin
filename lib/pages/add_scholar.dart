@@ -18,9 +18,6 @@ class _AddScholarState extends State<AddScholar> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _schoolIdController = TextEditingController();
-
-  String _selectedYearLevel = "";
-  int _selectedCourse = 0;
   final List<String> yearLevel = [
     "Select year level",
     "1st Year",
@@ -30,7 +27,10 @@ class _AddScholarState extends State<AddScholar> {
   ];
 
   Map<int, String> courseMap = {};
+  Map<int, String> scholarTypeMap = {};
+  String _selectedYearLevel = "";
   int _selectedCourseId = 0;
+  int _selectedSholarshipType = 0;
   bool _isLoading = false;
 
   void getCourse() async {
@@ -60,23 +60,37 @@ class _AddScholarState extends State<AddScholar> {
     }
   }
 
-  void setYearLevel(String? selectedValue) {
+  void getScholarshipType() async {
     setState(() {
-      _selectedYearLevel = selectedValue!;
-      print("Selected year level: " + _selectedYearLevel);
+      _isLoading = true;
     });
-  }
+    try {
+      Map<String, String> requestBody = {"operation": "getScholarshipType"};
+      var res = await http.post(
+        Uri.parse("${SessionStorage.url}admin.php"),
+        body: requestBody,
+      );
 
-  void setCourse(int? selectedValue) {
-    setState(() {
-      _selectedCourse = selectedValue!;
-      print("Selected course Id: ${_selectedCourse}");
-    });
+      if (res.statusCode == 200) {
+        List<dynamic> scholarType = jsonDecode(res.body);
+        scholarTypeMap = {
+          for (var type in scholarType) type['type_id']: type['type_name']
+        };
+        print("course map $courseMap");
+      }
+    } catch (e) {
+      print("Failed to fetch scholarType data. Status code: $e");
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
+    getScholarshipType();
     getCourse();
   }
 
@@ -89,10 +103,10 @@ class _AddScholarState extends State<AddScholar> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(32.0),
+        padding: const EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const Text(
               'Fill the Form',
@@ -109,7 +123,7 @@ class _AddScholarState extends State<AddScholar> {
               ),
             ),
             const SizedBox(
-              height: 32,
+              height: 24,
             ),
             Row(
               children: [
@@ -136,9 +150,7 @@ class _AddScholarState extends State<AddScholar> {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 32,
-            ),
+            const SizedBox(height: 24),
             Row(
               children: [
                 Expanded(
@@ -162,13 +174,13 @@ class _AddScholarState extends State<AddScholar> {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 32,
-            ),
+            const SizedBox(height: 24),
             _isLoading
                 ? const LoadingSpinner()
                 : Column(
                     children: [
+                      // Year level dropdown
+
                       DropdownButtonFormField<String>(
                         value: _selectedYearLevel,
                         items: [
@@ -189,7 +201,7 @@ class _AddScholarState extends State<AddScholar> {
                           });
                         },
                         validator: (value) {
-                          if (value == null || value == 0) {
+                          if (value == null || value == "") {
                             return "This field is required";
                           }
                           return null;
@@ -205,7 +217,8 @@ class _AddScholarState extends State<AddScholar> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.primary),
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
                           ),
                           labelText: 'Year Level',
                           labelStyle: const TextStyle(
@@ -214,7 +227,10 @@ class _AddScholarState extends State<AddScholar> {
                         ),
                         style: const TextStyle(color: Colors.white),
                       ),
-                      SizedBox(height: 32),
+                      const SizedBox(height: 24),
+
+                      // course dropdown
+
                       DropdownButtonFormField<int>(
                         value: _selectedCourseId,
                         items: [
@@ -252,6 +268,56 @@ class _AddScholarState extends State<AddScholar> {
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                                 color: Theme.of(context).colorScheme.primary),
+                          ),
+                          labelText: 'Course',
+                          labelStyle: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      const SizedBox(height: 24),
+
+                      // Scholarship  type dropdown
+
+                      DropdownButtonFormField<int>(
+                        value: _selectedSholarshipType,
+                        items: [
+                          const DropdownMenuItem<int>(
+                            value: 0,
+                            child: Text("Scholarship Type"),
+                          ),
+                          ...scholarTypeMap.entries.map((entry) {
+                            return DropdownMenuItem<int>(
+                              value: entry.key,
+                              child: Text(entry.value),
+                            );
+                          }).toList(),
+                        ],
+                        onChanged: (int? newValue) {
+                          setState(() {
+                            _selectedSholarshipType = newValue!;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value == 0) {
+                            return "This field is required";
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
                           ),
                           labelText: 'Course',
                           labelStyle: const TextStyle(
