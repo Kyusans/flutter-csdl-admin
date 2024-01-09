@@ -11,12 +11,17 @@ ThemeData darkMode = ThemeData(
     // para sa lahi2 nga color
     onPrimary: Colors.grey.shade900,
     onSecondary: Colors.grey.shade800,
+    // pwede ni para sa text
     onTertiary: Colors.white,
-    onInverseSurface: Colors.blue.shade900,
+    tertiary: Colors.blue.shade900,
     onPrimaryContainer: const Color.fromARGB(255, 16, 147, 21),
+    onInverseSurface: Colors.grey.shade800,
   ),
   textTheme: ThemeData.light().textTheme.apply(
         bodyColor: Colors.grey[200],
         displayColor: Colors.white,
       ),
+  textSelectionTheme: const TextSelectionThemeData(
+    cursorColor: Colors.white,
+  ),
 );

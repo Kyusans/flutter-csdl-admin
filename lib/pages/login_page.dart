@@ -40,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
         body: requestBody,
       );
 
-      // print("res.body: " + res.body);
+      print("res.body: " + res.body);
 
       if (res.body != "0") {
         // ignore: use_build_context_synchronously
@@ -55,7 +55,10 @@ class _LoginPageState extends State<LoginPage> {
             backgroundColor: Colors.red,
             content: Text(
               "Invalid Id or password",
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+              ),
             ),
             duration: Duration(seconds: 2),
           ),
@@ -194,9 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () {
                                 _login();
                               },
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onPrimaryContainer,
+                              color: Theme.of(context).colorScheme.tertiary,
                             ),
                     ],
                   ),
