@@ -21,4 +21,7 @@ ThemeData lightMode = ThemeData(
         bodyColor: Colors.grey[800],
         displayColor: Colors.black,
       ),
+  textSelectionTheme: const TextSelectionThemeData(
+    cursorColor: Colors.white,
+  ),
 );

@@ -21,4 +21,7 @@ ThemeData darkMode = ThemeData(
         bodyColor: Colors.grey[200],
         displayColor: Colors.white,
       ),
+  textSelectionTheme: const TextSelectionThemeData(
+    cursorColor: Colors.white,
+  ),
 );

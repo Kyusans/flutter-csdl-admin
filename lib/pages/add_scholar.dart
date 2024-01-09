@@ -14,10 +14,12 @@ class AddScholar extends StatefulWidget {
 }
 
 class _AddScholarState extends State<AddScholar> {
+  late ScaffoldMessengerState scaffoldMessenger = ScaffoldMessenger.of(context);
   final TextEditingController _contactController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _schoolIdController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final List<String> yearLevel = [
     "Select year level",
     "1st Year",
@@ -30,8 +32,81 @@ class _AddScholarState extends State<AddScholar> {
   Map<int, String> scholarTypeMap = {};
   String _selectedYearLevel = "";
   int _selectedCourseId = 0;
-  int _selectedSholarshipType = 0;
+  int _selectedScholarshipType = 0;
   bool _isLoading = false;
+  String responseMessage = "Unsuccessful";
+  bool isSuccess = false;
+
+  void addScholar() async {
+    setState(() {
+      _isLoading = false;
+    });
+    try {
+      Map<String, String> jsonData = {
+        "schoolId": _schoolIdController.text,
+        "firstName": _firstNameController.text,
+        "lastName": _lastNameController.text,
+        "yearLevel": _selectedYearLevel,
+        "contact": _contactController.text,
+        "courseId": _selectedCourseId.toString(),
+        "scholarShipId": _selectedScholarshipType.toString(),
+      };
+      Map<String, String> requestBody = {
+        "json": jsonEncode(jsonData),
+        "operation": "addScholar",
+      };
+      var res = await http.post(
+        Uri.parse("${SessionStorage.url}admin.php"),
+        body: requestBody,
+      );
+      print("res ni addScholar: " + res.body);
+      if (res.body == "1") {
+        setState(() {
+          responseMessage = "Scholar added successfully";
+          isSuccess = true;
+        });
+      }
+      scaffoldMessenger.showSnackBar(
+        SnackBar(
+          backgroundColor: isSuccess ? Colors.green : Colors.red,
+          content: Text(
+            responseMessage,
+            style: const TextStyle(
+              fontSize: 20,
+              color: Colors.white,
+            ),
+          ),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    } catch (e) {
+      scaffoldMessenger.showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(
+            "There was an unexpected error: $e",
+            style: const TextStyle(
+              fontSize: 10,
+            ),
+          ),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    } finally {
+      setState(() {
+        if (isSuccess) {
+          _selectedYearLevel = "";
+          _selectedCourseId = 0;
+          _selectedScholarshipType = 0;
+          _contactController.text = "";
+          _firstNameController.text = "";
+          _lastNameController.text = "";
+          _schoolIdController.text = "";
+        }
+        _isLoading = false;
+      });
+    }
+  }
 
   void getCourse() async {
     setState(() {
@@ -96,289 +171,309 @@ class _AddScholarState extends State<AddScholar> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      color: Theme.of(context).colorScheme.onPrimary,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Text(
-              'Fill the Form',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 36,
-              ),
-            ),
-            const Text(
-              'Fill out the form by the given below.',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-              ),
-            ),
-            const SizedBox(
-              height: 24,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      right: 16.0,
+    return Form(
+      key: _formKey,
+      child: Card(
+        elevation: 4,
+        color: Theme.of(context).colorScheme.onPrimary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: _isLoading
+              ? const LoadingSpinner()
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Fill the Form',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 36,
+                      ),
                     ),
-                    child: MyTextField(
-                      labelText: "First name",
-                      obscureText: false,
-                      willValidate: true,
-                      controller: _firstNameController,
+                    const Text(
+                      'Fill out the form by the given below.',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                      ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  child: MyTextField(
-                    labelText: "Last name",
-                    obscureText: false,
-                    willValidate: true,
-                    controller: _lastNameController,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: MyTextField(
-                      labelText: "School id",
-                      willValidate: true,
-                      obscureText: false,
-                      controller: _schoolIdController,
+                    const SizedBox(
+                      height: 24,
                     ),
-                  ),
-                ),
-                Expanded(
-                  child: MyTextField(
-                    labelText: "Contact number",
-                    willValidate: true,
-                    obscureText: false,
-                    controller: _contactController,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            _isLoading
-                ? const LoadingSpinner()
-                : Column(
-                    children: [
-                      // Year level dropdown
-
-                      DropdownButtonFormField<String>(
-                        value: _selectedYearLevel,
-                        items: [
-                          const DropdownMenuItem<String>(
-                            value: "",
-                            child: Text("Select Year level"),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              right: 16.0,
+                            ),
+                            child: MyTextField(
+                              labelText: "First name",
+                              obscureText: false,
+                              willValidate: true,
+                              controller: _firstNameController,
+                            ),
                           ),
-                          ...yearLevel.map((entry) {
-                            return DropdownMenuItem<String>(
-                              value: entry,
-                              child: Text(entry),
-                            );
-                          }),
-                        ],
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _selectedYearLevel = newValue!;
-                          });
-                        },
-                        validator: (value) {
-                          if (value == null || value == "") {
-                            return "This field is required";
-                          }
-                          return null;
-                        },
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down_outlined,
-                          color: Colors.white,
                         ),
-                        dropdownColor:
-                            Theme.of(context).colorScheme.onInverseSurface,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor:
-                              Theme.of(context).colorScheme.onInverseSurface,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
+                        Expanded(
+                          child: MyTextField(
+                            labelText: "Last name",
+                            obscureText: false,
+                            willValidate: true,
+                            controller: _lastNameController,
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 16.0),
+                            child: MyTextField(
+                              labelText: "School id",
+                              willValidate: true,
+                              obscureText: false,
+                              controller: _schoolIdController,
                             ),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
+                        ),
+                        Expanded(
+                          child: MyTextField(
+                            labelText: "Contact number",
+                            willValidate: true,
+                            obscureText: false,
+                            controller: _contactController,
                           ),
-                          labelText: 'Year Level',
-                          labelStyle: const TextStyle(
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    Column(
+                      children: [
+                        // Year level dropdown
+
+                        DropdownButtonFormField<String>(
+                          value: _selectedYearLevel,
+                          items: [
+                            const DropdownMenuItem<String>(
+                              value: "",
+                              child: Text("Select Year level"),
+                            ),
+                            ...yearLevel.map((entry) {
+                              return DropdownMenuItem<String>(
+                                value: entry,
+                                child: Text(entry),
+                              );
+                            }),
+                          ],
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              _selectedYearLevel = newValue!;
+                            });
+                          },
+                          validator: (value) {
+                            if (value == null || value == "") {
+                              return "This field is required";
+                            }
+                            return null;
+                          },
+                          icon: const Icon(
+                            Icons.keyboard_arrow_down_outlined,
                             color: Colors.white,
                           ),
-                        ),
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                      const SizedBox(height: 24),
-
-                      // course dropdown
-
-                      DropdownButtonFormField<int>(
-                        value: _selectedCourseId,
-                        items: [
-                          const DropdownMenuItem<int>(
-                            value: 0,
-                            child: Text("Select Course"),
-                          ),
-                          ...courseMap.entries.map((entry) {
-                            return DropdownMenuItem<int>(
-                              value: entry.key,
-                              child: Text(
-                                entry.value,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                ),
+                          dropdownColor:
+                              Theme.of(context).colorScheme.onInverseSurface,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor:
+                                Theme.of(context).colorScheme.onInverseSurface,
+                            border: const OutlineInputBorder(),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(7),
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade600,
                               ),
-                            );
-                          }).toList(),
-                        ],
-                        onChanged: (int? newValue) {
-                          setState(() {
-                            _selectedCourseId = newValue!;
-                          });
-                        },
-                        validator: (value) {
-                          if (value == null || value == 0) {
-                            return "This field is required";
-                          }
-                          return null;
-                        },
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down_outlined,
-                          color: Colors.white,
-                        ),
-                        dropdownColor:
-                            Theme.of(context).colorScheme.onInverseSurface,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor:
-                              Theme.of(context).colorScheme.onInverseSurface,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade600,
+                              ),
+                            ),
+                            labelText: 'Year Level',
+                            labelStyle: const TextStyle(
+                              color: Colors.white,
                             ),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.primary),
-                          ),
-                          labelText: 'Course',
-                          labelStyle: const TextStyle(
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        const SizedBox(height: 24),
+
+                        // course dropdown
+
+                        DropdownButtonFormField<int>(
+                          value: _selectedCourseId,
+                          items: [
+                            const DropdownMenuItem<int>(
+                              value: 0,
+                              child: Text("Select Course"),
+                            ),
+                            ...courseMap.entries.map((entry) {
+                              return DropdownMenuItem<int>(
+                                value: entry.key,
+                                child: Text(
+                                  entry.value,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ],
+                          onChanged: (int? newValue) {
+                            setState(() {
+                              _selectedCourseId = newValue!;
+                            });
+                          },
+                          validator: (value) {
+                            if (value == null || value == 0) {
+                              return "This field is required";
+                            }
+                            return null;
+                          },
+                          icon: const Icon(
+                            Icons.keyboard_arrow_down_outlined,
                             color: Colors.white,
                           ),
-                        ),
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                      const SizedBox(height: 24),
-
-                      // Scholarship  type dropdown
-
-                      DropdownButtonFormField<int>(
-                        value: _selectedSholarshipType,
-                        items: [
-                          const DropdownMenuItem<int>(
-                            value: 0,
-                            child: Text("Scholarship Type"),
-                          ),
-                          ...scholarTypeMap.entries.map((entry) {
-                            return DropdownMenuItem<int>(
-                              value: entry.key,
-                              child: Text(entry.value),
-                            );
-                          }).toList(),
-                        ],
-                        onChanged: (int? newValue) {
-                          setState(() {
-                            _selectedSholarshipType = newValue!;
-                          });
-                        },
-                        validator: (value) {
-                          if (value == null || value == 0) {
-                            return "This field is required";
-                          }
-                          return null;
-                        },
-                        dropdownColor:
-                            Theme.of(context).colorScheme.onInverseSurface,
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down_outlined,
-                          color: Colors.white,
-                        ),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor:
+                          dropdownColor:
                               Theme.of(context).colorScheme.onInverseSurface,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.primary,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor:
+                                Theme.of(context).colorScheme.onInverseSurface,
+                            border: const OutlineInputBorder(),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(7),
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade600,
+                              ),
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade600,
+                              ),
+                            ),
+                            labelText: 'Course',
+                            labelStyle: const TextStyle(
+                              color: Colors.white,
                             ),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.primary,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        const SizedBox(height: 24),
+
+                        // Scholarship  type dropdown
+
+                        DropdownButtonFormField<int>(
+                          value: _selectedScholarshipType,
+                          items: [
+                            const DropdownMenuItem<int>(
+                              value: 0,
+                              child: Text("Scholarship Type"),
                             ),
-                          ),
-                          labelText: 'Course',
-                          labelStyle: const TextStyle(
+                            ...scholarTypeMap.entries.map((entry) {
+                              return DropdownMenuItem<int>(
+                                value: entry.key,
+                                child: Text(entry.value),
+                              );
+                            }).toList(),
+                          ],
+                          onChanged: (int? newValue) {
+                            setState(() {
+                              _selectedScholarshipType = newValue!;
+                            });
+                          },
+                          validator: (value) {
+                            if (value == null || value == 0) {
+                              return "This field is required";
+                            }
+                            return null;
+                          },
+                          dropdownColor:
+                              Theme.of(context).colorScheme.onInverseSurface,
+                          icon: const Icon(
+                            Icons.keyboard_arrow_down_outlined,
                             color: Colors.white,
                           ),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor:
+                                Theme.of(context).colorScheme.onInverseSurface,
+                            border: const OutlineInputBorder(),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(7),
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade600,
+                              ),
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade600,
+                              ),
+                            ),
+                            labelText: 'Course',
+                            labelStyle: const TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          style: const TextStyle(color: Colors.white),
                         ),
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                const SizedBox(
-                  height: 200,
+                      ],
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        const SizedBox(
+                          height: 100,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: MyButton(
+                            buttonText: "Add Scholar",
+                            buttonSize: 16,
+                            color: Theme.of(context).colorScheme.tertiary,
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                addScholar();
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: MyButton(
-                    buttonText: "Add Scholar",
-                    buttonSize: 16,
-                    color: Theme.of(context).colorScheme.tertiary,
-                    onPressed: () {},
-                  ),
-                ),
-              ],
-            ),
-          ],
         ),
       ),
     );

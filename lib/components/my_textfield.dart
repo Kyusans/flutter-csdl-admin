@@ -39,19 +39,24 @@ class _MyTextFieldState extends State<MyTextField> {
       ),
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.primary,
+            color: Colors.white,
           ),
-          borderRadius: const BorderRadius.all(
+          borderRadius: BorderRadius.all(
             Radius.circular(7),
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.grey.shade100,
           ),
         ),
         filled: true,
         fillColor: Theme.of(context).colorScheme.onInverseSurface,
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.primary,
+            color: Colors.grey.shade600,
           ),
           borderRadius: const BorderRadius.all(
             Radius.circular(7),

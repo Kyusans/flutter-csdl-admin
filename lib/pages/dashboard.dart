@@ -11,7 +11,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   // eh change nig 0 paghuman
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   int _selectedTileIndex = 0;
   bool _isMobile = false;
   String _secondText = "";
