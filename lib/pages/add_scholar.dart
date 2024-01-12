@@ -113,7 +113,9 @@ class _AddScholarState extends State<AddScholar> {
       _isLoading = true;
     });
     try {
-      Map<String, String> requestBody = {"operation": "getCourse"};
+      Map<String, String> requestBody = {
+        "operation": "getCourse"
+      };
       var res = await http.post(
         Uri.parse("${SessionStorage.url}admin.php"),
         body: requestBody,
@@ -140,7 +142,9 @@ class _AddScholarState extends State<AddScholar> {
       _isLoading = true;
     });
     try {
-      Map<String, String> requestBody = {"operation": "getScholarshipType"};
+      Map<String, String> requestBody = {
+        "operation": "getScholarshipType"
+      };
       var res = await http.post(
         Uri.parse("${SessionStorage.url}admin.php"),
         body: requestBody,
@@ -180,30 +184,13 @@ class _AddScholarState extends State<AddScholar> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(20.0),
           child: _isLoading
               ? const LoadingSpinner()
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Fill the Form',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 36,
-                      ),
-                    ),
-                    const Text(
-                      'Fill out the form by the given below.',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 24,
-                    ),
                     Row(
                       children: [
                         Expanded(
@@ -212,7 +199,7 @@ class _AddScholarState extends State<AddScholar> {
                               right: 16.0,
                             ),
                             child: MyTextField(
-                              labelText: "First name",
+                              labelText: "First name *",
                               obscureText: false,
                               willValidate: true,
                               controller: _firstNameController,
@@ -221,7 +208,7 @@ class _AddScholarState extends State<AddScholar> {
                         ),
                         Expanded(
                           child: MyTextField(
-                            labelText: "Last name",
+                            labelText: "Last name *",
                             obscureText: false,
                             willValidate: true,
                             controller: _lastNameController,
@@ -236,7 +223,7 @@ class _AddScholarState extends State<AddScholar> {
                           child: Padding(
                             padding: const EdgeInsets.only(right: 16.0),
                             child: MyTextField(
-                              labelText: "School id",
+                              labelText: "School id *",
                               willValidate: true,
                               obscureText: false,
                               controller: _schoolIdController,
@@ -245,7 +232,7 @@ class _AddScholarState extends State<AddScholar> {
                         ),
                         Expanded(
                           child: MyTextField(
-                            labelText: "Contact number",
+                            labelText: "Contact number *",
                             willValidate: true,
                             obscureText: false,
                             controller: _contactController,
@@ -287,12 +274,10 @@ class _AddScholarState extends State<AddScholar> {
                             Icons.keyboard_arrow_down_outlined,
                             color: Colors.white,
                           ),
-                          dropdownColor:
-                              Theme.of(context).colorScheme.onInverseSurface,
+                          dropdownColor: Theme.of(context).colorScheme.onInverseSurface,
                           decoration: InputDecoration(
                             filled: true,
-                            fillColor:
-                                Theme.of(context).colorScheme.onInverseSurface,
+                            fillColor: Theme.of(context).colorScheme.onInverseSurface,
                             border: const OutlineInputBorder(),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(7),
@@ -310,7 +295,7 @@ class _AddScholarState extends State<AddScholar> {
                                 color: Colors.grey.shade600,
                               ),
                             ),
-                            labelText: 'Year Level',
+                            labelText: 'Year Level *',
                             labelStyle: const TextStyle(
                               color: Colors.white,
                             ),
@@ -355,12 +340,10 @@ class _AddScholarState extends State<AddScholar> {
                             Icons.keyboard_arrow_down_outlined,
                             color: Colors.white,
                           ),
-                          dropdownColor:
-                              Theme.of(context).colorScheme.onInverseSurface,
+                          dropdownColor: Theme.of(context).colorScheme.onInverseSurface,
                           decoration: InputDecoration(
                             filled: true,
-                            fillColor:
-                                Theme.of(context).colorScheme.onInverseSurface,
+                            fillColor: Theme.of(context).colorScheme.onInverseSurface,
                             border: const OutlineInputBorder(),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(7),
@@ -378,7 +361,7 @@ class _AddScholarState extends State<AddScholar> {
                                 color: Colors.grey.shade600,
                               ),
                             ),
-                            labelText: 'Course',
+                            labelText: 'Course *',
                             labelStyle: const TextStyle(
                               color: Colors.white,
                             ),
@@ -414,16 +397,14 @@ class _AddScholarState extends State<AddScholar> {
                             }
                             return null;
                           },
-                          dropdownColor:
-                              Theme.of(context).colorScheme.onInverseSurface,
+                          dropdownColor: Theme.of(context).colorScheme.onInverseSurface,
                           icon: const Icon(
                             Icons.keyboard_arrow_down_outlined,
                             color: Colors.white,
                           ),
                           decoration: InputDecoration(
                             filled: true,
-                            fillColor:
-                                Theme.of(context).colorScheme.onInverseSurface,
+                            fillColor: Theme.of(context).colorScheme.onInverseSurface,
                             border: const OutlineInputBorder(),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(7),
@@ -441,7 +422,7 @@ class _AddScholarState extends State<AddScholar> {
                                 color: Colors.grey.shade600,
                               ),
                             ),
-                            labelText: 'Course',
+                            labelText: 'Scholarship Type *',
                             labelStyle: const TextStyle(
                               color: Colors.white,
                             ),

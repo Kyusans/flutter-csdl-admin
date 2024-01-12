@@ -28,8 +28,7 @@ class _DashboardState extends State<Dashboard> {
           break;
         case 1:
           _firstText = "Add Scholar";
-          _secondText =
-              "Enroll the scholar by completing the registration form.";
+          _secondText = "Enroll the scholar by completing the registration form.";
           break;
         default:
           _firstText = "Wala pa ni";
@@ -51,20 +50,26 @@ class _DashboardState extends State<Dashboard> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _checkIsMobile();
+  }
+
+  @override
   void initState() {
     super.initState();
     setState(() {
       _firstText = "Kunwari Dashboard ni";
       _secondText = "Dashboard ko to";
     });
-    _checkIsMobile();
+    // _checkIsMobile();
   }
 
   void _checkIsMobile() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final maxWidth = MediaQuery.of(context).size.width;
       setState(() {
-        _isMobile = maxWidth <= 1300;
+        _isMobile = maxWidth <= 800;
       });
     });
   }
