@@ -184,7 +184,7 @@ class _AddScholarState extends State<AddScholar> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(64.0),
+          padding: const EdgeInsets.all(20.0),
           child: _isLoading
               ? const LoadingSpinner()
               : Column(
@@ -250,7 +250,7 @@ class _AddScholarState extends State<AddScholar> {
                           items: [
                             const DropdownMenuItem<String>(
                               value: "",
-                              child: Text("Select Year level *"),
+                              child: Text("Select Year level"),
                             ),
                             ...yearLevel.map((entry) {
                               return DropdownMenuItem<String>(
@@ -311,7 +311,7 @@ class _AddScholarState extends State<AddScholar> {
                           items: [
                             const DropdownMenuItem<int>(
                               value: 0,
-                              child: Text("Select Course *"),
+                              child: Text("Select Course"),
                             ),
                             ...courseMap.entries.map((entry) {
                               return DropdownMenuItem<int>(
@@ -377,7 +377,7 @@ class _AddScholarState extends State<AddScholar> {
                           items: [
                             const DropdownMenuItem<int>(
                               value: 0,
-                              child: Text("Scholarship Type *"),
+                              child: Text("Scholarship Type"),
                             ),
                             ...scholarTypeMap.entries.map((entry) {
                               return DropdownMenuItem<int>(
@@ -422,7 +422,7 @@ class _AddScholarState extends State<AddScholar> {
                                 color: Colors.grey.shade600,
                               ),
                             ),
-                            labelText: 'Course',
+                            labelText: 'Scholarship Type *',
                             labelStyle: const TextStyle(
                               color: Colors.white,
                             ),
