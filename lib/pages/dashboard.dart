@@ -28,7 +28,8 @@ class _DashboardState extends State<Dashboard> {
           break;
         case 1:
           _firstText = "Add Scholar";
-          _secondText = "Enroll the scholar by completing the registration form.";
+          _secondText =
+              "Enroll the scholar by completing the registration form.";
           break;
         default:
           _firstText = "Wala pa ni";
@@ -107,7 +108,7 @@ class _DashboardState extends State<Dashboard> {
         ),
         Expanded(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Padding(
@@ -119,7 +120,7 @@ class _DashboardState extends State<Dashboard> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 40.0, top: 20),
+                    padding: const EdgeInsets.only(left: 40.0, top: 10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,7 +143,7 @@ class _DashboardState extends State<Dashboard> {
                           height: 20,
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(64, 20, 104, 0),
+                          padding: const EdgeInsets.only(right: 40, bottom: 40),
                           child: selectedWidget(),
                         ),
                       ],

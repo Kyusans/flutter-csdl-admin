@@ -113,9 +113,7 @@ class _AddScholarState extends State<AddScholar> {
       _isLoading = true;
     });
     try {
-      Map<String, String> requestBody = {
-        "operation": "getCourse"
-      };
+      Map<String, String> requestBody = {"operation": "getCourse"};
       var res = await http.post(
         Uri.parse("${SessionStorage.url}admin.php"),
         body: requestBody,
@@ -142,9 +140,7 @@ class _AddScholarState extends State<AddScholar> {
       _isLoading = true;
     });
     try {
-      Map<String, String> requestBody = {
-        "operation": "getScholarshipType"
-      };
+      Map<String, String> requestBody = {"operation": "getScholarshipType"};
       var res = await http.post(
         Uri.parse("${SessionStorage.url}admin.php"),
         body: requestBody,
@@ -201,6 +197,7 @@ class _AddScholarState extends State<AddScholar> {
                             child: MyTextField(
                               labelText: "First name *",
                               obscureText: false,
+                              isNumber: false,
                               willValidate: true,
                               controller: _firstNameController,
                             ),
@@ -210,6 +207,7 @@ class _AddScholarState extends State<AddScholar> {
                           child: MyTextField(
                             labelText: "Last name *",
                             obscureText: false,
+                            isNumber: false,
                             willValidate: true,
                             controller: _lastNameController,
                           ),
@@ -225,6 +223,7 @@ class _AddScholarState extends State<AddScholar> {
                             child: MyTextField(
                               labelText: "School id *",
                               willValidate: true,
+                              isNumber: false,
                               obscureText: false,
                               controller: _schoolIdController,
                             ),
@@ -234,6 +233,7 @@ class _AddScholarState extends State<AddScholar> {
                           child: MyTextField(
                             labelText: "Contact number *",
                             willValidate: true,
+                            isNumber: true,
                             obscureText: false,
                             controller: _contactController,
                           ),
@@ -274,10 +274,12 @@ class _AddScholarState extends State<AddScholar> {
                             Icons.keyboard_arrow_down_outlined,
                             color: Colors.white,
                           ),
-                          dropdownColor: Theme.of(context).colorScheme.onInverseSurface,
+                          dropdownColor:
+                              Theme.of(context).colorScheme.onInverseSurface,
                           decoration: InputDecoration(
                             filled: true,
-                            fillColor: Theme.of(context).colorScheme.onInverseSurface,
+                            fillColor:
+                                Theme.of(context).colorScheme.onInverseSurface,
                             border: const OutlineInputBorder(),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(7),
@@ -288,11 +290,6 @@ class _AddScholarState extends State<AddScholar> {
                             focusedBorder: const OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: Colors.white,
-                              ),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.grey.shade600,
                               ),
                             ),
                             labelText: 'Year Level *',
@@ -340,10 +337,12 @@ class _AddScholarState extends State<AddScholar> {
                             Icons.keyboard_arrow_down_outlined,
                             color: Colors.white,
                           ),
-                          dropdownColor: Theme.of(context).colorScheme.onInverseSurface,
+                          dropdownColor:
+                              Theme.of(context).colorScheme.onInverseSurface,
                           decoration: InputDecoration(
                             filled: true,
-                            fillColor: Theme.of(context).colorScheme.onInverseSurface,
+                            fillColor:
+                                Theme.of(context).colorScheme.onInverseSurface,
                             border: const OutlineInputBorder(),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(7),
@@ -354,11 +353,6 @@ class _AddScholarState extends State<AddScholar> {
                             focusedBorder: const OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: Colors.white,
-                              ),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.grey.shade600,
                               ),
                             ),
                             labelText: 'Course *',
@@ -397,14 +391,16 @@ class _AddScholarState extends State<AddScholar> {
                             }
                             return null;
                           },
-                          dropdownColor: Theme.of(context).colorScheme.onInverseSurface,
+                          dropdownColor:
+                              Theme.of(context).colorScheme.onInverseSurface,
                           icon: const Icon(
                             Icons.keyboard_arrow_down_outlined,
                             color: Colors.white,
                           ),
                           decoration: InputDecoration(
                             filled: true,
-                            fillColor: Theme.of(context).colorScheme.onInverseSurface,
+                            fillColor:
+                                Theme.of(context).colorScheme.onInverseSurface,
                             border: const OutlineInputBorder(),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(7),
@@ -415,11 +411,6 @@ class _AddScholarState extends State<AddScholar> {
                             focusedBorder: const OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: Colors.white,
-                              ),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.grey.shade600,
                               ),
                             ),
                             labelText: 'Scholarship Type *',

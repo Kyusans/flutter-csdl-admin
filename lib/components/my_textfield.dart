@@ -4,6 +4,7 @@ class MyTextField extends StatefulWidget {
   final String labelText;
   final bool obscureText;
   final bool willValidate;
+  final bool isNumber;
   final TextEditingController controller;
   final Icon? icon;
 
@@ -13,6 +14,7 @@ class MyTextField extends StatefulWidget {
     required this.obscureText,
     required this.willValidate,
     required this.controller,
+    required this.isNumber,
     this.icon,
   }) : super(key: key);
 
@@ -47,11 +49,6 @@ class _MyTextFieldState extends State<MyTextField> {
             Radius.circular(7),
           ),
         ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.grey.shade100,
-          ),
-        ),
         filled: true,
         fillColor: Theme.of(context).colorScheme.onInverseSurface,
         enabledBorder: OutlineInputBorder(
@@ -84,6 +81,10 @@ class _MyTextFieldState extends State<MyTextField> {
       validator: (value) {
         if (value == null || value.isEmpty && widget.willValidate) {
           return "This field is required";
+        } else if (widget.isNumber) {
+          if (double.tryParse(value) == null) {
+            return "Please enter a valid number";
+          }
         }
         return null;
       },
