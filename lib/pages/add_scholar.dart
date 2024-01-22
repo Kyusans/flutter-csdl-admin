@@ -21,7 +21,6 @@ class _AddScholarState extends State<AddScholar> {
   final TextEditingController _schoolIdController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final List<String> yearLevel = [
-    "Select year level",
     "1st Year",
     "2nd Year",
     "3rd Year",
@@ -423,24 +422,21 @@ class _AddScholarState extends State<AddScholar> {
                       ],
                     ),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(
                           height: 100,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: MyButton(
-                            buttonText: "Add Scholar",
-                            buttonSize: 16,
-                            color: Theme.of(context).colorScheme.tertiary,
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                addScholar();
-                              }
-                            },
-                          ),
+                        MyButton(
+                          buttonText: "Add Scholar",
+                          buttonSize: 16,
+                          color: Theme.of(context).colorScheme.tertiary,
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              addScholar();
+                            }
+                          },
                         ),
                       ],
                     ),

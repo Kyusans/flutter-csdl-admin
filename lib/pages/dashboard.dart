@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/components/my_drawer.dart';
 import 'package:flutter_csdl_admin/pages/add_scholar.dart';
+import 'package:flutter_csdl_admin/pages/user_profile.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -11,8 +12,8 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   // eh change nig 0 paghuman
-  int _selectedIndex = 0;
-  int _selectedTileIndex = 0;
+  int _selectedIndex = 2;
+  int _selectedTileIndex = 2;
   bool _isMobile = false;
   String _secondText = "";
   String _firstText = "";
@@ -31,6 +32,9 @@ class _DashboardState extends State<Dashboard> {
           _secondText =
               "Enroll the scholar by completing the registration form.";
           break;
+        case 2:
+          _firstText = "General Info";
+          _secondText = "Setup your profile account and edit profile details.";
         default:
           _firstText = "Wala pa ni";
           _secondText = "balik lang soon";
@@ -45,6 +49,8 @@ class _DashboardState extends State<Dashboard> {
         return DashboardMain();
       case 1:
         return AddScholar();
+      case 2:
+        return UserProfile();
       default:
         return Container();
     }
@@ -60,8 +66,10 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     super.initState();
     setState(() {
-      _firstText = "Kunwari Dashboard ni";
-      _secondText = "Dashboard ko to";
+      // _firstText = "Kunwari Dashboard ni";
+      // _secondText = "Dashboard ko to";
+      _firstText = "General Info";
+      _secondText = "Setup your profile account and edit profile details.";
     });
     // _checkIsMobile();
   }
@@ -70,7 +78,7 @@ class _DashboardState extends State<Dashboard> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final maxWidth = MediaQuery.of(context).size.width;
       setState(() {
-        _isMobile = maxWidth <= 800;
+        _isMobile = maxWidth <= 875;
       });
     });
   }
