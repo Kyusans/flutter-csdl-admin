@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         '/addScholar': (context) => const AddScholar(),
       },
       debugShowCheckedModeBanner: false,
-      home: Dashboard(),
+      home: LoginPage(),
       //LoginPage()
       theme: lightMode,
       darkTheme: darkMode,

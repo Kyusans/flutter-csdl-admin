@@ -1,6 +1,9 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/components/my_button.dart';
 import 'package:flutter_csdl_admin/components/my_textfield.dart';
+import 'package:flutter_csdl_admin/session_storage.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
@@ -16,6 +19,33 @@ class _UserProfileState extends State<UserProfile> {
   TextEditingController _confirmPasswordController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _confirmEmailController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _fullNameController.text = SessionStorage.fullName;
+    _userIdController.text = SessionStorage.employeeId;
+    _emailController.text = SessionStorage.email;
+  }
+
+  // void getAdminInfo() async {
+  //   var url = Uri.parse("${SessionStorage.url}admin.php");
+  //   Map<String, String> jsonData = {
+  //     "json": SessionStorage.userId,
+  //   };
+  //   Map<String, String> requestBody = {
+  //     "json": jsonEncode(jsonData),
+  //     "operation": "getAdminInfo"
+  //   };
+
+  //   var res = await http.post(url, body: requestBody);
+
+  //   if (res.body != "0") {
+  //     var response = json.decode(res.body);
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -108,7 +138,7 @@ class _UserProfileState extends State<UserProfile> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: MyTextField(
-                          labelText: "Password*",
+                          labelText: "New Password*",
                           obscureText: false,
                           willValidate: true,
                           controller: _passwordController,

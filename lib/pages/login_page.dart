@@ -41,8 +41,19 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       print("res.body: " + res.body);
+      var resBody = json.decode(res.body);
 
       if (res.body != "0") {
+        // print("res.body.adm_id: " + resBody["adm_id"].toString());
+        SessionStorage.userId = resBody["adm_id"].toString();
+        SessionStorage.fullName = resBody["adm_name"].toString();
+        SessionStorage.email = resBody["adm_email"].toString();
+        SessionStorage.employeeId = resBody["adm_employee_id"].toString();
+
+        // print("SessionStorage.userId: " + SessionStorage.userId);
+        // print("SessionStorage.fullName: " + SessionStorage.fullName);
+        // print("SessionStorage.email: " + SessionStorage.email);
+
         // ignore: use_build_context_synchronously
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -77,6 +88,8 @@ class _LoginPageState extends State<LoginPage> {
           duration: const Duration(seconds: 3),
         ),
       );
+
+      print(e);
     } finally {
       setState(() {
         _isLoading = false;
