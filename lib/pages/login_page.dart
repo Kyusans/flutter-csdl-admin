@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/components/loading_spinner.dart';
 import 'package:flutter_csdl_admin/components/my_button.dart';
 import 'package:flutter_csdl_admin/components/my_textfield.dart';
+import 'package:flutter_csdl_admin/local_storage.dart';
 import 'package:flutter_csdl_admin/pages/dashboard.dart';
 import 'package:flutter_csdl_admin/session_storage.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController userIdController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   late ScaffoldMessengerState scaffoldMessenger = ScaffoldMessenger.of(context);
+  final LocalStorage _localStorage = LocalStorage();
   bool _isLoading = false;
 
   void _login() async {
@@ -45,21 +47,21 @@ class _LoginPageState extends State<LoginPage> {
 
       if (res.body != "0") {
         // print("res.body.adm_id: " + resBody["adm_id"].toString());
-        SessionStorage.userId = resBody["adm_id"].toString();
-        SessionStorage.fullName = resBody["adm_name"].toString();
-        SessionStorage.email = resBody["adm_email"].toString();
-        SessionStorage.employeeId = resBody["adm_employee_id"].toString();
+        // SessionStorage.userId = resBody["adm_id"].toString();
+        // SessionStorage.fullName = resBody["adm_name"].toString();
+        // SessionStorage.email = resBody["adm_email"].toString();
+        // SessionStorage.employeeId = resBody["adm_employee_id"].toString();
 
         // print("SessionStorage.userId: " + SessionStorage.userId);
         // print("SessionStorage.fullName: " + SessionStorage.fullName);
         // print("SessionStorage.email: " + SessionStorage.email);
 
         // ignore: use_build_context_synchronously
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const Dashboard(),
-          ),
-        );
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //     builder: (context) => const Dashboard(),
+        //   ),
+        // );
       } else {
         scaffoldMessenger.showSnackBar(
           const SnackBar(
