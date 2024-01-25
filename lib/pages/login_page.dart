@@ -4,8 +4,8 @@ import 'package:flutter_csdl_admin/components/loading_spinner.dart';
 import 'package:flutter_csdl_admin/components/my_button.dart';
 import 'package:flutter_csdl_admin/components/my_textfield.dart';
 import 'package:flutter_csdl_admin/local_storage.dart';
-import 'package:flutter_csdl_admin/pages/dashboard.dart';
 import 'package:flutter_csdl_admin/session_storage.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
@@ -19,7 +19,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController userIdController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  late ScaffoldMessengerState scaffoldMessenger = ScaffoldMessenger.of(context);
   final LocalStorage _localStorage = LocalStorage();
   bool _isLoading = false;
 
@@ -28,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
       _isLoading = true;
     });
     try {
+      await _localStorage.init();
       Map<String, String> jsonData = {
         "userId": userIdController.text,
         "password": passwordController.text,
@@ -46,49 +46,38 @@ class _LoginPageState extends State<LoginPage> {
       var resBody = json.decode(res.body);
 
       if (res.body != "0") {
-        // print("res.body.adm_id: " + resBody["adm_id"].toString());
-        // SessionStorage.userId = resBody["adm_id"].toString();
-        // SessionStorage.fullName = resBody["adm_name"].toString();
-        // SessionStorage.email = resBody["adm_email"].toString();
-        // SessionStorage.employeeId = resBody["adm_employee_id"].toString();
-
-        // print("SessionStorage.userId: " + SessionStorage.userId);
-        // print("SessionStorage.fullName: " + SessionStorage.fullName);
-        // print("SessionStorage.email: " + SessionStorage.email);
-
-        // ignore: use_build_context_synchronously
-        // Navigator.of(context).push(
-        //   MaterialPageRoute(
-        //     builder: (context) => const Dashboard(),
-        //   ),
-        // );
+        _localStorage.setValue("userId", resBody["adm_id"].toString());
+        _localStorage.setValue("fullName", resBody["adm_name"].toString());
+        _localStorage.setValue("email", resBody["adm_email"].toString());
+        _localStorage.setValue("userImage", resBody["adm_image"].toString());
+        _localStorage.setValue(
+          "employeeId",
+          resBody["adm_employee_id"].toString(),
+        );
+        Get.snackbar(
+          "Success",
+          "Welcome ${resBody["adm_name"]}",
+          colorText: Colors.white,
+          backgroundColor: Colors.green,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        Get.toNamed("/dashboard");
       } else {
-        scaffoldMessenger.showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text(
-              "Invalid Id or password",
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-              ),
-            ),
-            duration: Duration(seconds: 2),
-          ),
+        Get.snackbar(
+          "Error",
+          "Invalid Id or password",
+          colorText: Colors.white,
+          backgroundColor: Colors.red,
+          snackPosition: SnackPosition.BOTTOM,
         );
       }
     } catch (e) {
-      scaffoldMessenger.showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.red,
-          content: Text(
-            "There was an unexpected error: $e",
-            style: const TextStyle(
-              fontSize: 10,
-            ),
-          ),
-          duration: const Duration(seconds: 3),
-        ),
+      Get.snackbar(
+        "Error",
+        "There was an unexpected error: $e",
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM,
       );
 
       print(e);
