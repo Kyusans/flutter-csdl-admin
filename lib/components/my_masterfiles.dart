@@ -41,13 +41,16 @@ class _MyMasterfilesState extends State<MyMasterfiles> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(widget.labelText),
+                  Text(
+                    widget.labelText,
+                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                  ),
                   const SizedBox(
                     width: 16,
                   ),
                   MyButton(
-                    buttonText: "Click me",
-                    buttonSize: 4,
+                    buttonText: "Click here",
+                    buttonSize: 5,
                     color: Theme.of(context).colorScheme.tertiary,
                     onPressed: widget.onPressed,
                   )

@@ -1,15 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/components/my_masterfiles.dart';
+import 'package:flutter_csdl_admin/pages/master_files/add_masterfiles.dart';
 
 class MasterFiles extends StatefulWidget {
   const MasterFiles({Key? key}) : super(key: key);
 
   @override
   _MasterFilesState createState() => _MasterFilesState();
+  static GlobalKey<_MasterFilesState> masterFilesKey =
+      GlobalKey<_MasterFilesState>();
 }
 
 class _MasterFilesState extends State<MasterFiles> {
+  int _selectedIndex = 0;
   bool _isMobile = false;
+  bool _isSelectedFiles = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      _isSelectedFiles = false;
+      _selectedIndex = 0;
+    });
+  }
 
   @override
   void didChangeDependencies() {
@@ -26,6 +41,19 @@ class _MasterFilesState extends State<MasterFiles> {
     });
   }
 
+  void handleGoBack() {
+    setState(() {
+      _isSelectedFiles = false;
+    });
+  }
+
+  void _handleAddMasterfiles(int index) {
+    setState(() {
+      _selectedIndex = index;
+      _isSelectedFiles = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -33,10 +61,18 @@ class _MasterFilesState extends State<MasterFiles> {
         color: Theme.of(context).colorScheme.onPrimary,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 32),
-          child: _isMobile ? onMobile() : onDesktop(),
+          child: _isSelectedFiles ? selectedFile() : masterFilesMain(),
         ),
       ),
     );
+  }
+
+  Widget masterFilesMain() {
+    return _isMobile ? onMobile() : onDesktop();
+  }
+
+  Widget selectedFile() {
+    return AddMasterfiles(selectedIndex: _selectedIndex);
   }
 
   Widget onDesktop() {
@@ -48,17 +84,23 @@ class _MasterFilesState extends State<MasterFiles> {
             MyMasterfiles(
               topText: "Admin",
               labelText: "Add Administrator",
-              onPressed: () {},
+              onPressed: () {
+                _handleAddMasterfiles(0);
+              },
             ),
             MyMasterfiles(
               topText: "Department",
               labelText: "Add Department",
-              onPressed: () {},
+              onPressed: () {
+                _handleAddMasterfiles(1);
+              },
             ),
             MyMasterfiles(
               topText: "School Year",
               labelText: "Add School Year",
-              onPressed: () {},
+              onPressed: () {
+                _handleAddMasterfiles(2);
+              },
             ),
           ],
         ),
@@ -69,17 +111,23 @@ class _MasterFilesState extends State<MasterFiles> {
             MyMasterfiles(
               topText: "Supervisor",
               labelText: "Add Supervisor",
-              onPressed: () {},
+              onPressed: () {
+                _handleAddMasterfiles(3);
+              },
             ),
             MyMasterfiles(
               topText: "Course",
               labelText: "Add Course",
-              onPressed: () {},
+              onPressed: () {
+                _handleAddMasterfiles(4);
+              },
             ),
             MyMasterfiles(
               topText: "Scholarship Type",
               labelText: "Add Scholarship Type",
-              onPressed: () {},
+              onPressed: () {
+                _handleAddMasterfiles(5);
+              },
             ),
           ],
         ),
@@ -90,17 +138,23 @@ class _MasterFilesState extends State<MasterFiles> {
             MyMasterfiles(
               topText: "Office Master",
               labelText: "Add Office Master",
-              onPressed: () {},
+              onPressed: () {
+                _handleAddMasterfiles(6);
+              },
             ),
             MyMasterfiles(
               topText: "Office",
               labelText: "Add Office",
-              onPressed: () {},
+              onPressed: () {
+                _handleAddMasterfiles(7);
+              },
             ),
             MyMasterfiles(
               topText: "Scholarship Sub Type",
               labelText: "Add Scholarship Sub Type",
-              onPressed: () {},
+              onPressed: () {
+                _handleAddMasterfiles(8);
+              },
             ),
           ],
         ),
@@ -114,49 +168,67 @@ class _MasterFilesState extends State<MasterFiles> {
         MyMasterfiles(
           topText: "Admin",
           labelText: "Add Administrator",
-          onPressed: () {},
+          onPressed: () {
+            _handleAddMasterfiles(0);
+          },
         ),
         MyMasterfiles(
           topText: "Department",
           labelText: "Add Department",
-          onPressed: () {},
+          onPressed: () {
+            _handleAddMasterfiles(1);
+          },
         ),
         MyMasterfiles(
           topText: "School Year",
           labelText: "Add School Year",
-          onPressed: () {},
+          onPressed: () {
+            _handleAddMasterfiles(2);
+          },
         ),
         const SizedBox(height: 16),
         MyMasterfiles(
           topText: "Supervisor",
           labelText: "Add Supervisor",
-          onPressed: () {},
+          onPressed: () {
+            _handleAddMasterfiles(3);
+          },
         ),
         MyMasterfiles(
           topText: "Course",
           labelText: "Add Course",
-          onPressed: () {},
+          onPressed: () {
+            _handleAddMasterfiles(4);
+          },
         ),
         MyMasterfiles(
           topText: "Scholarship Type",
           labelText: "Add Scholarship Type",
-          onPressed: () {},
+          onPressed: () {
+            _handleAddMasterfiles(5);
+          },
         ),
         const SizedBox(height: 16),
         MyMasterfiles(
           topText: "Office Master",
           labelText: "Add Office Master",
-          onPressed: () {},
+          onPressed: () {
+            _handleAddMasterfiles(6);
+          },
         ),
         MyMasterfiles(
           topText: "Office",
           labelText: "Add Office",
-          onPressed: () {},
+          onPressed: () {
+            _handleAddMasterfiles(7);
+          },
         ),
         MyMasterfiles(
           topText: "Scholarship Sub Type",
           labelText: "Add Scholarship Sub Type",
-          onPressed: () {},
+          onPressed: () {
+            _handleAddMasterfiles(8);
+          },
         ),
       ],
     );

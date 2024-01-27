@@ -46,6 +46,8 @@ class _LoginPageState extends State<LoginPage> {
       var resBody = json.decode(res.body);
 
       if (res.body != "0") {
+        //                       para sa dashboard ni hehe
+        _localStorage.setValue("selectedIndex", "0");
         _localStorage.setValue("userId", resBody["adm_id"].toString());
         _localStorage.setValue("fullName", resBody["adm_name"].toString());
         _localStorage.setValue("email", resBody["adm_email"].toString());
@@ -61,6 +63,8 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: Colors.green,
           snackPosition: SnackPosition.BOTTOM,
         );
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pop();
         Get.toNamed("/dashboard");
       } else {
         Get.snackbar(

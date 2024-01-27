@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/components/my_drawer.dart';
+import 'package:flutter_csdl_admin/local_storage.dart';
 import 'package:flutter_csdl_admin/pages/add_scholar.dart';
 import 'package:flutter_csdl_admin/pages/master_files.dart';
 import 'package:flutter_csdl_admin/pages/user_profile.dart';
@@ -10,15 +11,22 @@ class Dashboard extends StatefulWidget {
 
   @override
   _DashboardState createState() => _DashboardState();
+  // static GlobalKey<_DashboardState> dashboardKey = GlobalKey<_DashboardState>();
 }
 
 class _DashboardState extends State<Dashboard> {
+  final LocalStorage _localStorage = LocalStorage();
   // eh change nig 0 paghuman
   int _selectedIndex = 6;
   int _selectedTileIndex = 6;
   bool _isMobile = false;
   String _secondText = "";
   String _firstText = "";
+
+  Future<void> initialize() async {
+    await _localStorage.init();
+    updateSelectedIndex(int.parse(_localStorage.getValue("selectedIndex")));
+  }
 
   void updateSelectedIndex(int index) {
     setState(() {
@@ -41,11 +49,13 @@ class _DashboardState extends State<Dashboard> {
           _firstText = "Master Files";
           _secondText =
               "Maintain and reference masterfiles for centralized and accurate data management.";
+          print("HEEEEEEEEEEEEEEEEEEEEE");
         default:
           _firstText = "Wala pa ni";
           _secondText = "balik lang soon";
           break;
       }
+      _localStorage.setValue("selectedIndex", index.toString());
     });
   }
 
@@ -73,13 +83,14 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      // _firstText = "Kunwari Dashboard ni";
-      // _secondText = "Dashboard ko to";
-      _firstText = "Master Files";
-      _secondText =
-          "Maintain and reference masterfiles for centralized and accurate data management.";
-    });
+    initialize();
+    // setState(() {
+    //   // _firstText = "Kunwari Dashboard ni";
+    //   // _secondText = "Dashboard ko to";
+    //   _firstText = "Master Files";
+    //   _secondText =
+    //       "Maintain and reference masterfiles for centralized and accurate data management.";
+    // });
     // _checkIsMobile();
   }
 
