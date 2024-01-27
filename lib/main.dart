@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/dashboard': (context) => const Dashboard(),
       },
-      home: LoginPage(),
+      home: const LoginPage(),
       //LoginPage()
       theme: lightMode,
       darkTheme: darkMode,

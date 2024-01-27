@@ -8,6 +8,7 @@ class MyDrawer extends StatefulWidget {
 
   @override
   _MyDrawerState createState() => _MyDrawerState(selectedTileIndex);
+  // static GlobalKey<_MyDrawerState> drawerKey = GlobalKey<_MyDrawerState>();
 }
 
 class _MyDrawerState extends State<MyDrawer> {
@@ -263,7 +264,7 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
             ),
 
-            // 6 history
+            // 6 Master files
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
