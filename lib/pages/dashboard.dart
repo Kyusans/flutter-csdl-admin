@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/components/my_drawer.dart';
 import 'package:flutter_csdl_admin/pages/add_scholar.dart';
+import 'package:flutter_csdl_admin/pages/master_files.dart';
 import 'package:flutter_csdl_admin/pages/user_profile.dart';
+// import 'package:get/get.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -12,8 +14,8 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   // eh change nig 0 paghuman
-  int _selectedIndex = 2;
-  int _selectedTileIndex = 2;
+  int _selectedIndex = 6;
+  int _selectedTileIndex = 6;
   bool _isMobile = false;
   String _secondText = "";
   String _firstText = "";
@@ -35,6 +37,10 @@ class _DashboardState extends State<Dashboard> {
         case 2:
           _firstText = "General Info";
           _secondText = "Setup your profile account and edit profile details.";
+        case 6:
+          _firstText = "Master Files";
+          _secondText =
+              "Maintain and reference masterfiles for centralized and accurate data management.";
         default:
           _firstText = "Wala pa ni";
           _secondText = "balik lang soon";
@@ -51,6 +57,8 @@ class _DashboardState extends State<Dashboard> {
         return AddScholar();
       case 2:
         return UserProfile();
+      case 6:
+        return MasterFiles();
       default:
         return Container();
     }
@@ -68,8 +76,9 @@ class _DashboardState extends State<Dashboard> {
     setState(() {
       // _firstText = "Kunwari Dashboard ni";
       // _secondText = "Dashboard ko to";
-      _firstText = "General Info";
-      _secondText = "Setup your profile account and edit profile details.";
+      _firstText = "Master Files";
+      _secondText =
+          "Maintain and reference masterfiles for centralized and accurate data management.";
     });
     // _checkIsMobile();
   }
@@ -78,7 +87,7 @@ class _DashboardState extends State<Dashboard> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final maxWidth = MediaQuery.of(context).size.width;
       setState(() {
-        _isMobile = maxWidth <= 875;
+        _isMobile = maxWidth <= 800;
       });
     });
   }
@@ -115,51 +124,56 @@ class _DashboardState extends State<Dashboard> {
           selectedTileIndex: _selectedTileIndex,
         ),
         Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Card(
-                  elevation: 4,
-                  color: Theme.of(context).colorScheme.onSecondary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 40.0, top: 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          _firstText,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.inverseSurface,
-                            fontSize: 36,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Card(
+                    elevation: 4,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 40.0, top: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _firstText,
+                            style: TextStyle(
+                              color:
+                                  Theme.of(context).colorScheme.inverseSurface,
+                              fontSize: 36,
+                            ),
                           ),
-                        ),
-                        Text(
-                          _secondText,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.inverseSurface,
-                            fontSize: 14,
+                          Text(
+                            _secondText,
+                            style: TextStyle(
+                              color:
+                                  Theme.of(context).colorScheme.inverseSurface,
+                              fontSize: 14,
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 40, bottom: 40),
-                          child: selectedWidget(),
-                        ),
-                      ],
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(right: 40, bottom: 40),
+                            child: selectedWidget(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ],

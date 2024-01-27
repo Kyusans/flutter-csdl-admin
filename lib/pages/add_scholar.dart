@@ -179,7 +179,8 @@ class _AddScholarState extends State<AddScholar> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding:
+              const EdgeInsets.symmetric(horizontal: 24.0, vertical: 100.0),
           child: _isLoading
               ? const LoadingSpinner()
               : Column(
@@ -213,7 +214,7 @@ class _AddScholarState extends State<AddScholar> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 32),
                     Row(
                       children: [
                         Expanded(
@@ -239,7 +240,7 @@ class _AddScholarState extends State<AddScholar> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 32),
                     Column(
                       children: [
                         // Year level dropdown
@@ -361,7 +362,7 @@ class _AddScholarState extends State<AddScholar> {
                           ),
                           style: const TextStyle(color: Colors.white),
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 32),
 
                         // Scholarship  type dropdown
 
