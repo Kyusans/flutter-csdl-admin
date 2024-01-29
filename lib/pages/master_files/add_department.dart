@@ -15,13 +15,13 @@ class AddDepartment extends StatefulWidget {
 }
 
 class _AddDepartmentState extends State<AddDepartment> {
-  TextEditingController _departmentController = TextEditingController();
+  final TextEditingController _departmentController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
   void addDepartment() async {
     setState(() {
-      _isLoading = false;
+      _isLoading = true;
     });
     try {
       Map<String, String> jsonData = {"department": _departmentController.text};
@@ -48,6 +48,7 @@ class _AddDepartmentState extends State<AddDepartment> {
           colorText: Colors.white,
           backgroundColor: Colors.green,
         );
+        _departmentController.clear();
       } else {
         Get.snackbar(
           "Error",
@@ -60,6 +61,10 @@ class _AddDepartmentState extends State<AddDepartment> {
     } catch (e) {
       Get.snackbar("Network Error", "Something went wrong");
       print(e);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -67,50 +72,50 @@ class _AddDepartmentState extends State<AddDepartment> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Column(
-          children: [
-            MyTextField(
+      child: Column(
+        children: [
+          SizedBox(
+            width: Get.width * 0.2,
+            child: MyTextField(
               labelText: "Department name",
               controller: _departmentController,
               obscureText: false,
               willValidate: true,
               isNumber: false,
             ),
-            const SizedBox(
-              height: 32,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                MyButton(
-                  buttonText: "Back",
-                  buttonSize: 8,
-                  color: Colors.red,
-                  onPressed: () {
-                    Get.back();
-                  },
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                _isLoading
-                    ? const LoadingSpinner()
-                    : MyButton(
-                        buttonText: "Submit",
-                        buttonSize: 8,
-                        color: Theme.of(context).colorScheme.tertiary,
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            addDepartment();
-                          }
-                        },
-                      ),
-              ],
-            )
-          ],
-        ),
+          ),
+          const SizedBox(
+            height: 32,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              MyButton(
+                buttonText: "Back",
+                buttonSize: 8,
+                color: Colors.red,
+                onPressed: () {
+                  Get.back();
+                },
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              _isLoading
+                  ? const LoadingSpinner()
+                  : MyButton(
+                      buttonText: "Submit",
+                      buttonSize: 8,
+                      color: Theme.of(context).colorScheme.tertiary,
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          addDepartment();
+                        }
+                      },
+                    ),
+            ],
+          )
+        ],
       ),
     );
   }

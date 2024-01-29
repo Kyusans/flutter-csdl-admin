@@ -60,6 +60,12 @@ class _AddAdminState extends State<AddAdmin> {
           colorText: Colors.white,
           backgroundColor: Colors.green,
         );
+        _firstNameController.clear();
+        _lastNameController.clear();
+        _usernameController.clear();
+        _emailController.clear();
+        _passwordController.clear();
+        _confirmPasswordController.clear();
       } else {
         Get.snackbar(
           "Error",

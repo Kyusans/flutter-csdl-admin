@@ -289,7 +289,9 @@ class _AddScholarState extends State<AddScholar> {
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(7),
                                 borderSide: BorderSide(
-                                  color: Colors.grey.shade600,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onInverseSurface,
                                 ),
                               ),
                               focusedBorder: const OutlineInputBorder(
@@ -353,7 +355,9 @@ class _AddScholarState extends State<AddScholar> {
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(7),
                                 borderSide: BorderSide(
-                                  color: Colors.grey.shade600,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onInverseSurface,
                                 ),
                               ),
                               focusedBorder: const OutlineInputBorder(
@@ -412,7 +416,9 @@ class _AddScholarState extends State<AddScholar> {
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(7),
                                 borderSide: BorderSide(
-                                  color: Colors.grey.shade600,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onInverseSurface,
                                 ),
                               ),
                               focusedBorder: const OutlineInputBorder(

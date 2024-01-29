@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_csdl_admin/pages/add_scholar.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_admin.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_department.dart';
+import 'package:flutter_csdl_admin/pages/master_files/add_school_year.dart';
 import 'package:get/get.dart';
 
 class AddMasterfiles extends StatefulWidget {
@@ -55,13 +55,14 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 840,
+            SizedBox(
+              width: 500,
               height: 600,
               child: Card(
                 elevation: 5,
@@ -98,6 +99,8 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
         return AddAdmin();
       case 1:
         return AddDepartment();
+      case 2:
+        return AddSchoolYear();
       default:
         return Text("Add scholarship sub type");
     }

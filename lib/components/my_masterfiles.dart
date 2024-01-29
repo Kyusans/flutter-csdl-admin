@@ -38,21 +38,44 @@ class _MyMasterfilesState extends State<MyMasterfiles> {
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
-              child: Row(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    widget.labelText,
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                  Row(
+                    children: [
+                      Text(
+                        widget.labelText,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                    ],
                   ),
-                  const SizedBox(
-                    width: 16,
+                  SizedBox(
+                    height: 8,
                   ),
-                  MyButton(
-                    buttonText: "Click here",
-                    buttonSize: 5,
-                    color: Theme.of(context).colorScheme.tertiary,
-                    onPressed: widget.onPressed,
+                  Row(
+                    children: [
+                      MyButton(
+                        buttonText: "Add",
+                        buttonSize: 5,
+                        color: Theme.of(context).colorScheme.tertiary,
+                        onPressed: widget.onPressed,
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      MyButton(
+                        buttonText: "Get List",
+                        buttonSize: 5,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        onPressed: () {},
+                      ),
+                    ],
                   )
                 ],
               ),

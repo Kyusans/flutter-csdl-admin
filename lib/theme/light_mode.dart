@@ -15,7 +15,7 @@ ThemeData lightMode = ThemeData(
     onTertiary: Colors.black,
     tertiary: const Color.fromARGB(255, 16, 147, 21),
     onPrimaryContainer: Colors.blue[900],
-    onInverseSurface: Colors.blue[900],
+    onInverseSurface: const Color.fromARGB(255, 8, 54, 100),
   ),
   textTheme: ThemeData.light().textTheme.apply(
         bodyColor: Colors.grey[800],
