@@ -174,8 +174,9 @@ class _AddAdminState extends State<AddAdmin> {
                 buttonSize: 8,
                 color: Colors.red,
                 onPressed: () {
-                  Navigator.pop(context);
-                  Get.toNamed("/dashboard");
+                  Get.back();
+                  // Navigator.pop(context);
+                  // Get.toNamed("/dashboard");
                 },
               ),
               const SizedBox(
@@ -204,7 +205,7 @@ class _AddAdminState extends State<AddAdmin> {
                       },
                     ),
             ],
-          )
+          ),
         ],
       ),
     );

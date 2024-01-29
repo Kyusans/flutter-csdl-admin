@@ -53,25 +53,25 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 24.0),
-            child: Text(
+    return Scaffold(
+      body: Card(
+        elevation: 5,
+        color: Theme.of(context).colorScheme.onPrimary,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
               _title,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 32,
               ),
             ),
-          ),
-          const SizedBox(height: 16),
-          selectedMasterFile(),
-        ],
+            const SizedBox(height: 16),
+            selectedMasterFile(),
+          ],
+        ),
       ),
     );
   }
