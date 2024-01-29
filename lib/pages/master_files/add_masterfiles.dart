@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_csdl_admin/pages/add_scholar.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_admin.dart';
+import 'package:flutter_csdl_admin/pages/master_files/add_department.dart';
+import 'package:get/get.dart';
 
 class AddMasterfiles extends StatefulWidget {
-  final int selectedIndex;
   const AddMasterfiles({
     Key? key,
-    required this.selectedIndex,
   }) : super(key: key);
 
   @override
@@ -19,7 +20,7 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
   void initState() {
     super.initState();
     setState(() {
-      _selectedIndex = widget.selectedIndex;
+      _selectedIndex = Get.arguments;
       switch (_selectedIndex) {
         case 0:
           _title = "Add Administrator";
@@ -54,22 +55,37 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Card(
-        elevation: 5,
-        color: Theme.of(context).colorScheme.onPrimary,
+      body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              _title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 32,
+            Container(
+              width: 840,
+              height: 600,
+              child: Card(
+                elevation: 5,
+                color: Theme.of(context).colorScheme.onPrimary,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      _title,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 32,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: selectedMasterFile(),
+                    ),
+                  ],
+                ),
               ),
             ),
-            const SizedBox(height: 16),
-            selectedMasterFile(),
           ],
         ),
       ),
@@ -81,7 +97,7 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
       case 0:
         return AddAdmin();
       case 1:
-        return Container();
+        return AddDepartment();
       default:
         return Text("Add scholarship sub type");
     }

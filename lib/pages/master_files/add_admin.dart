@@ -70,7 +70,7 @@ class _AddAdminState extends State<AddAdmin> {
         print("Res.body" + res.body);
       }
     } catch (e) {
-      Get.snackbar("Error", "Something went wrong");
+      Get.snackbar("Network Error", "Something went wrong");
       print(e);
     }
   }
@@ -175,8 +175,6 @@ class _AddAdminState extends State<AddAdmin> {
                 color: Colors.red,
                 onPressed: () {
                   Get.back();
-                  // Navigator.pop(context);
-                  // Get.toNamed("/dashboard");
                 },
               ),
               const SizedBox(

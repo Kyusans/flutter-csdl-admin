@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginPage(),
         '/dashboard': (context) => const Dashboard(),
-        '/masterfiles': (context) => const AddMasterfiles(selectedIndex: 0),
+        '/masterfiles': (context) => const AddMasterfiles(),
       },
       home: const LoginPage(),
       //LoginPage()
