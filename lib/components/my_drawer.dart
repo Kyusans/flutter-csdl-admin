@@ -70,7 +70,7 @@ class _MyDrawerState extends State<MyDrawer> {
                       ],
                     ),
                   ],
-                )
+                ),
               ],
             ),
 
@@ -280,8 +280,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 selectedTileColor:
                     Theme.of(context).colorScheme.onPrimaryContainer,
                 leading: const Icon(
-                  //change ni
-                  Icons.filter_frames_sharp,
+                  Icons.folder_copy_outlined,
                   color: Colors.white,
                 ),
                 title: const Text(

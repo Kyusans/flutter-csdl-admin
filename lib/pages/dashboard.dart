@@ -17,8 +17,8 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final LocalStorage _localStorage = LocalStorage();
   // eh change nig 0 paghuman
-  int _selectedIndex = 6;
-  int _selectedTileIndex = 6;
+  int _selectedIndex = 0;
+  int _selectedTileIndex = 0;
   bool _isMobile = false;
   String _secondText = "";
   String _firstText = "";

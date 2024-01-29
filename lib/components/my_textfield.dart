@@ -53,7 +53,7 @@ class _MyTextFieldState extends State<MyTextField> {
         fillColor: Theme.of(context).colorScheme.onInverseSurface,
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.grey.shade600,
+            color: Theme.of(context).colorScheme.onInverseSurface,
           ),
           borderRadius: const BorderRadius.all(
             Radius.circular(7),
