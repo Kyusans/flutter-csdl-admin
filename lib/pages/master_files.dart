@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/components/loading_spinner.dart';
 import 'package:flutter_csdl_admin/components/my_masterfiles.dart';
+import 'package:flutter_csdl_admin/pages/master_files/add_masterfiles.dart';
 import 'package:get/get.dart';
 
 class MasterFiles extends StatefulWidget {
@@ -24,9 +25,13 @@ class _MasterFilesState extends State<MasterFiles> {
   }
 
   void _handleAddMasterfiles(int index) {
-    setState(() {
-      Get.toNamed("/masterfiles", arguments: index);
-    });
+    Get.dialog(
+      AlertDialog(
+        content: AddMasterfiles(selectedIndex: index),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+    );
   }
 
   void _initializeData() async {

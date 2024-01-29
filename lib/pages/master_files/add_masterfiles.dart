@@ -5,8 +5,10 @@ import 'package:flutter_csdl_admin/pages/master_files/add_school_year.dart';
 import 'package:get/get.dart';
 
 class AddMasterfiles extends StatefulWidget {
+  final int selectedIndex;
   const AddMasterfiles({
     Key? key,
+    required this.selectedIndex,
   }) : super(key: key);
 
   @override
@@ -20,7 +22,7 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
   void initState() {
     super.initState();
     setState(() {
-      _selectedIndex = Get.arguments;
+      _selectedIndex = widget.selectedIndex;
       switch (_selectedIndex) {
         case 0:
           _title = "Add Administrator";
@@ -54,41 +56,38 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.onPrimary,
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 500,
-              height: 600,
-              child: Card(
-                elevation: 5,
-                color: Theme.of(context).colorScheme.onPrimary,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      _title,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                      ),
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 500,
+            height: 600,
+            child: Card(
+              elevation: 5,
+              color: Theme.of(context).colorScheme.onPrimary,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    _title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 32,
                     ),
-                    const SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: selectedMasterFile(),
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: selectedMasterFile(),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
