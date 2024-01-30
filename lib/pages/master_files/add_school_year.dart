@@ -75,51 +75,54 @@ class _AddSchoolYearState extends State<AddSchoolYear> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Column(
-          children: [
-            MyTextField(
-              labelText: "School Year",
-              controller: _schoolYearController,
-              obscureText: false,
-              willValidate: true,
-              isNumber: true,
-            ),
-            const SizedBox(
-              height: 32,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                MyButton(
-                  buttonText: "Back",
-                  buttonSize: 8,
-                  color: Colors.red,
-                  onPressed: () {
-                    Get.back();
-                  },
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                _isLoading
-                    ? const LoadingSpinner()
-                    : MyButton(
-                        buttonText: "Submit",
-                        buttonSize: 8,
-                        color: Theme.of(context).colorScheme.tertiary,
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            addSchoolYear();
-                          }
-                        },
-                      ),
-              ],
-            )
-          ],
+    return SizedBox(
+      width: Get.width * 0.5,
+      child: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Column(
+            children: [
+              MyTextField(
+                labelText: "School Year",
+                controller: _schoolYearController,
+                obscureText: false,
+                willValidate: true,
+                isNumber: true,
+              ),
+              const SizedBox(
+                height: 32,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  MyButton(
+                    buttonText: "Back",
+                    buttonSize: 8,
+                    color: Colors.red,
+                    onPressed: () {
+                      Get.back();
+                    },
+                  ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  _isLoading
+                      ? const LoadingSpinner()
+                      : MyButton(
+                          buttonText: "Submit",
+                          buttonSize: 8,
+                          color: Theme.of(context).colorScheme.tertiary,
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              addSchoolYear();
+                            }
+                          },
+                        ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

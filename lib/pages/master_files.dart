@@ -30,6 +30,7 @@ class _MasterFilesState extends State<MasterFiles> {
         content: AddMasterfiles(selectedIndex: index),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        scrollable: true,
       ),
     );
   }
