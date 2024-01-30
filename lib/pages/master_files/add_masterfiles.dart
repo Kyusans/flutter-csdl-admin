@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_admin.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_department.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_school_year.dart';
+import 'package:flutter_csdl_admin/pages/master_files/add_supervisor.dart';
 import 'package:get/get.dart';
 
 class AddMasterfiles extends StatefulWidget {
+  final int selectedIndex;
   const AddMasterfiles({
     Key? key,
+    required this.selectedIndex,
   }) : super(key: key);
 
   @override
@@ -20,7 +23,7 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
   void initState() {
     super.initState();
     setState(() {
-      _selectedIndex = Get.arguments;
+      _selectedIndex = widget.selectedIndex;
       switch (_selectedIndex) {
         case 0:
           _title = "Add Administrator";
@@ -54,15 +57,15 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.onPrimary,
-      body: Center(
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              width: 500,
+              width: Get.width * 0.5,
               height: 600,
               child: Card(
                 elevation: 5,
@@ -101,6 +104,8 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
         return AddDepartment();
       case 2:
         return AddSchoolYear();
+      case 3:
+        return AddSupervisor();
       default:
         return Text("Add scholarship sub type");
     }

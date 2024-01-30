@@ -75,7 +75,7 @@ class _AddDepartmentState extends State<AddDepartment> {
       child: Column(
         children: [
           SizedBox(
-            width: Get.width * 0.2,
+            width: Get.width * 0.5,
             child: MyTextField(
               labelText: "Department name",
               controller: _departmentController,

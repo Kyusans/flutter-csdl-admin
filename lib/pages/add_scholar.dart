@@ -306,6 +306,7 @@ class _AddScholarState extends State<AddScholar> {
                             ),
                             style: const TextStyle(color: Colors.white),
                           ),
+
                           const SizedBox(height: 24),
 
                           // course dropdown
@@ -372,6 +373,7 @@ class _AddScholarState extends State<AddScholar> {
                             ),
                             style: const TextStyle(color: Colors.white),
                           ),
+
                           const SizedBox(height: 32),
 
                           // Scholarship  type dropdown
