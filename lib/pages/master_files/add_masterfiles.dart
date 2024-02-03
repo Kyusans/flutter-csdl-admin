@@ -50,9 +50,6 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
         case 6:
           _title = "Add Office Master";
           break;
-        case 7:
-          _title = "Add office";
-          break;
         default:
           _title = "Add Scholarship Sub Type";
       }
