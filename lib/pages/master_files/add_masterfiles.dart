@@ -7,9 +7,11 @@ import 'package:get/get.dart';
 
 class AddMasterfiles extends StatefulWidget {
   final int selectedIndex;
+  final bool isMobile;
   const AddMasterfiles({
     Key? key,
     required this.selectedIndex,
+    required this.isMobile,
   }) : super(key: key);
 
   @override
@@ -64,9 +66,10 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            //Get.width * 0.5
             SizedBox(
-              width: Get.width * 0.5,
               height: 600,
+              width: widget.isMobile ? Get.width * 1 : Get.width * 0.3,
               child: Card(
                 elevation: 5,
                 color: Theme.of(context).colorScheme.onPrimary,
