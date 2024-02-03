@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_admin.dart';
+import 'package:flutter_csdl_admin/pages/master_files/add_course.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_department.dart';
+import 'package:flutter_csdl_admin/pages/master_files/add_scholarship_type.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_school_year.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_supervisor.dart';
 import 'package:get/get.dart';
 
 class AddMasterfiles extends StatefulWidget {
   final int selectedIndex;
+  final bool isMobile;
   const AddMasterfiles({
     Key? key,
     required this.selectedIndex,
+    required this.isMobile,
   }) : super(key: key);
 
   @override
@@ -46,9 +50,6 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
         case 6:
           _title = "Add Office Master";
           break;
-        case 7:
-          _title = "Add office";
-          break;
         default:
           _title = "Add Scholarship Sub Type";
       }
@@ -64,9 +65,10 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            //Get.width * 0.5
             SizedBox(
-              width: Get.width * 0.5,
               height: 600,
+              width: widget.isMobile ? Get.width * 1 : Get.width * 0.3,
               child: Card(
                 elevation: 5,
                 color: Theme.of(context).colorScheme.onPrimary,
@@ -106,6 +108,10 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
         return AddSchoolYear();
       case 3:
         return AddSupervisor();
+      case 4:
+        return AddCourse();
+      case 5:
+        return AddScholarshipType();
       default:
         return Text("Add scholarship sub type");
     }

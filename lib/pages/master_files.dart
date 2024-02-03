@@ -27,10 +27,9 @@ class _MasterFilesState extends State<MasterFiles> {
   void _handleAddMasterfiles(int index) {
     Get.dialog(
       AlertDialog(
-        content: AddMasterfiles(selectedIndex: index),
+        content: AddMasterfiles(selectedIndex: index, isMobile: _isMobile),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        scrollable: true,
       ),
     );
   }
@@ -99,12 +98,6 @@ class _MasterFilesState extends State<MasterFiles> {
                       _handleAddMasterfiles(2);
                     },
                   ),
-                ],
-              ),
-              const SizedBox(height: 40),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
                   MyMasterfiles(
                     topText: "Supervisor",
                     labelText: "Add Supervisor",
@@ -112,6 +105,12 @@ class _MasterFilesState extends State<MasterFiles> {
                       _handleAddMasterfiles(3);
                     },
                   ),
+                ],
+              ),
+              const SizedBox(height: 40),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
                   MyMasterfiles(
                     topText: "Course",
                     labelText: "Add Course",
@@ -126,12 +125,6 @@ class _MasterFilesState extends State<MasterFiles> {
                       _handleAddMasterfiles(5);
                     },
                   ),
-                ],
-              ),
-              const SizedBox(height: 40),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
                   MyMasterfiles(
                     topText: "Office Master",
                     labelText: "Add Office Master",
@@ -140,21 +133,15 @@ class _MasterFilesState extends State<MasterFiles> {
                     },
                   ),
                   MyMasterfiles(
-                    topText: "Office",
-                    labelText: "Add Office",
+                    topText: "Scholarship Sub Type",
+                    labelText: "Add Scholarship Sub Type",
                     onPressed: () {
                       _handleAddMasterfiles(7);
                     },
                   ),
-                  MyMasterfiles(
-                    topText: "Scholarship Sub Type",
-                    labelText: "Add Scholarship Sub Type",
-                    onPressed: () {
-                      _handleAddMasterfiles(8);
-                    },
-                  ),
                 ],
               ),
+              const SizedBox(height: 40),
             ],
           );
   }
@@ -214,17 +201,10 @@ class _MasterFilesState extends State<MasterFiles> {
           },
         ),
         MyMasterfiles(
-          topText: "Office",
-          labelText: "Add Office",
-          onPressed: () {
-            _handleAddMasterfiles(7);
-          },
-        ),
-        MyMasterfiles(
           topText: "Scholarship Sub Type",
           labelText: "Add Scholarship Sub Type",
           onPressed: () {
-            _handleAddMasterfiles(8);
+            _handleAddMasterfiles(7);
           },
         ),
       ],

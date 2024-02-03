@@ -62,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
         ShowAlert().showAlert("error", "Invalid Id or password");
       }
     } catch (e) {
-      ShowAlert().showAlert("error", "There was an unexpected error: $e");
+      ShowAlert().showAlert("error", "Network error");
       print(e);
     } finally {
       setState(() {
@@ -78,43 +78,48 @@ class _LoginPageState extends State<LoginPage> {
       body: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth > 1300) {
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(200, 100, 0, 0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 250.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 150.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "SAMS",
+                          style: TextStyle(
+                            fontSize: 150,
+                          ),
+                        ),
+                        Text(
+                          "School Attendance",
+                          style: TextStyle(
+                            fontSize: 30,
+                          ),
+                        ),
+                        Text(
+                          "Monitoring System",
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Column(
                     children: [
-                      Text(
-                        "SAMS",
-                        style: TextStyle(
-                          fontSize: 150,
-                        ),
-                      ),
-                      Text(
-                        "School Attendance",
-                        style: TextStyle(
-                          fontSize: 30,
-                        ),
-                      ),
-                      Text(
-                        "Monitoring System",
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
+                      Expanded(
+                        child: _buildLoginSection(context),
                       ),
                     ],
                   ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(250, 0, 50, 0),
-                    child: _buildLoginSection(context),
-                  ),
-                ),
-              ],
+                ],
+              ),
             );
           } else {
             return Container(
@@ -137,31 +142,31 @@ class _LoginPageState extends State<LoginPage> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 75),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Sign In",
-                  style: TextStyle(
-                    fontSize: 60,
-                    color: Colors.white,
-                  ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Sign In",
+                style: TextStyle(
+                  fontSize: 60,
+                  color: Colors.white,
                 ),
-                const SizedBox(
-                  height: 8,
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              const Text(
+                "Sign in your account",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
                 ),
-                const Text(
-                  "Sign in your account",
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Padding(
-                  padding: const EdgeInsets.all(24),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: 500,
+                child: Padding(
+                  padding: const EdgeInsets.all(32),
                   child: Column(
                     children: [
                       MyTextField(
@@ -170,6 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                         willValidate: true,
                         controller: userIdController,
                         isNumber: false,
+                        isEmail: false,
                         icon: null,
                       ),
                       const SizedBox(height: 16),
@@ -179,6 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                         isNumber: false,
                         willValidate: true,
                         controller: passwordController,
+                        isEmail: false,
                         icon: null,
                       ),
                       const SizedBox(height: 16),
@@ -195,8 +202,8 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

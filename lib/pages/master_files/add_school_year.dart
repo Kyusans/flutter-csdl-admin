@@ -26,9 +26,7 @@ class _AddSchoolYearState extends State<AddSchoolYear> {
       _isLoading = true;
     });
     try {
-      Map<String, String> jsonData = {
-        "schoolYear": _schoolYearController.text
-      };
+      Map<String, String> jsonData = {"schoolYear": _schoolYearController.text};
       Map<String, String> requestBody = {
         "json": jsonEncode(jsonData),
         "operation": "addSchoolYear",
@@ -71,6 +69,7 @@ class _AddSchoolYearState extends State<AddSchoolYear> {
                 controller: _schoolYearController,
                 obscureText: false,
                 willValidate: true,
+                isEmail: false,
                 isNumber: true,
               ),
               const SizedBox(

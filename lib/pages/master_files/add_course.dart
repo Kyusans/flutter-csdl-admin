@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/components/loading_spinner.dart';
 import 'package:flutter_csdl_admin/components/my_button.dart';
@@ -9,26 +8,20 @@ import 'package:flutter_csdl_admin/session_storage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-class AddSupervisor extends StatefulWidget {
-  const AddSupervisor({Key? key}) : super(key: key);
+class AddCourse extends StatefulWidget {
+  const AddCourse({Key? key}) : super(key: key);
 
   @override
-  _AddSupervisorState createState() => _AddSupervisorState();
+  _AddCourseState createState() => _AddCourseState();
 }
 
-class _AddSupervisorState extends State<AddSupervisor> {
+class _AddCourseState extends State<AddCourse> {
+  final TextEditingController _nameController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _employeeIdController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
 
   int _selectedDepartment = 0;
   Map<int, String> departmentMap = {};
-  bool _isLoading = false;
+  bool _isLoading = true;
   bool _isSubmitted = false;
 
   void getDepartment() async {
@@ -61,46 +54,38 @@ class _AddSupervisorState extends State<AddSupervisor> {
     }
   }
 
-  void addSupervisor() async {
+  void addCourse() async {
     setState(() {
       _isSubmitted = true;
     });
+
     try {
       Map<String, String> jsonData = {
-        "firstName": _firstNameController.text,
-        "lastName": _lastNameController.text,
-        "employeeId": _employeeIdController.text,
-        "password": _passwordController.text,
-        "email": _emailController.text,
+        "course": _nameController.text,
         "department": _selectedDepartment.toString(),
       };
-      print("jsondata: $jsonData");
       Map<String, String> requestBody = {
-        "operation": "addSupervisor",
         "json": jsonEncode(jsonData),
+        "operation": "addCourse"
       };
       var res = await http.post(
         Uri.parse("${SessionStorage.url}admin.php"),
         body: requestBody,
       );
       if (res.body == "-1") {
-        ShowAlert().showAlert("error", "Employee ID already exists");
+        ShowAlert().showAlert("error", "Course already exists");
       } else if (res.body == "1") {
-        ShowAlert().showAlert("success", "Successfully added");
-        _firstNameController.clear();
-        _lastNameController.clear();
-        _employeeIdController.clear();
-        _passwordController.clear();
-        _confirmPasswordController.clear();
-        _emailController.clear();
+        ShowAlert().showAlert("success", "Course added successfully");
+        _nameController.clear();
         setState(() {
           _selectedDepartment = 0;
         });
       } else {
-        ShowAlert().showAlert("error", "Failed to add supervisor");
-        print("Res.body $res");
+        ShowAlert().showAlert("error", "Failed to add course");
+        print("res.body" + res.body);
       }
     } catch (e) {
+      print("Failed to add course. Error: $e");
       ShowAlert().showAlert("error", "Network error");
     } finally {
       setState(() {
@@ -111,7 +96,6 @@ class _AddSupervisorState extends State<AddSupervisor> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getDepartment();
   }
@@ -124,95 +108,6 @@ class _AddSupervisorState extends State<AddSupervisor> {
           ? const LoadingSpinner()
           : Column(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: MyTextField(
-                        labelText: "First Name*",
-                        obscureText: false,
-                        willValidate: true,
-                        controller: _firstNameController,
-                        isNumber: false,
-                        isEmail: false,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    Expanded(
-                      child: MyTextField(
-                        labelText: "Last Name*",
-                        obscureText: false,
-                        willValidate: true,
-                        controller: _lastNameController,
-                        isEmail: false,
-                        isNumber: false,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: MyTextField(
-                        labelText: "Employee Id*",
-                        obscureText: false,
-                        willValidate: true,
-                        controller: _employeeIdController,
-                        isEmail: false,
-                        isNumber: false,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    Expanded(
-                      child: MyTextField(
-                        labelText: "Email*",
-                        obscureText: false,
-                        willValidate: true,
-                        controller: _emailController,
-                        isEmail: true,
-                        isNumber: false,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: MyTextField(
-                        labelText: "Password*",
-                        obscureText: true,
-                        willValidate: true,
-                        controller: _passwordController,
-                        isNumber: false,
-                        isEmail: false,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    Expanded(
-                        child: MyTextField(
-                      labelText: "Confirm Password*",
-                      obscureText: true,
-                      willValidate: true,
-                      controller: _confirmPasswordController,
-                      isEmail: false,
-                      isNumber: false,
-                    ))
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
                 DropdownButtonFormField<int>(
                   value: _selectedDepartment,
                   items: [
@@ -271,6 +166,17 @@ class _AddSupervisorState extends State<AddSupervisor> {
                   style: const TextStyle(color: Colors.white),
                 ),
                 const SizedBox(
+                  height: 20,
+                ),
+                MyTextField(
+                  labelText: "Course Name*",
+                  obscureText: false,
+                  willValidate: true,
+                  controller: _nameController,
+                  isNumber: false,
+                  isEmail: false,
+                ),
+                const SizedBox(
                   height: 24,
                 ),
                 Row(
@@ -295,14 +201,8 @@ class _AddSupervisorState extends State<AddSupervisor> {
                             buttonSize: 8,
                             color: Theme.of(context).colorScheme.tertiary,
                             onPressed: () {
-                              if (_confirmPasswordController.text !=
-                                  _passwordController.text) {
-                                ShowAlert().showAlert(
-                                    "Error", "Confirm password does not match");
-                              } else {
-                                if (_formKey.currentState!.validate()) {
-                                  addSupervisor();
-                                }
+                              if (_formKey.currentState!.validate()) {
+                                addCourse();
                               }
                             },
                           ),

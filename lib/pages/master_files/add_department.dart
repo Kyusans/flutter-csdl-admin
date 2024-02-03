@@ -25,9 +25,7 @@ class _AddDepartmentState extends State<AddDepartment> {
       _isLoading = true;
     });
     try {
-      Map<String, String> jsonData = {
-        "department": _departmentController.text
-      };
+      Map<String, String> jsonData = {"department": _departmentController.text};
       Map<String, String> requestBody = {
         "json": jsonEncode(jsonData),
         "operation": "addDepartment",
@@ -69,6 +67,7 @@ class _AddDepartmentState extends State<AddDepartment> {
               controller: _departmentController,
               obscureText: false,
               willValidate: true,
+              isEmail: false,
               isNumber: false,
             ),
           ),

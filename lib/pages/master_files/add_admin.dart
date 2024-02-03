@@ -21,7 +21,8 @@ class _AddAdminState extends State<AddAdmin> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
@@ -80,6 +81,7 @@ class _AddAdminState extends State<AddAdmin> {
                   obscureText: false,
                   willValidate: true,
                   controller: _firstNameController,
+                  isEmail: false,
                   isNumber: false,
                 ),
               ),
@@ -92,6 +94,7 @@ class _AddAdminState extends State<AddAdmin> {
                   obscureText: false,
                   willValidate: true,
                   controller: _lastNameController,
+                  isEmail: false,
                   isNumber: false,
                 ),
               ),
@@ -107,6 +110,7 @@ class _AddAdminState extends State<AddAdmin> {
                   labelText: "User ID*",
                   obscureText: false,
                   willValidate: true,
+                  isEmail: false,
                   controller: _usernameController,
                   isNumber: false,
                 ),
@@ -120,6 +124,7 @@ class _AddAdminState extends State<AddAdmin> {
                   obscureText: false,
                   willValidate: true,
                   controller: _emailController,
+                  isEmail: true,
                   isNumber: false,
                 ),
               ),
@@ -136,6 +141,7 @@ class _AddAdminState extends State<AddAdmin> {
                   obscureText: true,
                   willValidate: true,
                   controller: _passwordController,
+                  isEmail: false,
                   isNumber: false,
                 ),
               ),
@@ -145,6 +151,7 @@ class _AddAdminState extends State<AddAdmin> {
               Expanded(
                 child: MyTextField(
                   labelText: "Confirm Password*",
+                  isEmail: false,
                   obscureText: true,
                   willValidate: true,
                   controller: _confirmPasswordController,
@@ -178,8 +185,10 @@ class _AddAdminState extends State<AddAdmin> {
                       buttonSize: 8,
                       color: Theme.of(context).colorScheme.tertiary,
                       onPressed: () {
-                        if (_confirmPasswordController.text != _passwordController.text) {
-                          ShowAlert().showAlert("Error", "Confirm password does not match");
+                        if (_confirmPasswordController.text !=
+                            _passwordController.text) {
+                          ShowAlert().showAlert(
+                              "Error", "Confirm password does not match");
                         } else {
                           if (_formKey.currentState!.validate()) {
                             addAdmin();
