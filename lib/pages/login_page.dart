@@ -62,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
         ShowAlert().showAlert("error", "Invalid Id or password");
       }
     } catch (e) {
-      ShowAlert().showAlert("error", "There was an unexpected error: $e");
+      ShowAlert().showAlert("error", "Network error");
       print(e);
     } finally {
       setState(() {
@@ -175,6 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                         willValidate: true,
                         controller: userIdController,
                         isNumber: false,
+                        isEmail: false,
                         icon: null,
                       ),
                       const SizedBox(height: 16),
@@ -184,6 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                         isNumber: false,
                         willValidate: true,
                         controller: passwordController,
+                        isEmail: false,
                         icon: null,
                       ),
                       const SizedBox(height: 16),

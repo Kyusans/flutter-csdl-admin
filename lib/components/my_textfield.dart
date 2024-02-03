@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MyTextField extends StatefulWidget {
   final String labelText;
   final bool obscureText;
   final bool willValidate;
   final bool isNumber;
+  final bool isEmail;
   final TextEditingController controller;
   final Icon? icon;
 
@@ -15,6 +17,7 @@ class MyTextField extends StatefulWidget {
     required this.willValidate,
     required this.controller,
     required this.isNumber,
+    required this.isEmail,
     this.icon,
   }) : super(key: key);
 
@@ -81,10 +84,10 @@ class _MyTextFieldState extends State<MyTextField> {
       validator: (value) {
         if (value == null || value.isEmpty && widget.willValidate) {
           return "This field is required";
-        } else if (widget.isNumber) {
-          if (double.tryParse(value) == null) {
-            return "Please enter a valid number";
-          }
+        } else if (widget.isEmail && !GetUtils.isEmail(value)) {
+          return "Please enter a valid email";
+        } else if (widget.isNumber && double.tryParse(value) == null) {
+          return "Please enter a valid number";
         }
         return null;
       },

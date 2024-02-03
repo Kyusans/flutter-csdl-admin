@@ -17,13 +17,14 @@ class AddSupervisor extends StatefulWidget {
 }
 
 class _AddSupervisorState extends State<AddSupervisor> {
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController _firstNameController = TextEditingController();
-  TextEditingController _lastNameController = TextEditingController();
-  TextEditingController _employeeIdController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmPasswordController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _employeeIdController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   int _selectedDepartment = 0;
   Map<int, String> departmentMap = {};
@@ -35,9 +36,7 @@ class _AddSupervisorState extends State<AddSupervisor> {
       _isLoading = true;
     });
     try {
-      Map<String, String> requestBody = {
-        "operation": "getDepartment"
-      };
+      Map<String, String> requestBody = {"operation": "getDepartment"};
       var res = await http.post(
         Uri.parse("${SessionStorage.url}admin.php"),
         body: requestBody,
@@ -46,7 +45,8 @@ class _AddSupervisorState extends State<AddSupervisor> {
       if (res.statusCode == 200 && res.body.isNotEmpty) {
         List<dynamic> departments = jsonDecode(res.body);
         departmentMap = {
-          for (var department in departments) department['dept_id']: department['dept_name'],
+          for (var department in departments)
+            department['dept_id']: department['dept_name'],
         };
         print("department map $departmentMap");
       } else {
@@ -61,11 +61,52 @@ class _AddSupervisorState extends State<AddSupervisor> {
     }
   }
 
-  void getSupervisor() async {
+  void addSupervisor() async {
     setState(() {
       _isSubmitted = true;
     });
-    try {} catch (e) {}
+    try {
+      Map<String, String> jsonData = {
+        "firstName": _firstNameController.text,
+        "lastName": _lastNameController.text,
+        "employeeId": _employeeIdController.text,
+        "password": _passwordController.text,
+        "email": _emailController.text,
+        "department": _selectedDepartment.toString(),
+      };
+      print("jsondata: $jsonData");
+      Map<String, String> requestBody = {
+        "operation": "addSupervisor",
+        "json": jsonEncode(jsonData),
+      };
+      var res = await http.post(
+        Uri.parse("${SessionStorage.url}admin.php"),
+        body: requestBody,
+      );
+      if (res.body == "-1") {
+        ShowAlert().showAlert("error", "Employee ID already exists");
+      } else if (res.body == "1") {
+        ShowAlert().showAlert("success", "Successfully added");
+        _firstNameController.clear();
+        _lastNameController.clear();
+        _employeeIdController.clear();
+        _passwordController.clear();
+        _confirmPasswordController.clear();
+        _emailController.clear();
+        setState(() {
+          _selectedDepartment = 0;
+        });
+      } else {
+        ShowAlert().showAlert("error", "Failed to add supervisor");
+        print("Res.body $res");
+      }
+    } catch (e) {
+      ShowAlert().showAlert("error", "Network error");
+    } finally {
+      setState(() {
+        _isSubmitted = false;
+      });
+    }
   }
 
   @override
@@ -92,6 +133,7 @@ class _AddSupervisorState extends State<AddSupervisor> {
                         willValidate: true,
                         controller: _firstNameController,
                         isNumber: false,
+                        isEmail: false,
                       ),
                     ),
                     const SizedBox(
@@ -103,6 +145,7 @@ class _AddSupervisorState extends State<AddSupervisor> {
                         obscureText: false,
                         willValidate: true,
                         controller: _lastNameController,
+                        isEmail: false,
                         isNumber: false,
                       ),
                     ),
@@ -115,10 +158,11 @@ class _AddSupervisorState extends State<AddSupervisor> {
                   children: [
                     Expanded(
                       child: MyTextField(
-                        labelText: "User Id*",
+                        labelText: "Employee Id*",
                         obscureText: false,
                         willValidate: true,
                         controller: _employeeIdController,
+                        isEmail: false,
                         isNumber: false,
                       ),
                     ),
@@ -131,6 +175,7 @@ class _AddSupervisorState extends State<AddSupervisor> {
                         obscureText: false,
                         willValidate: true,
                         controller: _emailController,
+                        isEmail: true,
                         isNumber: false,
                       ),
                     ),
@@ -144,10 +189,11 @@ class _AddSupervisorState extends State<AddSupervisor> {
                     Expanded(
                       child: MyTextField(
                         labelText: "Password*",
-                        obscureText: false,
+                        obscureText: true,
                         willValidate: true,
                         controller: _passwordController,
                         isNumber: false,
+                        isEmail: false,
                       ),
                     ),
                     const SizedBox(
@@ -159,6 +205,7 @@ class _AddSupervisorState extends State<AddSupervisor> {
                       obscureText: true,
                       willValidate: true,
                       controller: _confirmPasswordController,
+                      isEmail: false,
                       isNumber: false,
                     ))
                   ],
@@ -248,11 +295,13 @@ class _AddSupervisorState extends State<AddSupervisor> {
                             buttonSize: 8,
                             color: Theme.of(context).colorScheme.tertiary,
                             onPressed: () {
-                              if (_confirmPasswordController.text != _passwordController.text) {
-                                ShowAlert().showAlert("Error", "Confirm password does not match");
+                              if (_confirmPasswordController.text !=
+                                  _passwordController.text) {
+                                ShowAlert().showAlert(
+                                    "Error", "Confirm password does not match");
                               } else {
                                 if (_formKey.currentState!.validate()) {
-                                  // addSupervisor;
+                                  addSupervisor();
                                 }
                               }
                             },
