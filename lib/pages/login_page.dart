@@ -4,6 +4,7 @@ import 'package:flutter_csdl_admin/components/loading_spinner.dart';
 import 'package:flutter_csdl_admin/components/my_button.dart';
 import 'package:flutter_csdl_admin/components/my_textfield.dart';
 import 'package:flutter_csdl_admin/local_storage.dart';
+import 'package:flutter_csdl_admin/pages/master_files/show_alert.dart';
 import 'package:flutter_csdl_admin/session_storage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -12,7 +13,6 @@ class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _LoginPageState createState() => _LoginPageState();
 }
 
@@ -56,34 +56,13 @@ class _LoginPageState extends State<LoginPage> {
           "employeeId",
           resBody["adm_employee_id"].toString(),
         );
-        Get.snackbar(
-          "Success",
-          "Welcome ${resBody["adm_name"]}",
-          colorText: Colors.white,
-          backgroundColor: Colors.green,
-          snackPosition: SnackPosition.BOTTOM,
-        );
-        // ignore: use_build_context_synchronously
-        Navigator.of(context).pop();
+        ShowAlert().showAlert("success", "Welcome ${resBody["adm_name"]}");
         Get.toNamed("/dashboard");
       } else {
-        Get.snackbar(
-          "Error",
-          "Invalid Id or password",
-          colorText: Colors.white,
-          backgroundColor: Colors.red,
-          snackPosition: SnackPosition.BOTTOM,
-        );
+        ShowAlert().showAlert("error", "Invalid Id or password");
       }
     } catch (e) {
-      Get.snackbar(
-        "Error",
-        "There was an unexpected error: $e",
-        colorText: Colors.white,
-        backgroundColor: Colors.red,
-        snackPosition: SnackPosition.BOTTOM,
-      );
-
+      ShowAlert().showAlert("error", "There was an unexpected error: $e");
       print(e);
     } finally {
       setState(() {
@@ -131,14 +110,18 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(650, 30, 50, 250),
+                    padding: const EdgeInsets.fromLTRB(250, 0, 50, 0),
                     child: _buildLoginSection(context),
                   ),
                 ),
               ],
             );
           } else {
-            return _buildLoginSection(context);
+            return Container(
+              padding: const EdgeInsets.all(24),
+              width: double.infinity,
+              child: _buildLoginSection(context),
+            );
           }
         },
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/components/loading_spinner.dart';
 import 'package:flutter_csdl_admin/components/my_button.dart';
 import 'package:flutter_csdl_admin/components/my_textfield.dart';
+import 'package:flutter_csdl_admin/pages/master_files/show_alert.dart';
 import 'package:flutter_csdl_admin/session_storage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -20,8 +21,7 @@ class _AddAdminState extends State<AddAdmin> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
@@ -47,19 +47,9 @@ class _AddAdminState extends State<AddAdmin> {
         body: requestBody,
       );
       if (res.body == "-1") {
-        Get.snackbar(
-          "Error",
-          "User ID already exists",
-          colorText: Colors.white,
-          backgroundColor: Colors.red,
-        );
+        ShowAlert().showAlert("error", "User ID already exists");
       } else if (res.body == "1") {
-        Get.snackbar(
-          "Success",
-          "Successfully added",
-          colorText: Colors.white,
-          backgroundColor: Colors.green,
-        );
+        ShowAlert().showAlert("success", "Successfully added");
         _firstNameController.clear();
         _lastNameController.clear();
         _usernameController.clear();
@@ -67,16 +57,11 @@ class _AddAdminState extends State<AddAdmin> {
         _passwordController.clear();
         _confirmPasswordController.clear();
       } else {
-        Get.snackbar(
-          "Error",
-          "Something went wrong",
-          colorText: Colors.white,
-          backgroundColor: Colors.red,
-        );
+        ShowAlert().showAlert("error", "Failed to add");
         print("Res.body" + res.body);
       }
     } catch (e) {
-      Get.snackbar("Network Error", "Something went wrong");
+      ShowAlert().showAlert("error", "Network error");
       print(e);
     }
   }
@@ -193,14 +178,8 @@ class _AddAdminState extends State<AddAdmin> {
                       buttonSize: 8,
                       color: Theme.of(context).colorScheme.tertiary,
                       onPressed: () {
-                        if (_confirmPasswordController.text !=
-                            _passwordController.text) {
-                          Get.snackbar(
-                            "Error",
-                            "Confirm password does not match",
-                            colorText: Colors.white,
-                            backgroundColor: Colors.red,
-                          );
+                        if (_confirmPasswordController.text != _passwordController.text) {
+                          ShowAlert().showAlert("Error", "Confirm password does not match");
                         } else {
                           if (_formKey.currentState!.validate()) {
                             addAdmin();

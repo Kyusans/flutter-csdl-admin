@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_csdl_admin/pages/master_files/show_alert.dart';
 import 'package:flutter_csdl_admin/session_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -25,7 +26,9 @@ class _AddSchoolYearState extends State<AddSchoolYear> {
       _isLoading = true;
     });
     try {
-      Map<String, String> jsonData = {"schoolYear": _schoolYearController.text};
+      Map<String, String> jsonData = {
+        "schoolYear": _schoolYearController.text
+      };
       Map<String, String> requestBody = {
         "json": jsonEncode(jsonData),
         "operation": "addSchoolYear",
@@ -35,36 +38,16 @@ class _AddSchoolYearState extends State<AddSchoolYear> {
         body: requestBody,
       );
       if (res.body == "-1") {
-        Get.snackbar(
-          "Error",
-          "School year already exists",
-          colorText: Colors.white,
-          backgroundColor: Colors.red,
-        );
+        ShowAlert().showAlert("error", "School year already exists");
       } else if (res.body == "1") {
-        Get.snackbar(
-          "Success",
-          "Successfully added",
-          colorText: Colors.white,
-          backgroundColor: Colors.green,
-        );
+        ShowAlert().showAlert("success", "Successfully added");
         _schoolYearController.clear();
       } else {
-        Get.snackbar(
-          "Error",
-          "Something went wrong",
-          colorText: Colors.white,
-          backgroundColor: Colors.red,
-        );
+        ShowAlert().showAlert("error", "Failed to add");
         print("Res.body" + res.body);
       }
     } catch (e) {
-      Get.snackbar(
-        "Error",
-        "Network error",
-        colorText: Colors.white,
-        backgroundColor: Colors.red,
-      );
+      ShowAlert().showAlert("error", "Network error");
       print(e);
     } finally {
       setState(() {
