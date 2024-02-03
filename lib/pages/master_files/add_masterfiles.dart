@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_admin.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_course.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_department.dart';
+import 'package:flutter_csdl_admin/pages/master_files/add_scholarship_type.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_school_year.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_supervisor.dart';
 import 'package:get/get.dart';
@@ -112,6 +113,8 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
         return AddSupervisor();
       case 4:
         return AddCourse();
+      case 5:
+        return AddScholarshipType();
       default:
         return Text("Add scholarship sub type");
     }
