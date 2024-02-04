@@ -3,6 +3,7 @@ import 'package:flutter_csdl_admin/pages/master_files/add_admin.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_course.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_department.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_office_master.dart';
+import 'package:flutter_csdl_admin/pages/master_files/add_scholarship_sub_type.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_scholarship_type.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_school_year.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_supervisor.dart';
@@ -104,21 +105,21 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
   Widget selectedMasterFile() {
     switch (_selectedIndex) {
       case 0:
-        return AddAdmin();
+        return const AddAdmin();
       case 1:
-        return AddDepartment();
+        return const AddDepartment();
       case 2:
-        return AddSchoolYear();
+        return const AddSchoolYear();
       case 3:
-        return AddSupervisor();
+        return const AddSupervisor();
       case 4:
-        return AddCourse();
+        return const AddCourse();
       case 5:
-        return AddScholarshipType();
+        return const AddScholarshipType();
       case 6:
-        return AddOfficeMaster();
+        return const AddOfficeMaster();
       default:
-        return Text("Add scholarship sub type");
+        return const AddScholarshipSubType();
     }
   }
 }

@@ -19,7 +19,7 @@ class _MasterFilesState extends State<MasterFiles> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final maxWidth = MediaQuery.of(context).size.width;
       setState(() {
-        _isMobile = maxWidth <= 1400;
+        _isMobile = maxWidth <= 1475;
       });
     });
   }
