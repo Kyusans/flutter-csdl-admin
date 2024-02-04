@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_admin.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_course.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_department.dart';
+import 'package:flutter_csdl_admin/pages/master_files/add_office_master.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_scholarship_type.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_school_year.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_supervisor.dart';
@@ -67,7 +68,7 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
           children: [
             //Get.width * 0.5
             SizedBox(
-              height: 600,
+              height: Get.height * 1,
               width: widget.isMobile ? Get.width * 1 : Get.width * 0.3,
               child: Card(
                 elevation: 5,
@@ -76,14 +77,16 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      _title,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        _title,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 32,
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 16),
                     Padding(
                       padding: const EdgeInsets.all(24.0),
                       child: selectedMasterFile(),
@@ -112,6 +115,8 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
         return AddCourse();
       case 5:
         return AddScholarshipType();
+      case 6:
+        return AddOfficeMaster();
       default:
         return Text("Add scholarship sub type");
     }
