@@ -86,7 +86,7 @@ class _MyTextFieldState extends State<MyTextField> {
           return "This field is required";
         } else if (widget.isEmail && !GetUtils.isEmail(value)) {
           return "Please enter a valid email";
-        } else if (widget.isNumber && double.tryParse(value) == null) {
+        } else if (widget.isNumber && int.tryParse(value) == null) {
           return "Please enter a valid number";
         }
         return null;
