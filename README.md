@@ -1,6 +1,6 @@
 # flutter_csdl_admin
 
-HK scholar monitoring system pero sa admin side
+`HK scholar management` pero sa admin side
 
 ## Getting Started
 
