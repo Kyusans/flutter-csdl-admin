@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/components/loading_spinner.dart';
 import 'package:flutter_csdl_admin/components/my_masterfiles.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_masterfiles.dart';
+import 'package:flutter_csdl_admin/pages/master_files/get_master_files.dart';
 import 'package:get/get.dart';
 
 class MasterFiles extends StatefulWidget {
@@ -31,6 +32,26 @@ class _MasterFilesState extends State<MasterFiles> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
+    );
+  }
+
+  void _handleGetList(int index) {
+    Get.dialog(
+      AlertDialog(
+        insetPadding: _isMobile
+            ? EdgeInsets.zero
+            : EdgeInsets.symmetric(
+                horizontal: Get.width * 0.3, vertical: Get.width * 0.05),
+        content: GetMasterFiles(selectedIndex: index, isMobile: _isMobile),
+        backgroundColor: Theme.of(context).colorScheme.onPrimary,
+        elevation: 0,
+      ),
+      // Dialog(
+      //   insetPadding:
+      //       _isMobile ? EdgeInsets.zero : EdgeInsets.all(Get.width * 0.1),
+      //   child: GetMasterFiles(selectedIndex: index, isMobile: _isMobile),
+      // ),
+      // barrierDismissible: true,
     );
   }
 
@@ -83,6 +104,7 @@ class _MasterFilesState extends State<MasterFiles> {
                     onPressed: () {
                       _handleAddMasterfiles(0);
                     },
+                    getList: () => _handleGetList(0),
                   ),
                   MyMasterfiles(
                     topText: "Department",
@@ -90,6 +112,7 @@ class _MasterFilesState extends State<MasterFiles> {
                     onPressed: () {
                       _handleAddMasterfiles(1);
                     },
+                    getList: () => _handleGetList(1),
                   ),
                   MyMasterfiles(
                     topText: "School Year",
@@ -97,6 +120,7 @@ class _MasterFilesState extends State<MasterFiles> {
                     onPressed: () {
                       _handleAddMasterfiles(2);
                     },
+                    getList: () => _handleGetList(2),
                   ),
                   MyMasterfiles(
                     topText: "Supervisor",
@@ -104,6 +128,7 @@ class _MasterFilesState extends State<MasterFiles> {
                     onPressed: () {
                       _handleAddMasterfiles(3);
                     },
+                    getList: () => _handleGetList(3),
                   ),
                 ],
               ),
@@ -117,6 +142,7 @@ class _MasterFilesState extends State<MasterFiles> {
                     onPressed: () {
                       _handleAddMasterfiles(4);
                     },
+                    getList: () => _handleGetList(4),
                   ),
                   MyMasterfiles(
                     topText: "Scholarship Type",
@@ -124,6 +150,7 @@ class _MasterFilesState extends State<MasterFiles> {
                     onPressed: () {
                       _handleAddMasterfiles(5);
                     },
+                    getList: () => _handleGetList(5),
                   ),
                   MyMasterfiles(
                     topText: "Office Master",
@@ -131,6 +158,7 @@ class _MasterFilesState extends State<MasterFiles> {
                     onPressed: () {
                       _handleAddMasterfiles(6);
                     },
+                    getList: () => _handleGetList(6),
                   ),
                   MyMasterfiles(
                     topText: "Scholarship Sub Type",
@@ -138,6 +166,7 @@ class _MasterFilesState extends State<MasterFiles> {
                     onPressed: () {
                       _handleAddMasterfiles(7);
                     },
+                    getList: () => _handleGetList(7),
                   ),
                 ],
               ),
@@ -155,6 +184,7 @@ class _MasterFilesState extends State<MasterFiles> {
           onPressed: () {
             _handleAddMasterfiles(0);
           },
+          getList: () => _handleGetList(0),
         ),
         MyMasterfiles(
           topText: "Department",
@@ -162,6 +192,7 @@ class _MasterFilesState extends State<MasterFiles> {
           onPressed: () {
             _handleAddMasterfiles(1);
           },
+          getList: () => _handleGetList(1),
         ),
         MyMasterfiles(
           topText: "School Year",
@@ -169,6 +200,7 @@ class _MasterFilesState extends State<MasterFiles> {
           onPressed: () {
             _handleAddMasterfiles(2);
           },
+          getList: () => _handleGetList(2),
         ),
         const SizedBox(height: 16),
         MyMasterfiles(
@@ -177,6 +209,7 @@ class _MasterFilesState extends State<MasterFiles> {
           onPressed: () {
             _handleAddMasterfiles(3);
           },
+          getList: () => _handleGetList(3),
         ),
         MyMasterfiles(
           topText: "Course",
@@ -184,6 +217,7 @@ class _MasterFilesState extends State<MasterFiles> {
           onPressed: () {
             _handleAddMasterfiles(4);
           },
+          getList: () => _handleGetList(4),
         ),
         MyMasterfiles(
           topText: "Scholarship Type",
@@ -191,6 +225,7 @@ class _MasterFilesState extends State<MasterFiles> {
           onPressed: () {
             _handleAddMasterfiles(5);
           },
+          getList: () => _handleGetList(5),
         ),
         const SizedBox(height: 16),
         MyMasterfiles(
@@ -199,6 +234,7 @@ class _MasterFilesState extends State<MasterFiles> {
           onPressed: () {
             _handleAddMasterfiles(6);
           },
+          getList: () => _handleGetList(6),
         ),
         MyMasterfiles(
           topText: "Scholarship Sub Type",
@@ -206,6 +242,7 @@ class _MasterFilesState extends State<MasterFiles> {
           onPressed: () {
             _handleAddMasterfiles(7);
           },
+          getList: () => _handleGetList(7),
         ),
       ],
     );

@@ -63,7 +63,7 @@ class _AddDepartmentState extends State<AddDepartment> {
           SizedBox(
             width: Get.width * 0.5,
             child: MyTextField(
-              labelText: "Department name",
+              labelText: "Department name*",
               controller: _departmentController,
               obscureText: false,
               willValidate: true,

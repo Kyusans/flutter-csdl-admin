@@ -5,12 +5,14 @@ class MyMasterfiles extends StatefulWidget {
   final String topText;
   final String labelText;
   final void Function() onPressed;
+  final void Function() getList;
 
   const MyMasterfiles({
     Key? key,
     required this.topText,
     required this.labelText,
     required this.onPressed,
+    required this.getList,
   }) : super(key: key);
 
   @override
@@ -78,7 +80,7 @@ class _MyMasterfilesState extends State<MyMasterfiles> {
                         buttonText: "Get List",
                         buttonSize: 5,
                         color: Theme.of(context).colorScheme.onPrimaryContainer,
-                        onPressed: () {},
+                        onPressed: widget.getList,
                       ),
                     ],
                   )
