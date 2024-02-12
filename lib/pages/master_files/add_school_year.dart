@@ -65,7 +65,7 @@ class _AddSchoolYearState extends State<AddSchoolYear> {
           child: Column(
             children: [
               MyTextField(
-                labelText: "School Year",
+                labelText: "School Year*",
                 controller: _schoolYearController,
                 obscureText: false,
                 willValidate: true,
