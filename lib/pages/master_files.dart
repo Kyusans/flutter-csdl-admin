@@ -26,10 +26,22 @@ class _MasterFilesState extends State<MasterFiles> {
   }
 
   void _handleAddMasterfiles(int index) {
+    // Get.dialog(
+    //   AlertDialog(
+    //     content: AddMasterfiles(selectedIndex: index, isMobile: _isMobile),
+    //     backgroundColor: Colors.transparent,
+    //     elevation: 0,
+    //   ),
+    // );
+
     Get.dialog(
       AlertDialog(
+        insetPadding: _isMobile
+            ? EdgeInsets.zero
+            : EdgeInsets.symmetric(
+                horizontal: Get.width * 0.3, vertical: Get.width * 0.05),
         content: AddMasterfiles(selectedIndex: index, isMobile: _isMobile),
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).colorScheme.onPrimary,
         elevation: 0,
       ),
     );
@@ -46,12 +58,6 @@ class _MasterFilesState extends State<MasterFiles> {
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
         elevation: 0,
       ),
-      // Dialog(
-      //   insetPadding:
-      //       _isMobile ? EdgeInsets.zero : EdgeInsets.all(Get.width * 0.1),
-      //   child: GetMasterFiles(selectedIndex: index, isMobile: _isMobile),
-      // ),
-      // barrierDismissible: true,
     );
   }
 
