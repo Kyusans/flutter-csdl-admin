@@ -60,41 +60,26 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Center(
+    return Center(
+      child: SizedBox(
+        height: Get.height * 1,
+        width: widget.isMobile ? Get.width * 1 : Get.width * 0.3,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            //Get.width * 0.5
-            SizedBox(
-              height: Get.height * 1,
-              width: widget.isMobile ? Get.width * 1 : Get.width * 0.3,
-              child: Card(
-                elevation: 5,
-                color: Theme.of(context).colorScheme.onPrimary,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        _title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 32,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: selectedMasterFile(),
-                    ),
-                  ],
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                _title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 32,
                 ),
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: selectedMasterFile(),
             ),
           ],
         ),
