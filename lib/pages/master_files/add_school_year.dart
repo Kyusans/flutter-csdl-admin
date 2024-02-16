@@ -26,7 +26,9 @@ class _AddSchoolYearState extends State<AddSchoolYear> {
       _isLoading = true;
     });
     try {
-      Map<String, String> jsonData = {"schoolYear": _schoolYearController.text};
+      Map<String, String> jsonData = {
+        "schoolYear": _schoolYearController.text
+      };
       Map<String, String> requestBody = {
         "json": jsonEncode(jsonData),
         "operation": "addSchoolYear",
@@ -78,17 +80,17 @@ class _AddSchoolYearState extends State<AddSchoolYear> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  MyButton(
-                    buttonText: "Back",
-                    buttonSize: 8,
-                    color: Colors.red,
-                    onPressed: () {
-                      Get.back();
-                    },
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
+                  // MyButton(
+                  //   buttonText: "Back",
+                  //   buttonSize: 8,
+                  //   color: Colors.red,
+                  //   onPressed: () {
+                  //     Get.back();
+                  //   },
+                  // ),
+                  // const SizedBox(
+                  //   width: 16,
+                  // ),
                   _isLoading
                       ? const LoadingSpinner()
                       : MyButton(

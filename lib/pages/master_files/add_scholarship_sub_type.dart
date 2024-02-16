@@ -5,7 +5,6 @@ import 'package:flutter_csdl_admin/components/my_button.dart';
 import 'package:flutter_csdl_admin/components/my_textfield.dart';
 import 'package:flutter_csdl_admin/pages/master_files/show_alert.dart';
 import 'package:flutter_csdl_admin/session_storage.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class AddScholarshipSubType extends StatefulWidget {
@@ -29,7 +28,9 @@ class _AddScholarshipSubTypeState extends State<AddScholarshipSubType> {
       _isLoading = true;
     });
     try {
-      Map<String, String> requestBody = {"operation": "getScholarshipType"};
+      Map<String, String> requestBody = {
+        "operation": "getScholarshipType"
+      };
       var res = await http.post(
         Uri.parse("${SessionStorage.url}admin.php"),
         body: requestBody,
@@ -103,9 +104,7 @@ class _AddScholarshipSubTypeState extends State<AddScholarshipSubType> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-        key: _formKey,
-        child: _isLoading ? const LoadingSpinner() : _scholarshipSubTypeForm());
+    return Form(key: _formKey, child: _isLoading ? const LoadingSpinner() : _scholarshipSubTypeForm());
   }
 
   Widget _scholarshipSubTypeForm() {
@@ -186,17 +185,17 @@ class _AddScholarshipSubTypeState extends State<AddScholarshipSubType> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            MyButton(
-              buttonText: "Back",
-              buttonSize: 8,
-              color: Colors.red,
-              onPressed: () {
-                Get.back();
-              },
-            ),
-            const SizedBox(
-              width: 16,
-            ),
+            // MyButton(
+            //   buttonText: "Back",
+            //   buttonSize: 8,
+            //   color: Colors.red,
+            //   onPressed: () {
+            //     Get.back();
+            //   },
+            // ),
+            // const SizedBox(
+            //   width: 16,
+            // ),
             _isSubmitted
                 ? const LoadingSpinner()
                 : MyButton(

@@ -25,7 +25,9 @@ class _AddDepartmentState extends State<AddDepartment> {
       _isLoading = true;
     });
     try {
-      Map<String, String> jsonData = {"department": _departmentController.text};
+      Map<String, String> jsonData = {
+        "department": _departmentController.text
+      };
       Map<String, String> requestBody = {
         "json": jsonEncode(jsonData),
         "operation": "addDepartment",
@@ -77,17 +79,17 @@ class _AddDepartmentState extends State<AddDepartment> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              MyButton(
-                buttonText: "Back",
-                buttonSize: 8,
-                color: Colors.red,
-                onPressed: () {
-                  Get.back();
-                },
-              ),
-              const SizedBox(
-                width: 16,
-              ),
+              // MyButton(
+              //   buttonText: "Back",
+              //   buttonSize: 8,
+              //   color: Colors.red,
+              //   onPressed: () {
+              //     Get.back();
+              //   },
+              // ),
+              // const SizedBox(
+              //   width: 16,
+              // ),
               _isLoading
                   ? const LoadingSpinner()
                   : MyButton(

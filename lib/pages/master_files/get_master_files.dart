@@ -112,11 +112,15 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
         "json": jsonEncode(jsonData),
         "operation": "getList",
       };
+      print("jsondata" + jsonData.toString());
+      print("requestbody" + requestBody.toString());
 
       var res = await http.post(url, body: requestBody);
+      print("res mo to: " + res.body.toString());
       return res.body != "0" ? jsonDecode(res.body) : [];
     } catch (e) {
       ShowAlert().showAlert("danger", "Network error");
+      print("error mo to" + e.toString());
       return [];
     }
   }
@@ -135,13 +139,13 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(
-                    onPressed: () => Get.back(),
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.white,
-                    ),
-                  ),
+                  // IconButton(
+                  //   onPressed: () => Get.back(),
+                  //   icon: const Icon(
+                  //     Icons.arrow_back_ios,
+                  //     color: Colors.white,
+                  //   ),
+                  // ),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
@@ -222,8 +226,7 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                           onPressed: (context) {
                             print(masterFiles[index]["adm_id"]);
                           },
-                          backgroundColor:
-                              Theme.of(context).colorScheme.onPrimaryContainer,
+                          backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
                           foregroundColor: Colors.white,
                           icon: Icons.update,
                           label: 'Update',
@@ -235,8 +238,7 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                 padding: const EdgeInsets.all(8),
                 child: ListTile(
                   title: Text(
-                    masterFiles[index][_orderBy] +
-                        (isCurrentUser ? " (You)" : ""),
+                    masterFiles[index][_orderBy] + (isCurrentUser ? " (You)" : ""),
                     style: const TextStyle(color: Colors.white),
                   ),
                 ),

@@ -4,7 +4,6 @@ import 'package:flutter_csdl_admin/components/my_button.dart';
 import 'package:flutter_csdl_admin/components/my_textfield.dart';
 import 'package:flutter_csdl_admin/pages/master_files/show_alert.dart';
 import 'package:flutter_csdl_admin/session_storage.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -56,8 +55,7 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
       );
 
       if (res.body == "-1") {
-        ShowAlert().showAlert(
-            "danger", "${_isOffices ? "Office" : "Class"} name already exists");
+        ShowAlert().showAlert("danger", "${_isOffices ? "Office" : "Class"} name already exists");
       } else if (res.body == "1") {
         ShowAlert().showAlert("success", "Successfully added");
         _officeNameController.clear();
@@ -94,7 +92,10 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
                 fontSize: 15,
                 initialLabelIndex: _isOffices ? 0 : 1,
                 totalSwitches: 2,
-                labels: const ['Offices', 'Classes'],
+                labels: const [
+                  'Offices',
+                  'Classes'
+                ],
                 onToggle: (index) {
                   print('switched to: $index');
                   setState(() {
@@ -113,15 +114,15 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                MyButton(
-                  buttonText: "Back",
-                  buttonSize: 8,
-                  color: Colors.red,
-                  onPressed: () {
-                    Get.back();
-                  },
-                ),
-                const SizedBox(width: 16),
+                // MyButton(
+                //   buttonText: "Back",
+                //   buttonSize: 8,
+                //   color: Colors.red,
+                //   onPressed: () {
+                //     Get.back();
+                //   },
+                // ),
+                // const SizedBox(width: 16),
                 _isSubmitted
                     ? const LoadingSpinner()
                     : MyButton(

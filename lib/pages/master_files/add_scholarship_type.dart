@@ -5,7 +5,6 @@ import 'package:flutter_csdl_admin/components/my_button.dart';
 import 'package:flutter_csdl_admin/components/my_textfield.dart';
 import 'package:flutter_csdl_admin/pages/master_files/show_alert.dart';
 import 'package:flutter_csdl_admin/session_storage.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class AddScholarshipType extends StatefulWidget {
@@ -17,8 +16,7 @@ class AddScholarshipType extends StatefulWidget {
 
 class _AddScholarshipTypeState extends State<AddScholarshipType> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _scholarshipNameController =
-      TextEditingController();
+  final TextEditingController _scholarshipNameController = TextEditingController();
 
   void addScholarshipType() async {
     setState(() {
@@ -82,17 +80,17 @@ class _AddScholarshipTypeState extends State<AddScholarshipType> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      MyButton(
-                        buttonText: "Back",
-                        buttonSize: 8,
-                        color: Colors.red,
-                        onPressed: () {
-                          Get.back();
-                        },
-                      ),
-                      const SizedBox(
-                        width: 16,
-                      ),
+                      // MyButton(
+                      //   buttonText: "Back",
+                      //   buttonSize: 8,
+                      //   color: Colors.red,
+                      //   onPressed: () {
+                      //     Get.back();
+                      //   },
+                      // ),
+                      // const SizedBox(
+                      //   width: 16,
+                      // ),
                       _isSubmitted
                           ? const LoadingSpinner()
                           : MyButton(

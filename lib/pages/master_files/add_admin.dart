@@ -4,7 +4,6 @@ import 'package:flutter_csdl_admin/components/my_button.dart';
 import 'package:flutter_csdl_admin/components/my_textfield.dart';
 import 'package:flutter_csdl_admin/pages/master_files/show_alert.dart';
 import 'package:flutter_csdl_admin/session_storage.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -21,8 +20,7 @@ class _AddAdminState extends State<AddAdmin> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
@@ -167,17 +165,17 @@ class _AddAdminState extends State<AddAdmin> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              MyButton(
-                buttonText: "Back",
-                buttonSize: 8,
-                color: Colors.red,
-                onPressed: () {
-                  Get.back();
-                },
-              ),
-              const SizedBox(
-                width: 16,
-              ),
+              // MyButton(
+              //   buttonText: "Back",
+              //   buttonSize: 8,
+              //   color: Colors.red,
+              //   onPressed: () {
+              //     Get.back();
+              //   },
+              // ),
+              // const SizedBox(
+              //   width: 16,
+              // ),
               _isLoading
                   ? const LoadingSpinner()
                   : MyButton(
@@ -185,10 +183,8 @@ class _AddAdminState extends State<AddAdmin> {
                       buttonSize: 8,
                       color: Theme.of(context).colorScheme.tertiary,
                       onPressed: () {
-                        if (_confirmPasswordController.text !=
-                            _passwordController.text) {
-                          ShowAlert().showAlert(
-                              "Error", "Confirm password does not match");
+                        if (_confirmPasswordController.text != _passwordController.text) {
+                          ShowAlert().showAlert("Error", "Confirm password does not match");
                         } else {
                           if (_formKey.currentState!.validate()) {
                             addAdmin();

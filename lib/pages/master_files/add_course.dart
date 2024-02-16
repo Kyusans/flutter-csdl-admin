@@ -5,7 +5,6 @@ import 'package:flutter_csdl_admin/components/my_button.dart';
 import 'package:flutter_csdl_admin/components/my_textfield.dart';
 import 'package:flutter_csdl_admin/pages/master_files/show_alert.dart';
 import 'package:flutter_csdl_admin/session_storage.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class AddCourse extends StatefulWidget {
@@ -29,7 +28,9 @@ class _AddCourseState extends State<AddCourse> {
       _isLoading = true;
     });
     try {
-      Map<String, String> requestBody = {"operation": "getDepartment"};
+      Map<String, String> requestBody = {
+        "operation": "getDepartment"
+      };
       var res = await http.post(
         Uri.parse("${SessionStorage.url}admin.php"),
         body: requestBody,
@@ -38,8 +39,7 @@ class _AddCourseState extends State<AddCourse> {
       if (res.statusCode == 200 && res.body.isNotEmpty) {
         List<dynamic> departments = jsonDecode(res.body);
         departmentMap = {
-          for (var department in departments)
-            department['dept_id']: department['dept_name'],
+          for (var department in departments) department['dept_id']: department['dept_name'],
         };
         print("department map $departmentMap");
       } else {
@@ -183,17 +183,17 @@ class _AddCourseState extends State<AddCourse> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    MyButton(
-                      buttonText: "Back",
-                      buttonSize: 8,
-                      color: Colors.red,
-                      onPressed: () {
-                        Get.back();
-                      },
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
+                    // MyButton(
+                    //   buttonText: "Back",
+                    //   buttonSize: 8,
+                    //   color: Colors.red,
+                    //   onPressed: () {
+                    //     Get.back();
+                    //   },
+                    // ),
+                    // const SizedBox(
+                    //   width: 16,
+                    // ),
                     _isSubmitted
                         ? const LoadingSpinner()
                         : MyButton(
