@@ -7,7 +7,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:flutter_csdl_admin/session_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_csdl_admin/pages/master_files/show_alert.dart';
+import 'package:flutter_csdl_admin/components/show_alert.dart';
 
 class GetMasterFiles extends StatefulWidget {
   final int selectedIndex;
@@ -110,8 +110,10 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
   void _handleUpdateMasterfiles(masterfileIndex, masterFileId) {
     Get.dialog(
       AlertDialog(
-        insetPadding: EdgeInsets.symmetric(horizontal: Get.width * 0.3, vertical: Get.width * 0.05),
-        content: UpdateMasterfiles(selectedMasterFile: masterfileIndex, masterfileId: masterFileId),
+        insetPadding: EdgeInsets.symmetric(
+            horizontal: Get.width * 0.3, vertical: Get.width * 0.05),
+        content: UpdateMasterfiles(
+            selectedMasterFile: masterfileIndex, masterfileId: masterFileId),
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
         elevation: 0,
       ),
@@ -243,7 +245,8 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                             _handleUpdateMasterfiles(_title, _masterfileId);
                             print(masterFiles[index]["adm_id"]);
                           },
-                          backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
                           foregroundColor: Colors.white,
                           icon: Icons.update,
                           label: 'Update',
