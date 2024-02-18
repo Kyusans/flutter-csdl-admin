@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/components/loading_spinner.dart';
 import 'package:flutter_csdl_admin/local_storage.dart';
+import 'package:flutter_csdl_admin/pages/master_files/update_masterfiles/update_masterfiles.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:flutter_csdl_admin/session_storage.dart';
@@ -23,12 +24,12 @@ class GetMasterFiles extends StatefulWidget {
 
 class _GetMasterFilesState extends State<GetMasterFiles> {
   late LocalStorage _localStorage;
-  String _userId = "";
   int _selectedIndex = 0;
   List<dynamic> masterFiles = [];
   String _title = "";
   String _tableName = "";
   String _orderBy = "";
+  String _masterfileId = "";
   @override
   void initState() {
     super.initState();
@@ -42,51 +43,56 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
           _title = "Administrators";
           _tableName = "tbl_admin";
           _orderBy = "adm_name";
+          _masterfileId = "adm_id";
           break;
         case 1:
           _title = "Department";
           _tableName = "tbl_departments";
           _orderBy = "dept_name";
+          _masterfileId = "dept_id";
           break;
         case 2:
           _title = "School Year";
           _tableName = "tbl_sy";
           _orderBy = "sy_name";
+          _masterfileId = "st_id";
           break;
         case 3:
           _title = "Supervisors";
           _tableName = "tbl_supervisors_master";
           _orderBy = "supM_name";
+          _masterfileId = "supM_id";
           break;
         case 4:
           _title = "Course";
           _tableName = "tbl_course";
           _orderBy = "crs_name";
+          _masterfileId = "crs_id";
           break;
         case 5:
           _title = "Scholarship Type";
           _tableName = "tbl_scholarship_type";
           _orderBy = "type_name";
+          _masterfileId = "type_id";
 
           break;
         case 6:
           _title = "Office Master";
           _tableName = "tbl_office_master";
           _orderBy = "off_name";
+          _masterfileId = "off_id";
           break;
         default:
           _title = "Scholarship Sub Type";
           _tableName = "tbl_scholarship_sub_type";
           _orderBy = "stype_name";
+          _masterfileId = "stype_id";
       }
     });
   }
 
   void _initializeLocalStorage() async {
     await _localStorage.init();
-    setState(() {
-      _userId = _localStorage.getValue("employeeId");
-    });
   }
 
   @override
@@ -101,6 +107,17 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
     print("masterfiles mo to: " + masterFilesList.toString());
   }
 
+  void _handleUpdateMasterfiles(masterfileIndex, masterFileId) {
+    Get.dialog(
+      AlertDialog(
+        insetPadding: EdgeInsets.symmetric(horizontal: Get.width * 0.3, vertical: Get.width * 0.05),
+        content: UpdateMasterfiles(selectedMasterFile: masterfileIndex, masterfileId: masterFileId),
+        backgroundColor: Theme.of(context).colorScheme.onPrimary,
+        elevation: 0,
+      ),
+    );
+  }
+
   Future<List> _getMasterFiles() async {
     try {
       var url = Uri.parse("${SessionStorage.url}admin.php");
@@ -112,11 +129,8 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
         "json": jsonEncode(jsonData),
         "operation": "getList",
       };
-      print("jsondata" + jsonData.toString());
-      print("requestbody" + requestBody.toString());
 
       var res = await http.post(url, body: requestBody);
-      print("res mo to: " + res.body.toString());
       return res.body != "0" ? jsonDecode(res.body) : [];
     } catch (e) {
       ShowAlert().showAlert("danger", "Network error");
@@ -204,15 +218,16 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
         itemCount: masterFiles.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          bool isCurrentUser = masterFiles[index]["adm_employee_id"] == _userId;
+          bool isAdminList = _title == "Administrators";
           return Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Slidable(
-              startActionPane: isCurrentUser
+              startActionPane: isAdminList
                   ? null
                   : ActionPane(
                       motion: const BehindMotion(),
                       children: [
+                        // delete
                         SlidableAction(
                           onPressed: (context) {
                             print(masterFiles[index]["adm_id"]);
@@ -222,8 +237,10 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                           icon: Icons.delete,
                           label: 'Delete',
                         ),
+                        // update
                         SlidableAction(
                           onPressed: (context) {
+                            _handleUpdateMasterfiles(_title, _masterfileId);
                             print(masterFiles[index]["adm_id"]);
                           },
                           backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -238,7 +255,7 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                 padding: const EdgeInsets.all(8),
                 child: ListTile(
                   title: Text(
-                    masterFiles[index][_orderBy] + (isCurrentUser ? " (You)" : ""),
+                    masterFiles[index][_orderBy],
                     style: const TextStyle(color: Colors.white),
                   ),
                 ),
