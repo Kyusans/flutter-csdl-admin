@@ -80,7 +80,11 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
             ),
             Padding(
               padding: const EdgeInsets.all(24.0),
-              child: selectedMasterFile(),
+              child: Column(
+                children: [
+                  selectedMasterFile(),
+                ],
+              ),
             ),
           ],
         ),

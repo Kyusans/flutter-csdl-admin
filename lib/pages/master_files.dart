@@ -26,14 +26,6 @@ class _MasterFilesState extends State<MasterFiles> {
   }
 
   void _handleAddMasterfiles(int index) {
-    // Get.dialog(
-    //   AlertDialog(
-    //     content: AddMasterfiles(selectedIndex: index, isMobile: _isMobile),
-    //     backgroundColor: Colors.transparent,
-    //     elevation: 0,
-    //   ),
-    // );
-
     Get.dialog(
       AlertDialog(
         insetPadding: _isMobile

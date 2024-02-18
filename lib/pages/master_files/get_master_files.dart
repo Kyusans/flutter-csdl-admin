@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/components/loading_spinner.dart';
+import 'package:flutter_csdl_admin/components/my_button.dart';
 import 'package:flutter_csdl_admin/local_storage.dart';
 import 'package:flutter_csdl_admin/pages/master_files/update_masterfiles/update_masterfiles.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -30,11 +31,16 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
   String _tableName = "";
   String _orderBy = "";
   String _masterfileId = "";
+  String _userId = "";
+  bool _isSubmitting = false;
+  bool _isLoading = true;
+
   @override
   void initState() {
     super.initState();
     _localStorage = LocalStorage();
     _initializeLocalStorage();
+
     setState(() {
       _selectedIndex = widget.selectedIndex;
       switch (_selectedIndex) {
@@ -93,6 +99,9 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
 
   void _initializeLocalStorage() async {
     await _localStorage.init();
+    setState(() {
+      _userId = _localStorage.getValue("employeeId");
+    });
   }
 
   @override
@@ -102,6 +111,7 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
     if (mounted) {
       setState(() {
         masterFiles = masterFilesList;
+        _isLoading = false;
       });
     }
     print("masterfiles mo to: " + masterFilesList.toString());
@@ -110,14 +120,123 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
   void _handleUpdateMasterfiles(masterfileIndex, masterFileId) {
     Get.dialog(
       AlertDialog(
-        insetPadding: EdgeInsets.symmetric(
-            horizontal: Get.width * 0.3, vertical: Get.width * 0.05),
+        insetPadding: widget.isMobile
+            ? EdgeInsets.zero
+            : EdgeInsets.symmetric(
+                horizontal: Get.width * 0.3,
+                vertical: Get.width * 0.05,
+              ),
         content: UpdateMasterfiles(
-            selectedMasterFile: masterfileIndex, masterfileId: masterFileId),
+          selectedMasterFile: masterfileIndex,
+          masterfileId: masterFileId,
+        ),
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
         elevation: 0,
       ),
     );
+  }
+
+  void _handleSetActive(schoolYearId, syName) async {
+    Get.dialog(
+      AlertDialog(
+        insetPadding: widget.isMobile
+            ? EdgeInsets.zero
+            : EdgeInsets.symmetric(
+                horizontal: Get.width * 0.3,
+                vertical: Get.height * 0.3,
+              ),
+        content: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Text(
+                  "Are you sure you want to activate $syName?",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            _isSubmitting
+                ? const LoadingSpinner()
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      MyButton(
+                        buttonText: "Cancel",
+                        buttonSize: 8,
+                        color: Colors.red,
+                        onPressed: () {
+                          Get.back();
+                        },
+                      ),
+                      const SizedBox(width: 8),
+                      MyButton(
+                        buttonText: "Activate",
+                        buttonSize: 8,
+                        color: Theme.of(context).colorScheme.tertiary,
+                        onPressed: () async {
+                          setState(() {
+                            _isSubmitting = true;
+                          });
+                          var uri = Uri.parse("${SessionStorage.url}admin.php");
+
+                          try {
+                            Map<String, dynamic> requestBody = {
+                              "schoolYearId": schoolYearId
+                            };
+                            Map<String, dynamic> jsonData = {
+                              "operation": "setSYActive",
+                              "json": jsonEncode(requestBody),
+                            };
+                            var res = await http.post(uri, body: jsonData);
+                            if (res.body == "1") {
+                              ShowAlert().showAlert(
+                                  "success", "Successfully activated");
+
+                              await _refreshData();
+                            } else {
+                              ShowAlert()
+                                  .showAlert("error", "Failed to activate");
+                              print("Res mo to: ${res.body}");
+                            }
+                          } catch (e) {
+                            ShowAlert().showAlert("error", "Network error");
+                            print(e);
+                          } finally {
+                            setState(() {
+                              _isSubmitting = false;
+                            });
+                            // ignore: use_build_context_synchronously
+                            Navigator.pop(context);
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _refreshData() async {
+    setState(() {
+      _isLoading = true;
+    });
+    List masterFilesList = await _getMasterFiles();
+    if (mounted) {
+      setState(() {
+        masterFiles = masterFilesList;
+        _isLoading = false;
+      });
+    }
   }
 
   Future<List> _getMasterFiles() async {
@@ -152,16 +271,15 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
           child: Column(
             children: [
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // IconButton(
-                  //   onPressed: () => Get.back(),
-                  //   icon: const Icon(
-                  //     Icons.arrow_back_ios,
-                  //     color: Colors.white,
-                  //   ),
-                  // ),
+                  IconButton(
+                    onPressed: () => Get.back(),
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.white,
+                    ),
+                  ),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
@@ -178,26 +296,14 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                 ],
               ),
               const SizedBox(height: 64),
-              FutureBuilder(
-                  future: _getMasterFiles(),
-                  builder: (context, snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            LoadingSpinner(),
-                          ],
-                        );
-                      case ConnectionState.done:
-                        if (snapshot.hasError) {
-                          return Text(snapshot.error.toString());
-                        }
-                        return masterFilesList();
-                      default:
-                        return Text(snapshot.error.toString());
-                    }
-                  }),
+              _isLoading
+                  ? const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        LoadingSpinner(),
+                      ],
+                    )
+                  : masterFilesList(),
             ],
           ),
         ),
@@ -221,24 +327,59 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
         shrinkWrap: true,
         itemBuilder: (context, index) {
           bool isAdminList = _title == "Administrators";
+          bool isSchoolYearList = _title == "School Year";
+          bool isCurrentUser = masterFiles[index]["adm_employee_id"] == _userId;
           return Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Slidable(
               startActionPane: isAdminList
-                  ? null
+                  ? ActionPane(motion: const BehindMotion(), children: [
+                      SlidableAction(
+                        onPressed: (context) {},
+                        backgroundColor: const Color(0xFFFE4A49),
+                        label: isCurrentUser
+                            ? "You cant change your personal details here"
+                            : "You cant change his/her personal details",
+                      )
+                    ])
                   : ActionPane(
                       motion: const BehindMotion(),
                       children: [
                         // delete
-                        SlidableAction(
-                          onPressed: (context) {
-                            print(masterFiles[index]["adm_id"]);
-                          },
-                          backgroundColor: const Color(0xFFFE4A49),
-                          foregroundColor: Colors.white,
-                          icon: Icons.delete,
-                          label: 'Delete',
-                        ),
+                        !isSchoolYearList
+                            ? SlidableAction(
+                                onPressed: (context) {
+                                  // delete mo to
+                                },
+                                backgroundColor: const Color(0xFFFE4A49),
+                                foregroundColor: Colors.white,
+                                icon: Icons.delete,
+                                label: 'Delete',
+                              )
+                            :
+                            // set active
+                            SlidableAction(
+                                onPressed: (context) {
+                                  if (masterFiles[index]["sy_status"] == 1) {
+                                    ShowAlert()
+                                        .showAlert("info", "Already Active");
+                                  } else {
+                                    _handleSetActive(
+                                        masterFiles[index]["sy_id"],
+                                        masterFiles[index]["sy_name"]);
+                                  }
+                                },
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer,
+                                foregroundColor: Colors.white,
+                                icon: masterFiles[index]["sy_status"] == 1
+                                    ? Icons.check_circle_outline
+                                    : Icons.check_outlined,
+                                label: masterFiles[index]["sy_status"] == 1
+                                    ? 'Already Active'
+                                    : 'Set active',
+                              ),
                         // update
                         SlidableAction(
                           onPressed: (context) {
@@ -246,8 +387,7 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                             print(masterFiles[index]["adm_id"]);
                           },
                           backgroundColor:
-                              Theme.of(context).colorScheme.onPrimaryContainer,
-                          foregroundColor: Colors.white,
+                              Theme.of(context).colorScheme.onInverseSurface,
                           icon: Icons.update,
                           label: 'Update',
                         ),
@@ -258,7 +398,7 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                 padding: const EdgeInsets.all(8),
                 child: ListTile(
                   title: Text(
-                    masterFiles[index][_orderBy],
+                    '${masterFiles[index][_orderBy]} ${masterFiles[index]['sy_status'] == 1 ? "(Currently Active)" : ""}',
                     style: const TextStyle(color: Colors.white),
                   ),
                 ),
