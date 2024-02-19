@@ -4,7 +4,9 @@ import 'package:flutter_csdl_admin/local_storage.dart';
 import 'package:flutter_csdl_admin/pages/add_scholar.dart';
 import 'package:flutter_csdl_admin/pages/master_files.dart';
 import 'package:flutter_csdl_admin/pages/user_profile.dart';
-// import 'package:get/get.dart';
+import 'package:flutter_csdl_admin/theme/dark_mode.dart';
+import 'package:flutter_csdl_admin/theme/light_mode.dart';
+import 'package:get/get.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -22,6 +24,19 @@ class _DashboardState extends State<Dashboard> {
   bool _isMobile = false;
   String _secondText = "";
   String _firstText = "";
+  bool _isDarkMode = false;
+
+  void _toggleTheme() {
+    setState(() {
+      _isDarkMode = !_isDarkMode;
+    });
+
+    if (_isDarkMode) {
+      Get.changeThemeMode(ThemeMode.dark);
+    } else {
+      Get.changeThemeMode(ThemeMode.light);
+    }
+  }
 
   Future<void> initialize() async {
     await _localStorage.init();
@@ -120,6 +135,7 @@ class _DashboardState extends State<Dashboard> {
       drawer: _isMobile
           ? MyDrawer(
               updateSelectedIndex,
+              isMobile: _isMobile,
               selectedTileIndex: _selectedTileIndex,
             )
           : null,
@@ -128,62 +144,91 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget _buildNonMobileLayout() {
-    return Row(
+    return Stack(
       children: [
-        MyDrawer(
-          updateSelectedIndex,
-          selectedTileIndex: _selectedTileIndex,
-        ),
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Card(
-                    elevation: 4,
-                    color: Theme.of(context).colorScheme.onSecondary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 40.0, top: 10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _firstText,
-                            style: TextStyle(
-                              color:
-                                  Theme.of(context).colorScheme.inverseSurface,
-                              fontSize: 36,
-                            ),
+        Row(
+          children: [
+            MyDrawer(
+              updateSelectedIndex,
+              isMobile: _isMobile,
+              selectedTileIndex: _selectedTileIndex,
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Card(
+                        elevation: 4,
+                        color: Theme.of(context).colorScheme.onSecondary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 40.0, top: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _firstText,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .inverseSurface,
+                                  fontSize: 36,
+                                ),
+                              ),
+                              Text(
+                                _secondText,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .inverseSurface,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 40, bottom: 40),
+                                child: selectedWidget(),
+                              ),
+                            ],
                           ),
-                          Text(
-                            _secondText,
-                            style: TextStyle(
-                              color:
-                                  Theme.of(context).colorScheme.inverseSurface,
-                              fontSize: 14,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(right: 40, bottom: 40),
-                            child: selectedWidget(),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
+            ),
+          ],
+        ),
+        Positioned(
+          top: 32.0,
+          right: 32.0,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(50.0),
+            child: Container(
+              color: Theme.of(context).colorScheme.onInverseSurface,
+              child: IconButton(
+                icon: Icon(
+                  _isDarkMode
+                      ? Icons.light_mode_outlined
+                      : Icons.dark_mode_outlined,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  print("dark mode: ${_isDarkMode}");
+                  _toggleTheme();
+                },
+              ),
             ),
           ),
         ),

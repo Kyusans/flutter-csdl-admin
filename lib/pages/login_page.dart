@@ -136,6 +136,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildLoginSection(context) {
     return Center(
       child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         child: Card(
           elevation: 5,
           color: const Color.fromARGB(175, 49, 49, 49),
