@@ -9,7 +9,17 @@ class ShowAlert {
         message,
         colorText: Colors.white,
         backgroundColor: Colors.green,
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
+        duration: const Duration(milliseconds: 1300),
+      );
+    } else if (variant.toLowerCase() == "info") {
+      Get.snackbar(
+        "Notice",
+        message,
+        colorText: Colors.white,
+        backgroundColor: Colors.blue,
+        snackPosition: SnackPosition.TOP,
+        duration: const Duration(milliseconds: 1300),
       );
     } else {
       Get.snackbar(
@@ -17,7 +27,8 @@ class ShowAlert {
         message,
         colorText: Colors.white,
         backgroundColor: Colors.red,
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
+        duration: const Duration(milliseconds: 1300),
       );
     }
   }
