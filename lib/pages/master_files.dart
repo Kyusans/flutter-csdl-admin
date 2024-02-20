@@ -3,6 +3,7 @@ import 'package:flutter_csdl_admin/components/loading_spinner.dart';
 import 'package:flutter_csdl_admin/components/my_masterfiles.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_masterfiles.dart';
 import 'package:flutter_csdl_admin/pages/master_files/get_master_files.dart';
+import 'package:flutter_csdl_admin/responsive/responsive_layout.dart';
 import 'package:get/get.dart';
 
 class MasterFiles extends StatefulWidget {
@@ -13,26 +14,23 @@ class MasterFiles extends StatefulWidget {
 }
 
 class _MasterFilesState extends State<MasterFiles> {
-  bool _isMobile = false;
-  bool _isLoading = true;
+  // bool _isMobile = false;
 
-  void _checkIsMobile() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final maxWidth = MediaQuery.of(context).size.width;
-      setState(() {
-        _isMobile = maxWidth <= 1475;
-      });
-    });
-  }
+  // void _checkIsMobile() {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     final maxWidth = MediaQuery.of(context).size.width;
+  //     setState(() {
+  //       _isMobile = maxWidth <= 1475;
+  //     });
+  //   });
+  // }
 
   void _handleAddMasterfiles(int index) {
     Get.dialog(
       AlertDialog(
-        insetPadding: _isMobile
-            ? EdgeInsets.zero
-            : EdgeInsets.symmetric(
-                horizontal: Get.width * 0.3, vertical: Get.width * 0.05),
-        content: AddMasterfiles(selectedIndex: index, isMobile: _isMobile),
+        insetPadding: EdgeInsets.symmetric(
+            horizontal: Get.width * 0.3, vertical: Get.width * 0.05),
+        content: AddMasterfiles(selectedIndex: index),
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
         elevation: 0,
       ),
@@ -42,38 +40,20 @@ class _MasterFilesState extends State<MasterFiles> {
   void _handleGetList(int index) {
     Get.dialog(
       AlertDialog(
-        insetPadding: _isMobile
-            ? EdgeInsets.zero
-            : EdgeInsets.symmetric(
-                horizontal: Get.width * 0.3, vertical: Get.width * 0.05),
-        content: GetMasterFiles(selectedIndex: index, isMobile: _isMobile),
+        insetPadding: EdgeInsets.symmetric(
+            horizontal: Get.width * 0.3, vertical: Get.width * 0.05),
+        content: GetMasterFiles(selectedIndex: index),
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
         elevation: 0,
       ),
     );
   }
 
-  void _initializeData() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    if (mounted) {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _checkIsMobile();
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _initializeData();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   _checkIsMobile();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -82,16 +62,23 @@ class _MasterFilesState extends State<MasterFiles> {
         color: Theme.of(context).colorScheme.onPrimary,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 32),
-          child: _isMobile ? onMobile() : onDesktop(),
+          child: ResponsiveLayout(
+            mobileBody: onMobile(),
+            desktopBody: onDesktop(),
+          ),
         ),
       ),
     );
   }
 
   Widget onDesktop() {
-    return _isLoading
-        ? const LoadingSpinner()
-        : Column(
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: SizedBox(
+        width: double.infinity,
+        child: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -170,7 +157,10 @@ class _MasterFilesState extends State<MasterFiles> {
               ),
               const SizedBox(height: 40),
             ],
-          );
+          ),
+        ),
+      ),
+    );
   }
 
   Widget onMobile() {

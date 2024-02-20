@@ -19,7 +19,7 @@ ThemeData lightMode = ThemeData(
   ),
   textTheme: ThemeData.light().textTheme.apply(
         bodyColor: Colors.grey[800],
-        displayColor: Colors.black,
+        displayColor: Colors.white,
       ),
   textSelectionTheme: const TextSelectionThemeData(
     cursorColor: Colors.white,

@@ -9,7 +9,7 @@ class ShowAlert {
         message,
         colorText: Colors.white,
         backgroundColor: Colors.green,
-        snackPosition: SnackPosition.TOP,
+        snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(milliseconds: 1300),
       );
     } else if (variant.toLowerCase() == "info") {
@@ -18,7 +18,7 @@ class ShowAlert {
         message,
         colorText: Colors.white,
         backgroundColor: Colors.blue,
-        snackPosition: SnackPosition.TOP,
+        snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(milliseconds: 1300),
       );
     } else {
@@ -27,7 +27,7 @@ class ShowAlert {
         message,
         colorText: Colors.white,
         backgroundColor: Colors.red,
-        snackPosition: SnackPosition.TOP,
+        snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(milliseconds: 1300),
       );
     }

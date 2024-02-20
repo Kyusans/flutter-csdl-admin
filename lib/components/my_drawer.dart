@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 class MyDrawer extends StatefulWidget {
   final Function(int) onItemTapped;
   final int selectedTileIndex;
-  const MyDrawer(this.onItemTapped, {required this.selectedTileIndex, Key? key})
-      : super(key: key);
+  final bool isMobile;
+  const MyDrawer(
+    this.onItemTapped, {
+    required this.selectedTileIndex,
+    Key? key,
+    required this.isMobile,
+  }) : super(key: key);
 
   @override
   _MyDrawerState createState() => _MyDrawerState(selectedTileIndex);
@@ -104,6 +109,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                 ),
                 onTap: () {
+                  widget.isMobile ? Navigator.pop(context) : null;
                   updateSelectedIndex(0);
                 },
               ),
@@ -135,6 +141,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                 ),
                 onTap: () {
+                  widget.isMobile ? Navigator.pop(context) : null;
                   updateSelectedIndex(1);
                 },
               ),
@@ -166,6 +173,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                 ),
                 onTap: () {
+                  widget.isMobile ? Navigator.pop(context) : null;
                   updateSelectedIndex(2);
                 },
               ),
@@ -197,6 +205,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                 ),
                 onTap: () {
+                  widget.isMobile ? Navigator.pop(context) : null;
                   updateSelectedIndex(3);
                 },
               ),
@@ -228,6 +237,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                 ),
                 onTap: () {
+                  widget.isMobile ? Navigator.pop(context) : null;
                   updateSelectedIndex(4);
                 },
               ),
@@ -259,6 +269,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                 ),
                 onTap: () {
+                  widget.isMobile ? Navigator.pop(context) : null;
                   updateSelectedIndex(5);
                 },
               ),
@@ -290,6 +301,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                 ),
                 onTap: () {
+                  widget.isMobile ? Navigator.pop(context) : null;
                   updateSelectedIndex(6);
                 },
               ),
