@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_csdl_admin/components/custom_toggle_switch.dart';
 import 'package:get/get.dart';
 import 'package:flutter_csdl_admin/components/loading_spinner.dart';
 import 'package:flutter_csdl_admin/components/my_button.dart';
@@ -8,15 +9,12 @@ import 'package:flutter_csdl_admin/session_storage.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:toggle_switch/toggle_switch.dart';
 
 class AddMasterfiles extends StatefulWidget {
   final int selectedIndex;
-  final bool isMobile;
   const AddMasterfiles({
     Key? key,
     required this.selectedIndex,
-    required this.isMobile,
   }) : super(key: key);
 
   @override
@@ -62,32 +60,28 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: SizedBox(
-        height: Get.height * 1,
-        width: widget.isMobile ? Get.width * 1 : Get.width * 0.3,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                _title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 32,
-                ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              _title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 32,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                children: [
-                  selectedMasterFile(),
-                ],
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              children: [
+                selectedMasterFile(),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -1147,15 +1141,25 @@ class AddOfficeMaster extends StatefulWidget {
 }
 
 class _AddOfficeMasterState extends State<AddOfficeMaster> {
+  final List<String> _day = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  // office
   final TextEditingController _officeNameController = TextEditingController();
-  final TextEditingController _classNameController = TextEditingController();
+
+  // Classes
   final TextEditingController _subjectCodeController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _sectionController = TextEditingController();
   final TextEditingController _roomController = TextEditingController();
   bool _isOffices = true;
   bool _isSubmitted = false;
+  String _selectedDayf2f = "SUN";
+  String _startTimef2f = "Starting time (Face to face)";
+  String _endTimef2f = "Ending time (Face to face)";
+
+  String _selectedDayRC = "SUN";
+  String _startTimeRC = "Starting time (Remote coaching)";
+  String _endTimeRC = "Ending time (Remote coaching)";
 
   void addOfficeMaster() async {
     setState(() {
@@ -1167,7 +1171,6 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
         "officeName": _officeNameController.text,
       };
       Map<String, String> classData = {
-        "className": _classNameController.text,
         "description": _descriptionController.text,
         "subjectCode": _subjectCodeController.text,
         "section": _sectionController.text,
@@ -1190,7 +1193,6 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
       } else if (res.body == "1") {
         ShowAlert().showAlert("success", "Successfully added");
         _officeNameController.clear();
-        _classNameController.clear();
         _descriptionController.clear();
         _sectionController.clear();
         _subjectCodeController.clear();
@@ -1218,16 +1220,12 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
           children: [
             SizedBox(
               height: 50,
-              child: ToggleSwitch(
-                centerText: true,
-                fontSize: 15,
-                initialLabelIndex: _isOffices ? 0 : 1,
-                totalSwitches: 2,
+              child: CustomToggleSwitch(
                 labels: const ['Offices', 'Classes'],
+                initialLabelIndex: _isOffices ? 0 : 1,
                 onToggle: (index) {
-                  print('switched to: $index');
                   setState(() {
-                    _isOffices = index == 0 ? true : false;
+                    _isOffices = index == 0;
                   });
                 },
               ),
@@ -1290,15 +1288,6 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
     return Column(
       children: [
         MyTextField(
-          labelText: "Class Name*",
-          obscureText: false,
-          willValidate: true,
-          controller: _classNameController,
-          isNumber: false,
-          isEmail: false,
-        ),
-        const SizedBox(height: 24),
-        MyTextField(
           labelText: "Subject Code*",
           obscureText: false,
           willValidate: true,
@@ -1317,7 +1306,7 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
         ),
         const SizedBox(height: 24),
         MyTextField(
-          labelText: "Section Name*",
+          labelText: "Section*",
           obscureText: false,
           willValidate: true,
           controller: _sectionController,
@@ -1325,13 +1314,76 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
           isEmail: false,
         ),
         const SizedBox(height: 24),
-        MyTextField(
-          labelText: "Room Name*",
-          obscureText: false,
-          willValidate: true,
-          controller: _roomController,
-          isNumber: false,
-          isEmail: false,
+        DropdownButtonFormField<String>(
+          value: _selectedDayf2f,
+          items: [
+            const DropdownMenuItem<String>(
+              value: "",
+              child: Text("Day(Face to Face)",
+                  style: TextStyle(color: Colors.white)),
+            ),
+            ..._day.map((day) {
+              return DropdownMenuItem<String>(
+                value: day,
+                child: Text(day, style: TextStyle(color: Colors.white)),
+              );
+            }).toList(),
+          ],
+          onChanged: (String? newValue) {
+            setState(() {
+              _selectedDayf2f = newValue!;
+            });
+          },
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Theme.of(context).colorScheme.onInverseSurface,
+            border: const OutlineInputBorder(),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(7),
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.onInverseSurface,
+              ),
+            ),
+            focusedBorder: const OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.white,
+              ),
+            ),
+            labelText: 'Day(Face to Face)',
+            labelStyle: const TextStyle(color: Colors.white),
+            prefixIcon: const Icon(
+              Icons.calendar_today,
+              color: Colors.white,
+            ),
+          ),
+          style: const TextStyle(color: Colors.white),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "This field is required";
+            }
+            return null;
+          },
+          dropdownColor: Theme.of(context).colorScheme.onInverseSurface,
+        ),
+        const SizedBox(height: 24),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            MyButton(
+              buttonText: _startTimef2f,
+              buttonSize: 16,
+              color: Theme.of(context).colorScheme.onInverseSurface,
+              onPressed: () {},
+            ),
+            const SizedBox(width: 16),
+            MyButton(
+              buttonText: _endTimef2f,
+              buttonSize: 16,
+              color: Theme.of(context).colorScheme.onInverseSurface,
+              onPressed: () {},
+            )
+          ],
         ),
       ],
     );

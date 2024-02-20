@@ -12,11 +12,9 @@ import 'package:flutter_csdl_admin/components/show_alert.dart';
 
 class GetMasterFiles extends StatefulWidget {
   final int selectedIndex;
-  final bool isMobile;
   const GetMasterFiles({
     Key? key,
     required this.selectedIndex,
-    required this.isMobile,
   }) : super(key: key);
 
   @override
@@ -120,12 +118,10 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
   void _handleUpdateMasterfiles(masterfileIndex, masterFileId) {
     Get.dialog(
       AlertDialog(
-        insetPadding: widget.isMobile
-            ? EdgeInsets.zero
-            : EdgeInsets.symmetric(
-                horizontal: Get.width * 0.3,
-                vertical: Get.width * 0.05,
-              ),
+        insetPadding: EdgeInsets.symmetric(
+          horizontal: Get.width * 0.3,
+          vertical: Get.width * 0.05,
+        ),
         content: UpdateMasterfiles(
           selectedMasterFile: masterfileIndex,
           masterfileId: masterFileId,
@@ -139,12 +135,10 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
   void _handleSetActive(schoolYearId, syName) async {
     Get.dialog(
       AlertDialog(
-        insetPadding: widget.isMobile
-            ? EdgeInsets.zero
-            : EdgeInsets.symmetric(
-                horizontal: Get.width * 0.3,
-                vertical: Get.height * 0.3,
-              ),
+        insetPadding: EdgeInsets.symmetric(
+          horizontal: Get.width * 0.3,
+          vertical: Get.height * 0.3,
+        ),
         content: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
