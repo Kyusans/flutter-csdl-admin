@@ -120,6 +120,7 @@ class _DashboardState extends State<Dashboard> {
 
   Widget onDesktop() {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
       body: Stack(
         children: [
           Row(
