@@ -12,9 +12,11 @@ import 'package:flutter_csdl_admin/components/show_alert.dart';
 
 class GetMasterFiles extends StatefulWidget {
   final int selectedIndex;
+  final bool isMobile;
   const GetMasterFiles({
     Key? key,
     required this.selectedIndex,
+    required this.isMobile,
   }) : super(key: key);
 
   @override
@@ -261,7 +263,7 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
       child: Center(
         child: SizedBox(
           height: Get.height * 1,
-          width: Get.width * 1,
+          width: widget.isMobile ? Get.width * 1 : Get.width * 0.5,
           child: Column(
             children: [
               Row(

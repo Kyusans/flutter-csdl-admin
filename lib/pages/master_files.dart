@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_csdl_admin/components/loading_spinner.dart';
 import 'package:flutter_csdl_admin/components/my_masterfiles.dart';
 import 'package:flutter_csdl_admin/pages/master_files/add_masterfiles.dart';
 import 'package:flutter_csdl_admin/pages/master_files/get_master_files.dart';
@@ -14,23 +13,25 @@ class MasterFiles extends StatefulWidget {
 }
 
 class _MasterFilesState extends State<MasterFiles> {
-  // bool _isMobile = false;
+  bool _isMobile = false;
 
-  // void _checkIsMobile() {
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     final maxWidth = MediaQuery.of(context).size.width;
-  //     setState(() {
-  //       _isMobile = maxWidth <= 1475;
-  //     });
-  //   });
-  // }
+  void _checkIsMobile() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final maxWidth = MediaQuery.of(context).size.width;
+      setState(() {
+        _isMobile = maxWidth <= 1475;
+      });
+    });
+  }
 
   void _handleAddMasterfiles(int index) {
     Get.dialog(
       AlertDialog(
-        insetPadding: EdgeInsets.symmetric(
-            horizontal: Get.width * 0.3, vertical: Get.width * 0.05),
-        content: AddMasterfiles(selectedIndex: index),
+        insetPadding: _isMobile
+            ? EdgeInsets.zero
+            : EdgeInsets.symmetric(
+                horizontal: Get.width * 0.3, vertical: Get.width * 0.05),
+        content: AddMasterfiles(selectedIndex: index, isMobile: _isMobile),
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
         elevation: 0,
       ),
@@ -40,20 +41,27 @@ class _MasterFilesState extends State<MasterFiles> {
   void _handleGetList(int index) {
     Get.dialog(
       AlertDialog(
-        insetPadding: EdgeInsets.symmetric(
-            horizontal: Get.width * 0.3, vertical: Get.width * 0.05),
-        content: GetMasterFiles(selectedIndex: index),
+        insetPadding: _isMobile
+            ? EdgeInsets.zero
+            : EdgeInsets.symmetric(
+                horizontal: Get.width * 0.3,
+                vertical: Get.width * 0.05,
+              ),
+        content: GetMasterFiles(
+          selectedIndex: index,
+          isMobile: _isMobile,
+        ),
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
         elevation: 0,
       ),
     );
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   _checkIsMobile();
-  // }
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _checkIsMobile();
+  }
 
   @override
   Widget build(BuildContext context) {

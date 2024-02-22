@@ -12,9 +12,11 @@ import 'dart:convert';
 
 class AddMasterfiles extends StatefulWidget {
   final int selectedIndex;
+  final bool isMobile;
   const AddMasterfiles({
     Key? key,
     required this.selectedIndex,
+    required this.isMobile,
   }) : super(key: key);
 
   @override
@@ -60,28 +62,31 @@ class _AddMasterfilesState extends State<AddMasterfiles> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              _title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 32,
+      child: SizedBox(
+        width: widget.isMobile ? Get.width * 1 : Get.width * 0.3,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                _title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 32,
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              children: [
-                selectedMasterFile(),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                children: [
+                  selectedMasterFile(),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -455,55 +460,52 @@ class _AddSchoolYearState extends State<AddSchoolYear> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: Get.width * 0.5,
-      child: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Column(
-            children: [
-              MyTextField(
-                labelText: "School Year*",
-                controller: _schoolYearController,
-                obscureText: false,
-                willValidate: true,
-                isEmail: false,
-                isNumber: true,
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  MyButton(
-                    buttonText: "Back",
-                    buttonSize: 8,
-                    color: Colors.red,
-                    onPressed: () {
-                      Get.back();
-                    },
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  _isLoading
-                      ? const LoadingSpinner()
-                      : MyButton(
-                          buttonText: "Submit",
-                          buttonSize: 8,
-                          color: Theme.of(context).colorScheme.tertiary,
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              addSchoolYear();
-                            }
-                          },
-                        ),
-                ],
-              )
-            ],
-          ),
+    return Form(
+      key: _formKey,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: Column(
+          children: [
+            MyTextField(
+              labelText: "School Year*",
+              controller: _schoolYearController,
+              obscureText: false,
+              willValidate: true,
+              isEmail: false,
+              isNumber: true,
+            ),
+            const SizedBox(
+              height: 32,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MyButton(
+                  buttonText: "Back",
+                  buttonSize: 8,
+                  color: Colors.red,
+                  onPressed: () {
+                    Get.back();
+                  },
+                ),
+                const SizedBox(
+                  width: 16,
+                ),
+                _isLoading
+                    ? const LoadingSpinner()
+                    : MyButton(
+                        buttonText: "Submit",
+                        buttonSize: 8,
+                        color: Theme.of(context).colorScheme.tertiary,
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            addSchoolYear();
+                          }
+                        },
+                      ),
+              ],
+            )
+          ],
         ),
       ),
     );
