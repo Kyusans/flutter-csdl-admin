@@ -4,6 +4,7 @@ import 'package:flutter_csdl_admin/pages/master_files/add_masterfiles.dart';
 import 'package:flutter_csdl_admin/pages/master_files/get_master_files.dart';
 import 'package:flutter_csdl_admin/responsive/responsive_layout.dart';
 import 'package:get/get.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class MasterFiles extends StatefulWidget {
   const MasterFiles({Key? key}) : super(key: key);
@@ -13,55 +14,85 @@ class MasterFiles extends StatefulWidget {
 }
 
 class _MasterFilesState extends State<MasterFiles> {
-  bool _isMobile = false;
+  // bool _isMobile = false;
 
-  void _checkIsMobile() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final maxWidth = MediaQuery.of(context).size.width;
-      setState(() {
-        _isMobile = maxWidth <= 1475;
-      });
-    });
-  }
+  // void _checkIsMobile() {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     if (mounted) {
+  //       final maxWidth = MediaQuery.of(context).size.width;
+  //       setState(() {
+  //         _isMobile = maxWidth <= 1475;
+  //       });
+  //     }
+  //   });
+  // }
+
+  // void _checkIsMobile() {
+  //   final maxWidth = MediaQuery.of(context).size.width;
+  //   setState(() {
+  //     _isMobile = maxWidth <= 1475;
+  //   });
+  // }
+
+  // void _handleAddMasterfiles(int index) {
+  //   print("Modal mo to");
+  //   showModalBottomSheet(
+  //     context: context,
+  //     builder: (context) {
+  //       return Container(
+  //         color: Theme.of(context).colorScheme.onPrimary,
+  //         height: MediaQuery.of(context).size.height * 0.8,
+  //         child: SingleChildScrollView(
+  //           scrollDirection: Axis.vertical,
+  //           child: AddMasterfiles(
+  //             selectedIndex: index,
+  //             isMobile: _isMobile,
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   void _handleAddMasterfiles(int index) {
-    Get.dialog(
-      AlertDialog(
-        insetPadding: _isMobile
-            ? EdgeInsets.zero
-            : EdgeInsets.symmetric(
-                horizontal: Get.width * 0.3, vertical: Get.width * 0.05),
-        content: AddMasterfiles(selectedIndex: index, isMobile: _isMobile),
-        backgroundColor: Theme.of(context).colorScheme.onPrimary,
-        elevation: 0,
-      ),
+    print("Modal mo to");
+    showBarModalBottomSheet(
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+      bounce: true,
+      enableDrag: true,
+      context: context,
+      builder: (context) {
+        return AddMasterfiles(selectedIndex: index);
+      },
     );
   }
 
   void _handleGetList(int index) {
-    Get.dialog(
-      AlertDialog(
-        insetPadding: _isMobile
-            ? EdgeInsets.zero
-            : EdgeInsets.symmetric(
-                horizontal: Get.width * 0.3,
-                vertical: Get.width * 0.05,
-              ),
-        content: GetMasterFiles(
-          selectedIndex: index,
-          isMobile: _isMobile,
-        ),
-        backgroundColor: Theme.of(context).colorScheme.onPrimary,
-        elevation: 0,
-      ),
+    showBarModalBottomSheet(
+      context: context,
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+      bounce: true,
+      enableDrag: true,
+      builder: (context) {
+        return GetMasterFiles(selectedIndex: index);
+      },
     );
+    // Get.dialog(
+    //   AlertDialog(
+    //     content: GetMasterFiles(
+    //       selectedIndex: index,
+    //     ),
+    //     backgroundColor: Theme.of(context).colorScheme.onPrimary,
+    //     elevation: 0,
+    //   ),
+    // );
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _checkIsMobile();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   _checkIsMobile();
+  // }
 
   @override
   Widget build(BuildContext context) {
