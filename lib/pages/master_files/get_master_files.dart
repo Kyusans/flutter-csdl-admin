@@ -12,11 +12,9 @@ import 'package:flutter_csdl_admin/components/show_alert.dart';
 
 class GetMasterFiles extends StatefulWidget {
   final int selectedIndex;
-  final bool isMobile;
   const GetMasterFiles({
     Key? key,
     required this.selectedIndex,
-    required this.isMobile,
   }) : super(key: key);
 
   @override
@@ -193,13 +191,11 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                             };
                             var res = await http.post(uri, body: jsonData);
                             if (res.body == "1") {
-                              ShowAlert().showAlert(
-                                  "success", "Successfully activated");
+                              ShowAlert().showAlert("success", "Successfully activated");
 
                               await _refreshData();
                             } else {
-                              ShowAlert()
-                                  .showAlert("error", "Failed to activate");
+                              ShowAlert().showAlert("error", "Failed to activate");
                               print("Res mo to: ${res.body}");
                             }
                           } catch (e) {
@@ -263,33 +259,35 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
       child: Center(
         child: SizedBox(
           height: Get.height * 1,
-          width: widget.isMobile ? Get.width * 1 : Get.width * 0.5,
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconButton(
-                    onPressed: () => Get.back(),
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text(
-                        _title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 32,
-                        ),
-                        textAlign: TextAlign.center,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    IconButton(
+                      onPressed: () => Get.back(),
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
                       ),
                     ),
-                  ),
-                ],
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          _title,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 32,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 64),
               _isLoading
@@ -333,9 +331,7 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                       SlidableAction(
                         onPressed: (context) {},
                         backgroundColor: const Color(0xFFFE4A49),
-                        label: isCurrentUser
-                            ? "You cant change your personal details here"
-                            : "You cant change his/her personal details",
+                        label: isCurrentUser ? "You cant change your personal details here" : "You cant change his/her personal details",
                       )
                     ])
                   : ActionPane(
@@ -357,24 +353,15 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                             SlidableAction(
                                 onPressed: (context) {
                                   if (masterFiles[index]["sy_status"] == 1) {
-                                    ShowAlert()
-                                        .showAlert("info", "Already Active");
+                                    ShowAlert().showAlert("info", "Already Active");
                                   } else {
-                                    _handleSetActive(
-                                        masterFiles[index]["sy_id"],
-                                        masterFiles[index]["sy_name"]);
+                                    _handleSetActive(masterFiles[index]["sy_id"], masterFiles[index]["sy_name"]);
                                   }
                                 },
-                                backgroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .onPrimaryContainer,
+                                backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
                                 foregroundColor: Colors.white,
-                                icon: masterFiles[index]["sy_status"] == 1
-                                    ? Icons.check_circle_outline
-                                    : Icons.check_outlined,
-                                label: masterFiles[index]["sy_status"] == 1
-                                    ? 'Already Active'
-                                    : 'Set active',
+                                icon: masterFiles[index]["sy_status"] == 1 ? Icons.check_circle_outline : Icons.check_outlined,
+                                label: masterFiles[index]["sy_status"] == 1 ? 'Already Active' : 'Set active',
                               ),
                         // update
                         SlidableAction(
@@ -382,8 +369,7 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                             _handleUpdateMasterfiles(_title, _masterfileId);
                             print(masterFiles[index]["adm_id"]);
                           },
-                          backgroundColor:
-                              Theme.of(context).colorScheme.onInverseSurface,
+                          backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
                           icon: Icons.update,
                           label: 'Update',
                         ),
