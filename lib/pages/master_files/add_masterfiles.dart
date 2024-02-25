@@ -122,7 +122,8 @@ class _AddAdminState extends State<AddAdmin> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
@@ -285,8 +286,10 @@ class _AddAdminState extends State<AddAdmin> {
                       buttonSize: 8,
                       color: Theme.of(context).colorScheme.tertiary,
                       onPressed: () {
-                        if (_confirmPasswordController.text != _passwordController.text) {
-                          ShowAlert().showAlert("Error", "Confirm password does not match");
+                        if (_confirmPasswordController.text !=
+                            _passwordController.text) {
+                          ShowAlert().showAlert(
+                              "Error", "Confirm password does not match");
                         } else {
                           if (_formKey.currentState!.validate()) {
                             addAdmin();
@@ -320,9 +323,7 @@ class _AddDepartmentState extends State<AddDepartment> {
       _isLoading = true;
     });
     try {
-      Map<String, String> jsonData = {
-        "department": _departmentController.text
-      };
+      Map<String, String> jsonData = {"department": _departmentController.text};
       Map<String, String> requestBody = {
         "json": jsonEncode(jsonData),
         "operation": "addDepartment",
@@ -424,9 +425,7 @@ class _AddSchoolYearState extends State<AddSchoolYear> {
       _isLoading = true;
     });
     try {
-      Map<String, String> jsonData = {
-        "schoolYear": _schoolYearController.text
-      };
+      Map<String, String> jsonData = {"schoolYear": _schoolYearController.text};
       Map<String, String> requestBody = {
         "json": jsonEncode(jsonData),
         "operation": "addSchoolYear",
@@ -523,7 +522,8 @@ class _AddSupervisorState extends State<AddSupervisor> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _employeeIdController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
   int _selectedDepartment = 0;
@@ -536,9 +536,7 @@ class _AddSupervisorState extends State<AddSupervisor> {
       _isLoading = true;
     });
     try {
-      Map<String, String> requestBody = {
-        "operation": "getDepartment"
-      };
+      Map<String, String> requestBody = {"operation": "getDepartment"};
       var res = await http.post(
         Uri.parse("${SessionStorage.url}admin.php"),
         body: requestBody,
@@ -547,7 +545,8 @@ class _AddSupervisorState extends State<AddSupervisor> {
       if (res.statusCode == 200 && res.body.isNotEmpty) {
         List<dynamic> departments = jsonDecode(res.body);
         departmentMap = {
-          for (var department in departments) department['dept_id']: department['dept_name'],
+          for (var department in departments)
+            department['dept_id']: department['dept_name'],
         };
         print("department map $departmentMap");
       } else {
@@ -796,8 +795,10 @@ class _AddSupervisorState extends State<AddSupervisor> {
                             buttonSize: 8,
                             color: Theme.of(context).colorScheme.tertiary,
                             onPressed: () {
-                              if (_confirmPasswordController.text != _passwordController.text) {
-                                ShowAlert().showAlert("Error", "Confirm password does not match");
+                              if (_confirmPasswordController.text !=
+                                  _passwordController.text) {
+                                ShowAlert().showAlert(
+                                    "Error", "Confirm password does not match");
                               } else {
                                 if (_formKey.currentState!.validate()) {
                                   addSupervisor();
@@ -836,9 +837,7 @@ class _AddCourseState extends State<AddCourse> {
       _isLoading = true;
     });
     try {
-      Map<String, String> requestBody = {
-        "operation": "getDepartment"
-      };
+      Map<String, String> requestBody = {"operation": "getDepartment"};
       var res = await http.post(
         Uri.parse("${SessionStorage.url}admin.php"),
         body: requestBody,
@@ -847,7 +846,8 @@ class _AddCourseState extends State<AddCourse> {
       if (res.statusCode == 200 && res.body.isNotEmpty) {
         List<dynamic> departments = jsonDecode(res.body);
         departmentMap = {
-          for (var department in departments) department['dept_id']: department['dept_name'],
+          for (var department in departments)
+            department['dept_id']: department['dept_name'],
         };
         print("department map $departmentMap");
       } else {
@@ -1033,7 +1033,8 @@ class AddScholarshipType extends StatefulWidget {
 
 class _AddScholarshipTypeState extends State<AddScholarshipType> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _scholarshipNameController = TextEditingController();
+  final TextEditingController _scholarshipNameController =
+      TextEditingController();
 
   void addScholarshipType() async {
     setState(() {
@@ -1137,14 +1138,7 @@ class AddOfficeMaster extends StatefulWidget {
 }
 
 class _AddOfficeMasterState extends State<AddOfficeMaster> {
-  final List<String> _day = [
-    "MON",
-    "TUE",
-    "WED",
-    "THU",
-    "FRI",
-    "SAT"
-  ];
+  final List<String> _day = ["MON", "TUE", "WED", "THU", "FRI", "SAT"];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // office
   final TextEditingController _officeNameController = TextEditingController();
@@ -1191,7 +1185,8 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
       );
 
       if (res.body == "-1") {
-        ShowAlert().showAlert("danger", "${_isOffices ? "Office" : "Class"} name already exists");
+        ShowAlert().showAlert(
+            "danger", "${_isOffices ? "Office" : "Class"} name already exists");
       } else if (res.body == "1") {
         ShowAlert().showAlert("success", "Successfully added");
         _officeNameController.clear();
@@ -1223,10 +1218,7 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
             SizedBox(
               height: 50,
               child: CustomToggleSwitch(
-                labels: const [
-                  'Offices',
-                  'Classes'
-                ],
+                labels: const ['Offices', 'Classes'],
                 initialLabelIndex: _isOffices ? 0 : 1,
                 onToggle: (index) {
                   setState(() {
@@ -1324,7 +1316,8 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
           items: [
             const DropdownMenuItem<String>(
               value: "",
-              child: Text("Day(Face to Face)", style: TextStyle(color: Colors.white)),
+              child: Text("Day(Face to Face)",
+                  style: TextStyle(color: Colors.white)),
             ),
             ..._day.map((day) {
               return DropdownMenuItem<String>(
@@ -1424,9 +1417,7 @@ class _AddScholarshipSubTypeState extends State<AddScholarshipSubType> {
       _isLoading = true;
     });
     try {
-      Map<String, String> requestBody = {
-        "operation": "getScholarshipType"
-      };
+      Map<String, String> requestBody = {"operation": "getScholarshipType"};
       var res = await http.post(
         Uri.parse("${SessionStorage.url}admin.php"),
         body: requestBody,
@@ -1500,7 +1491,9 @@ class _AddScholarshipSubTypeState extends State<AddScholarshipSubType> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(key: _formKey, child: _isLoading ? const LoadingSpinner() : _scholarshipSubTypeForm());
+    return Form(
+        key: _formKey,
+        child: _isLoading ? const LoadingSpinner() : _scholarshipSubTypeForm());
   }
 
   Widget _scholarshipSubTypeForm() {

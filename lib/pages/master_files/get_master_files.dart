@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:flutter_csdl_admin/session_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_csdl_admin/components/show_alert.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class GetMasterFiles extends StatefulWidget {
   final int selectedIndex;
@@ -133,88 +134,98 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
   }
 
   void _handleSetActive(schoolYearId, syName) async {
-    Get.dialog(
-      AlertDialog(
-        insetPadding: EdgeInsets.symmetric(
-          horizontal: Get.width * 0.3,
-          vertical: Get.height * 0.3,
-        ),
-        content: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
+    showMaterialModalBottomSheet(
+      context: context,
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+      bounce: true,
+      enableDrag: true,
+      builder: (context) {
+        return Container(
+          height: Get.height * 0.8,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  "Are you sure you want to activate $syName?",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Are you sure you want to activate $syName?",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
+                _isSubmitting
+                    ? const LoadingSpinner()
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          MyButton(
+                            buttonText: "Cancel",
+                            buttonSize: 8,
+                            color: Colors.red,
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                          const SizedBox(width: 8),
+                          MyButton(
+                            buttonText: "Activate",
+                            buttonSize: 8,
+                            color: Theme.of(context).colorScheme.tertiary,
+                            onPressed: () async {
+                              setState(() {
+                                _isSubmitting = true;
+                              });
+                              var uri =
+                                  Uri.parse("${SessionStorage.url}admin.php");
+
+                              try {
+                                Map<String, dynamic> requestBody = {
+                                  "schoolYearId": schoolYearId
+                                };
+                                Map<String, dynamic> jsonData = {
+                                  "operation": "setSYActive",
+                                  "json": jsonEncode(requestBody),
+                                };
+                                var res = await http.post(uri, body: jsonData);
+                                if (res.body == "1") {
+                                  ShowAlert().showAlert(
+                                      "success", "Successfully activated");
+
+                                  await _refreshData();
+                                } else {
+                                  ShowAlert()
+                                      .showAlert("error", "Failed to activate");
+                                  print("Res mo to: ${res.body}");
+                                }
+                              } catch (e) {
+                                ShowAlert().showAlert("error", "Network error");
+                                print(e);
+                              } finally {
+                                setState(() {
+                                  _isSubmitting = false;
+                                });
+                                // ignore: use_build_context_synchronously
+                                Navigator.pop(context);
+                              }
+                            },
+                          ),
+                        ],
+                      ),
               ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            _isSubmitting
-                ? const LoadingSpinner()
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      MyButton(
-                        buttonText: "Cancel",
-                        buttonSize: 8,
-                        color: Colors.red,
-                        onPressed: () {
-                          Get.back();
-                        },
-                      ),
-                      const SizedBox(width: 8),
-                      MyButton(
-                        buttonText: "Activate",
-                        buttonSize: 8,
-                        color: Theme.of(context).colorScheme.tertiary,
-                        onPressed: () async {
-                          setState(() {
-                            _isSubmitting = true;
-                          });
-                          var uri = Uri.parse("${SessionStorage.url}admin.php");
-
-                          try {
-                            Map<String, dynamic> requestBody = {
-                              "schoolYearId": schoolYearId
-                            };
-                            Map<String, dynamic> jsonData = {
-                              "operation": "setSYActive",
-                              "json": jsonEncode(requestBody),
-                            };
-                            var res = await http.post(uri, body: jsonData);
-                            if (res.body == "1") {
-                              ShowAlert().showAlert("success", "Successfully activated");
-
-                              await _refreshData();
-                            } else {
-                              ShowAlert().showAlert("error", "Failed to activate");
-                              print("Res mo to: ${res.body}");
-                            }
-                          } catch (e) {
-                            ShowAlert().showAlert("error", "Network error");
-                            print(e);
-                          } finally {
-                            setState(() {
-                              _isSubmitting = false;
-                            });
-                            // ignore: use_build_context_synchronously
-                            Navigator.pop(context);
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -331,7 +342,9 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                       SlidableAction(
                         onPressed: (context) {},
                         backgroundColor: const Color(0xFFFE4A49),
-                        label: isCurrentUser ? "You cant change your personal details here" : "You cant change his/her personal details",
+                        label: isCurrentUser
+                            ? "You cant change your personal details here"
+                            : "You cant change his/her personal details",
                       )
                     ])
                   : ActionPane(
@@ -353,15 +366,24 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                             SlidableAction(
                                 onPressed: (context) {
                                   if (masterFiles[index]["sy_status"] == 1) {
-                                    ShowAlert().showAlert("info", "Already Active");
+                                    ShowAlert()
+                                        .showAlert("info", "Already Active");
                                   } else {
-                                    _handleSetActive(masterFiles[index]["sy_id"], masterFiles[index]["sy_name"]);
+                                    _handleSetActive(
+                                        masterFiles[index]["sy_id"],
+                                        masterFiles[index]["sy_name"]);
                                   }
                                 },
-                                backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer,
                                 foregroundColor: Colors.white,
-                                icon: masterFiles[index]["sy_status"] == 1 ? Icons.check_circle_outline : Icons.check_outlined,
-                                label: masterFiles[index]["sy_status"] == 1 ? 'Already Active' : 'Set active',
+                                icon: masterFiles[index]["sy_status"] == 1
+                                    ? Icons.check_circle_outline
+                                    : Icons.check_outlined,
+                                label: masterFiles[index]["sy_status"] == 1
+                                    ? 'Already Active'
+                                    : 'Set active',
                               ),
                         // update
                         SlidableAction(
@@ -369,7 +391,8 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                             _handleUpdateMasterfiles(_title, _masterfileId);
                             print(masterFiles[index]["adm_id"]);
                           },
-                          backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.onInverseSurface,
                           icon: Icons.update,
                           label: 'Update',
                         ),
