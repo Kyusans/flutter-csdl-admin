@@ -1151,11 +1151,15 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
   bool _isOffices = true;
   bool _isSubmitted = false;
   String _selectedDayf2f = "MON";
+  TimeOfDay _selectedTimef2f = const TimeOfDay(hour: 6, minute: 00);
   String _startTimef2f = "Starting time (Face to face)";
+  TimeOfDay _selectedEndTimef2f = const TimeOfDay(hour: 6, minute: 00);
   String _endTimef2f = "Ending time (Face to face)";
 
   String _selectedDayRC = "MON";
+  TimeOfDay _selectedTimeRC = const TimeOfDay(hour: 6, minute: 00);
   String _startTimeRC = "Starting time (Remote coaching)";
+  TimeOfDay _selectedEndTimeRC = const TimeOfDay(hour: 6, minute: 00);
   String _endTimeRC = "Ending time (Remote coaching)";
 
   void addOfficeMaster() async {
@@ -1171,12 +1175,21 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
         "description": _descriptionController.text,
         "subjectCode": _subjectCodeController.text,
         "section": _sectionController.text,
+        "dayf2f": _selectedDayf2f,
+        "startTimef2f":
+            "${_selectedTimef2f.hour}:${_selectedTimef2f.minute}:00",
+        "endTimef2f":
+            "${_selectedEndTimef2f.hour}:${_selectedEndTimef2f.minute}:00",
+        "dayrc": _selectedDayRC,
+        "startTimerc": "${_selectedTimeRC.hour}:${_selectedTimeRC.minute}:00",
+        "endTimerc":
+            "${_selectedEndTimeRC.hour}:${_selectedEndTimeRC.minute}:00",
         "room": _roomController.text,
       };
 
       Map<String, String> requestBody = {
         "json": jsonEncode(_isOffices ? officeData : classData),
-        "operation": _isOffices ? "addOffice" : "addClass",
+        "operation": _isOffices ? "addOffice" : "addClasses",
       };
 
       var res = await http.post(
@@ -1185,8 +1198,8 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
       );
 
       if (res.body == "-1") {
-        ShowAlert().showAlert(
-            "danger", "${_isOffices ? "Office" : "Class"} name already exists");
+        ShowAlert().showAlert("danger",
+            "${_isOffices ? "Office" : "Subject Code"} name already exists");
       } else if (res.body == "1") {
         ShowAlert().showAlert("success", "Successfully added");
         _officeNameController.clear();
@@ -1194,6 +1207,16 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
         _sectionController.clear();
         _subjectCodeController.clear();
         _roomController.clear();
+        _selectedDayf2f = "MON";
+        _selectedTimef2f = const TimeOfDay(hour: 6, minute: 00);
+        _selectedEndTimef2f = const TimeOfDay(hour: 6, minute: 00);
+        _startTimef2f = "Starting time (Face to face)";
+        _endTimef2f = "Ending time (Face to face)";
+        _selectedDayRC = "MON";
+        _selectedTimeRC = const TimeOfDay(hour: 6, minute: 00);
+        _selectedEndTimeRC = const TimeOfDay(hour: 6, minute: 00);
+        _startTimeRC = "Starting time (Remote coaching)";
+        _endTimeRC = "Ending time (Remote coaching)";
       } else {
         ShowAlert().showAlert("danger", "Failed to add");
         print(res.body);
@@ -1209,59 +1232,56 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            SizedBox(
-              height: 50,
-              child: CustomToggleSwitch(
-                labels: const ['Offices', 'Classes'],
-                initialLabelIndex: _isOffices ? 0 : 1,
-                onToggle: (index) {
-                  setState(() {
-                    _isOffices = index == 0;
-                  });
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 50,
+            child: CustomToggleSwitch(
+              labels: const ['Offices', 'Classes'],
+              initialLabelIndex: _isOffices ? 0 : 1,
+              onToggle: (index) {
+                setState(() {
+                  _isOffices = index == 0;
+                });
+              },
+            ),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: _isOffices ? officeForm() : classForm(),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              MyButton(
+                buttonText: "Back",
+                buttonSize: 8,
+                color: Colors.red,
+                onPressed: () {
+                  Get.back();
                 },
               ),
-            ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              child: _isOffices ? officeForm() : classForm(),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                MyButton(
-                  buttonText: "Back",
-                  buttonSize: 8,
-                  color: Colors.red,
-                  onPressed: () {
-                    Get.back();
-                  },
-                ),
-                const SizedBox(width: 16),
-                _isSubmitted
-                    ? const LoadingSpinner()
-                    : MyButton(
-                        buttonText: "Submit",
-                        buttonSize: 8,
-                        color: Theme.of(context).colorScheme.tertiary,
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            addOfficeMaster();
-                          }
-                        },
-                      ),
-              ],
-            )
-          ],
-        ),
+              const SizedBox(width: 16),
+              _isSubmitted
+                  ? const LoadingSpinner()
+                  : MyButton(
+                      buttonText: "Submit",
+                      buttonSize: 8,
+                      color: Theme.of(context).colorScheme.tertiary,
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          addOfficeMaster();
+                        }
+                      },
+                    ),
+            ],
+          )
+        ],
       ),
     );
   }
@@ -1292,7 +1312,7 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
           isNumber: false,
           isEmail: false,
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 16),
         MyTextField(
           labelText: "Descriptive Title*",
           obscureText: false,
@@ -1301,7 +1321,7 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
           isNumber: false,
           isEmail: false,
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 16),
         MyTextField(
           labelText: "Section*",
           obscureText: false,
@@ -1310,19 +1330,19 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
           isNumber: false,
           isEmail: false,
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 16),
         DropdownButtonFormField<String>(
           value: _selectedDayf2f,
           items: [
             const DropdownMenuItem<String>(
               value: "",
-              child: Text("Day(Face to Face)",
+              child: Text("Day(Face to face)",
                   style: TextStyle(color: Colors.white)),
             ),
             ..._day.map((day) {
               return DropdownMenuItem<String>(
                 value: day,
-                child: Text(day, style: TextStyle(color: Colors.white)),
+                child: Text(day, style: const TextStyle(color: Colors.white)),
               );
             }).toList(),
           ],
@@ -1362,32 +1382,173 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
           },
           dropdownColor: Theme.of(context).colorScheme.onInverseSurface,
         ),
-        const SizedBox(height: 24),
-        SizedBox(
-          width: double.infinity,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: MyButton(
-                  buttonText: _startTimef2f,
-                  buttonSize: 12,
-                  color: Theme.of(context).colorScheme.onInverseSurface,
-                  onPressed: () {},
-                ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: MyButton(
+                buttonText: _startTimef2f,
+                buttonSize: 16,
+                color: Theme.of(context).colorScheme.onInverseSurface,
+                onPressed: () async {
+                  final TimeOfDay? newTime = await showTimePicker(
+                    context: context,
+                    initialTime: const TimeOfDay(hour: 7, minute: 0),
+                    hourLabelText: "",
+                    minuteLabelText: "",
+                  );
+
+                  if (newTime != null) {
+                    setState(() {
+                      _selectedTimef2f = newTime;
+                      _startTimef2f =
+                          "Starting time (Face to face):\n${_selectedTimef2f.hour}:${_selectedTimef2f.minute}:00";
+                    });
+                  }
+                },
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: MyButton(
-                  buttonText: _endTimef2f,
-                  buttonSize: 12,
-                  color: Theme.of(context).colorScheme.onInverseSurface,
-                  onPressed: () {},
-                ),
-              )
-            ],
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: MyButton(
+                buttonText: _endTimef2f,
+                buttonSize: 16,
+                color: Theme.of(context).colorScheme.onInverseSurface,
+                onPressed: () async {
+                  final TimeOfDay? newTime = await showTimePicker(
+                    context: context,
+                    initialTime: const TimeOfDay(hour: 7, minute: 0),
+                    hourLabelText: "",
+                    minuteLabelText: "",
+                  );
+
+                  if (newTime != null) {
+                    setState(() {
+                      _selectedEndTimef2f = newTime;
+                      _endTimef2f =
+                          "Ending time (Face to face):\n${_selectedEndTimef2f.hour}:${_selectedEndTimef2f.minute}:00";
+                    });
+                  }
+                },
+              ),
+            )
+          ],
+        ),
+        const SizedBox(height: 16),
+        DropdownButtonFormField<String>(
+          value: _selectedDayRC,
+          items: [
+            const DropdownMenuItem<String>(
+              value: "",
+              child: Text("Day(Remote coaching)",
+                  style: TextStyle(color: Colors.white)),
+            ),
+            ..._day.map((day) {
+              return DropdownMenuItem<String>(
+                value: day,
+                child: Text(day, style: const TextStyle(color: Colors.white)),
+              );
+            }).toList(),
+          ],
+          onChanged: (String? newValue) {
+            setState(() {
+              _selectedDayRC = newValue!;
+            });
+          },
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Theme.of(context).colorScheme.onInverseSurface,
+            border: const OutlineInputBorder(),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(7),
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.onInverseSurface,
+              ),
+            ),
+            focusedBorder: const OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.white,
+              ),
+            ),
+            labelText: 'Day(Remote coaching)',
+            labelStyle: const TextStyle(color: Colors.white),
+            prefixIcon: const Icon(
+              Icons.calendar_today,
+              color: Colors.white,
+            ),
           ),
+          style: const TextStyle(color: Colors.white),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "This field is required";
+            }
+            return null;
+          },
+          dropdownColor: Theme.of(context).colorScheme.onInverseSurface,
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: MyButton(
+                buttonText: _startTimeRC,
+                buttonSize: 16,
+                color: Theme.of(context).colorScheme.onInverseSurface,
+                onPressed: () async {
+                  final TimeOfDay? newTime = await showTimePicker(
+                    context: context,
+                    initialTime: const TimeOfDay(hour: 7, minute: 0),
+                    hourLabelText: "",
+                    minuteLabelText: "",
+                  );
+
+                  if (newTime != null) {
+                    setState(() {
+                      _selectedTimeRC = newTime;
+                      _startTimeRC =
+                          "Ending time (Face to face):\n${_selectedTimeRC.hour}:${_selectedTimeRC.minute}:00";
+                    });
+                  }
+                },
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: MyButton(
+                buttonText: _endTimeRC,
+                buttonSize: 16,
+                color: Theme.of(context).colorScheme.onInverseSurface,
+                onPressed: () async {
+                  final TimeOfDay? newTime = await showTimePicker(
+                    context: context,
+                    initialTime: const TimeOfDay(hour: 7, minute: 0),
+                    hourLabelText: "",
+                    minuteLabelText: "",
+                  );
+                  if (newTime != null) {
+                    setState(() {
+                      _selectedEndTimeRC = newTime;
+                      _endTimeRC =
+                          "Ending time (Face to face):\n${_selectedEndTimeRC.hour}:${_selectedEndTimeRC.minute}:00";
+                    });
+                  }
+                },
+              ),
+            )
+          ],
+        ),
+        const SizedBox(height: 16),
+        MyTextField(
+          labelText: "Room",
+          obscureText: false,
+          willValidate: true,
+          controller: _roomController,
+          isNumber: false,
+          isEmail: false,
         ),
       ],
     );
