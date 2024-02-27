@@ -21,7 +21,9 @@ class _MasterFilesState extends State<MasterFiles> {
       enableDrag: true,
       context: context,
       builder: (context) {
-        return AddMasterfiles(selectedIndex: index);
+        return SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: AddMasterfiles(selectedIndex: index));
       },
     );
   }

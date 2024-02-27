@@ -38,6 +38,8 @@ dependencies:
   flutter_slidable: ^3.0.1
   file_picker: ^6.1.1
   modal_bottom_sheet: ^3.0.0-pre
+  excel: ^4.0.2
+  data_table_2: ^2.5.11
 
 
   # The following adds the Cupertino Icons font to your application.

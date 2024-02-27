@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/components/custom_toggle_switch.dart';
+import 'package:flutter_csdl_admin/pages/master_files/batch_masterfiles/batch_classes.dart';
 import 'package:get/get.dart';
 import 'package:flutter_csdl_admin/components/loading_spinner.dart';
 import 'package:flutter_csdl_admin/components/my_button.dart';
@@ -1073,58 +1074,55 @@ class _AddScholarshipTypeState extends State<AddScholarshipType> {
     }
   }
 
-  bool _isLoading = false;
   bool _isSubmitted = false;
   @override
   Widget build(BuildContext context) {
     return Form(
         key: _formKey,
-        child: _isLoading
-            ? const LoadingSpinner()
-            : Column(
-                children: [
-                  MyTextField(
-                    labelText: "Scholarship Type Name*",
-                    obscureText: false,
-                    willValidate: true,
-                    controller: _scholarshipNameController,
-                    isNumber: false,
-                    isEmail: false,
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      MyButton(
-                        buttonText: "Back",
+        child: Column(
+          children: [
+            MyTextField(
+              labelText: "Scholarship Type Name*",
+              obscureText: false,
+              willValidate: true,
+              controller: _scholarshipNameController,
+              isNumber: false,
+              isEmail: false,
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                MyButton(
+                  buttonText: "Back",
+                  buttonSize: 8,
+                  color: Colors.red,
+                  onPressed: () {
+                    Get.back();
+                  },
+                ),
+                const SizedBox(
+                  width: 16,
+                ),
+                _isSubmitted
+                    ? const LoadingSpinner()
+                    : MyButton(
+                        buttonText: "Submit",
                         buttonSize: 8,
-                        color: Colors.red,
+                        color: Theme.of(context).colorScheme.tertiary,
                         onPressed: () {
-                          Get.back();
+                          if (_formKey.currentState!.validate()) {
+                            addScholarshipType();
+                          }
                         },
                       ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      _isSubmitted
-                          ? const LoadingSpinner()
-                          : MyButton(
-                              buttonText: "Submit",
-                              buttonSize: 8,
-                              color: Theme.of(context).colorScheme.tertiary,
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  addScholarshipType();
-                                }
-                              },
-                            ),
-                    ],
-                  )
-                ],
-              ));
+              ],
+            )
+          ],
+        ));
   }
 }
 
@@ -1304,6 +1302,18 @@ class _AddOfficeMasterState extends State<AddOfficeMaster> {
   Widget classForm() {
     return Column(
       children: [
+        SizedBox(
+          width: Get.width * 0.4,
+          child: MyButton(
+            buttonText: "Batch Files",
+            buttonSize: 16,
+            color: Theme.of(context).colorScheme.tertiary,
+            onPressed: () {
+              Get.to(const BatchClasses());
+            },
+          ),
+        ),
+        const SizedBox(height: 16),
         MyTextField(
           labelText: "Subject Code*",
           obscureText: false,

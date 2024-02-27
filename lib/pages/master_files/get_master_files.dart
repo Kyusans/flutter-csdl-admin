@@ -140,7 +140,7 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
       bounce: true,
       enableDrag: true,
       builder: (context) {
-        return Container(
+        return SizedBox(
           height: Get.height * 0.8,
           child: Center(
             child: Column(
