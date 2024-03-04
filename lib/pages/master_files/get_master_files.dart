@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/components/loading_spinner.dart';
 import 'package:flutter_csdl_admin/components/my_button.dart';
+import 'package:flutter_csdl_admin/components/my_textfield.dart';
 import 'package:flutter_csdl_admin/local_storage.dart';
 import 'package:flutter_csdl_admin/pages/master_files/update_masterfiles/update_masterfiles.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -33,6 +34,9 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
   String _userId = "";
   bool _isSubmitting = false;
   bool _isLoading = true;
+  int _currentPage = 1;
+  int _pageSize = 10;
+  bool _isFetching = false;
 
   @override
   void initState() {
@@ -44,7 +48,6 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
       _selectedIndex = widget.selectedIndex;
       switch (_selectedIndex) {
         case 0:
-          // _title = widget.isMobile.toString();
           _title = "Administrators";
           _tableName = "tbl_admin";
           _orderBy = "adm_name";
@@ -79,7 +82,6 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
           _tableName = "tbl_scholarship_type";
           _orderBy = "type_name";
           _masterfileId = "type_id";
-
           break;
         case 6:
           _title = "Office Master";
@@ -106,6 +108,28 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
+    _loadData();
+  }
+
+  void _loadData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    List masterFilesList = await _getMasterFiles();
+
+    if (mounted) {
+      setState(() {
+        masterFiles = masterFilesList;
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _refreshData() async {
+    setState(() {
+      _isLoading = true;
+    });
     List masterFilesList = await _getMasterFiles();
     if (mounted) {
       setState(() {
@@ -113,7 +137,27 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
         _isLoading = false;
       });
     }
-    print("masterfiles mo to: " + masterFilesList.toString());
+  }
+
+  Future<List> _getMasterFiles() async {
+    try {
+      var url = Uri.parse("${SessionStorage.url}admin.php");
+      Map<String, dynamic> jsonData = {
+        "tableName": _tableName,
+        "orderBy": _orderBy,
+      };
+      Map<String, dynamic> requestBody = {
+        "json": jsonEncode(jsonData),
+        "operation": "getList",
+      };
+
+      var res = await http.post(url, body: requestBody);
+      return res.body != "0" ? jsonDecode(res.body) : [];
+    } catch (e) {
+      ShowAlert().showAlert("danger", "Network error");
+      print("error mo to" + e.toString());
+      return [];
+    }
   }
 
   void _handleUpdateMasterfiles(masterfileIndex, masterFileId) {
@@ -200,7 +244,6 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                                 if (res.body == "1") {
                                   ShowAlert().showAlert(
                                       "success", "Successfully activated");
-
                                   await _refreshData();
                                 } else {
                                   ShowAlert()
@@ -214,7 +257,6 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                                 setState(() {
                                   _isSubmitting = false;
                                 });
-                                // ignore: use_build_context_synchronously
                                 Navigator.pop(context);
                               }
                             },
@@ -227,40 +269,6 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
         );
       },
     );
-  }
-
-  Future<void> _refreshData() async {
-    setState(() {
-      _isLoading = true;
-    });
-    List masterFilesList = await _getMasterFiles();
-    if (mounted) {
-      setState(() {
-        masterFiles = masterFilesList;
-        _isLoading = false;
-      });
-    }
-  }
-
-  Future<List> _getMasterFiles() async {
-    try {
-      var url = Uri.parse("${SessionStorage.url}admin.php");
-      Map<String, String> jsonData = {
-        "tableName": _tableName,
-        "orderBy": _orderBy,
-      };
-      Map<String, String> requestBody = {
-        "json": jsonEncode(jsonData),
-        "operation": "getList",
-      };
-
-      var res = await http.post(url, body: requestBody);
-      return res.body != "0" ? jsonDecode(res.body) : [];
-    } catch (e) {
-      ShowAlert().showAlert("danger", "Network error");
-      print("error mo to" + e.toString());
-      return [];
-    }
   }
 
   @override
@@ -308,7 +316,7 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                         LoadingSpinner(),
                       ],
                     )
-                  : masterFilesList(),
+                  : searchMasterFiles(),
             ],
           ),
         ),
@@ -316,102 +324,192 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
     );
   }
 
-  Widget masterFilesList() {
-    if (masterFiles.isEmpty) {
-      return const Center(
-        child: Text(
-          "No data found",
-          style: TextStyle(
-            color: Colors.white,
-          ),
+  Widget searchMasterFiles() {
+    final inputDecoration = InputDecoration(
+      filled: true,
+      fillColor: Theme.of(context).colorScheme.onInverseSurface,
+      labelText: "Search $_title",
+      labelStyle: const TextStyle(color: Colors.white),
+      border: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(7)),
+      ),
+      focusedBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.white),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Theme.of(context).colorScheme.onInverseSurface,
         ),
-      );
-    } else {
-      return ListView.builder(
-        itemCount: masterFiles.length,
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          bool isAdminList = _title == "Administrators";
-          bool isSchoolYearList = _title == "School Year";
-          bool isCurrentUser = masterFiles[index]["adm_employee_id"] == _userId;
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Slidable(
-              startActionPane: isAdminList
-                  ? ActionPane(motion: const BehindMotion(), children: [
-                      SlidableAction(
-                        onPressed: (context) {},
-                        backgroundColor: const Color(0xFFFE4A49),
-                        label: isCurrentUser
-                            ? "You cant change your personal details here"
-                            : "You cant change his/her personal details",
-                      )
-                    ])
-                  : ActionPane(
-                      motion: const BehindMotion(),
-                      children: [
-                        // delete
-                        !isSchoolYearList
-                            ? SlidableAction(
-                                onPressed: (context) {
-                                  // delete mo to
-                                },
-                                backgroundColor: const Color(0xFFFE4A49),
-                                foregroundColor: Colors.white,
-                                icon: Icons.delete,
-                                label: 'Delete',
-                              )
-                            :
-                            // set active
-                            SlidableAction(
-                                onPressed: (context) {
-                                  if (masterFiles[index]["sy_status"] == 1) {
-                                    ShowAlert()
-                                        .showAlert("info", "Already Active");
-                                  } else {
-                                    _handleSetActive(
-                                        masterFiles[index]["sy_id"],
-                                        masterFiles[index]["sy_name"]);
-                                  }
-                                },
-                                backgroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .onPrimaryContainer,
-                                foregroundColor: Colors.white,
-                                icon: masterFiles[index]["sy_status"] == 1
-                                    ? Icons.check_circle_outline
-                                    : Icons.check_outlined,
-                                label: masterFiles[index]["sy_status"] == 1
-                                    ? 'Already Active'
-                                    : 'Set active',
-                              ),
-                        // update
-                        SlidableAction(
-                          onPressed: (context) {
-                            _handleUpdateMasterfiles(_title, _masterfileId);
-                            print(masterFiles[index]["adm_id"]);
-                          },
-                          backgroundColor:
-                              Theme.of(context).colorScheme.onInverseSurface,
-                          icon: Icons.update,
-                          label: 'Update',
+      ),
+    );
+
+    return SizedBox(
+      width: Get.width * 0.9,
+      child: Center(
+        child: Column(
+          children: [
+            SizedBox(
+              width: Get.width * 0.9,
+              child: Autocomplete<String>(
+                optionsBuilder: (TextEditingValue textEditingValue) {
+                  return Future.value(
+                    masterFiles
+                        .map<String>(
+                            (dynamic value) => value[_orderBy].toString())
+                        .where((String value) => value.toLowerCase().contains(
+                              textEditingValue.text.toLowerCase(),
+                            )),
+                  );
+                },
+                onSelected: (String selectedValue) {
+                  var selectedObject = masterFiles.firstWhere(
+                    (element) => element[_orderBy].toString() == selectedValue,
+                  );
+                  print(selectedObject);
+                },
+                fieldViewBuilder: (context, textEditingController, focusNode,
+                    onFieldSubmitted) {
+                  return TextFormField(
+                    controller: textEditingController,
+                    focusNode: focusNode,
+                    onFieldSubmitted: (value) {},
+                    decoration: inputDecoration,
+                  );
+                },
+                optionsViewBuilder: (context, Function(String) onSelected,
+                    Iterable<String> options) {
+                  return Align(
+                    alignment: Alignment.topLeft,
+                    child: Material(
+                      color: Theme.of(context).colorScheme.onInverseSurface,
+                      elevation: 4.0,
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: Get.width * 0.9,
                         ),
-                      ],
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: options.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ListTile(
+                              title: Text(
+                                options.elementAt(index),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onTap: () {
+                                onSelected(
+                                  options.elementAt(index),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
                     ),
-              child: Container(
-                color: Theme.of(context).colorScheme.tertiary,
-                padding: const EdgeInsets.all(8),
-                child: ListTile(
-                  title: Text(
-                    '${masterFiles[index][_orderBy]} ${masterFiles[index]['sy_status'] == 1 ? "(Currently Active)" : ""}',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
+                  );
+                },
               ),
             ),
-          );
-        },
-      );
-    }
+          ],
+        ),
+      ),
+    );
   }
+
+  // Widget masterFilesList() {
+  //   if (masterFiles.isEmpty) {
+  //     return const Center(
+  //       child: Text(
+  //         "No data found",
+  //         style: TextStyle(
+  //           color: Colors.white,
+  //         ),
+  //       ),
+  //     );
+  //   } else {
+  //     return ListView.builder(
+  //       itemCount: masterFiles.length,
+  //       shrinkWrap: true,
+  //       itemBuilder: (context, index) {
+  //         bool isAdminList = _title == "Administrators";
+  //         bool isSchoolYearList = _title == "School Year";
+  //         bool isCurrentUser = masterFiles[index]["adm_employee_id"] == _userId;
+  //         return Padding(
+  //           padding: const EdgeInsets.only(bottom: 8.0),
+  //           child: Slidable(
+  //             startActionPane: isAdminList
+  //                 ? ActionPane(motion: const BehindMotion(), children: [
+  //                     SlidableAction(
+  //                       onPressed: (context) {},
+  //                       backgroundColor: const Color(0xFFFE4A49),
+  //                       label: isCurrentUser
+  //                           ? "You cant change your personal details here"
+  //                           : "You cant change his/her personal details",
+  //                     )
+  //                   ])
+  //                 : ActionPane(
+  //                     motion: const BehindMotion(),
+  //                     children: [
+  //                       !isSchoolYearList
+  //                           ? SlidableAction(
+  //                               onPressed: (context) {
+  //                                 // delete mo to
+  //                               },
+  //                               backgroundColor: const Color(0xFFFE4A49),
+  //                               foregroundColor: Colors.white,
+  //                               icon: Icons.delete,
+  //                               label: 'Delete',
+  //                             )
+  //                           : SlidableAction(
+  //                               onPressed: (context) {
+  //                                 if (masterFiles[index]["sy_status"] == 1) {
+  //                                   ShowAlert()
+  //                                       .showAlert("info", "Already Active");
+  //                                 } else {
+  //                                   _handleSetActive(
+  //                                       masterFiles[index]["sy_id"],
+  //                                       masterFiles[index]["sy_name"]);
+  //                                 }
+  //                               },
+  //                               backgroundColor: Theme.of(context)
+  //                                   .colorScheme
+  //                                   .onPrimaryContainer,
+  //                               foregroundColor: Colors.white,
+  //                               icon: masterFiles[index]["sy_status"] == 1
+  //                                   ? Icons.check_circle_outline
+  //                                   : Icons.check_outlined,
+  //                               label: masterFiles[index]["sy_status"] == 1
+  //                                   ? 'Already Active'
+  //                                   : 'Set active',
+  //                             ),
+  //                       SlidableAction(
+  //                         onPressed: (context) {
+  //                           _handleUpdateMasterfiles(_title, _masterfileId);
+  //                           print(masterFiles[index]["adm_id"]);
+  //                         },
+  //                         backgroundColor:
+  //                             Theme.of(context).colorScheme.onInverseSurface,
+  //                         icon: Icons.update,
+  //                         label: 'Update',
+  //                       ),
+  //                     ],
+  //                   ),
+  //             child: Container(
+  //               color: Theme.of(context).colorScheme.tertiary,
+  //               padding: const EdgeInsets.all(8),
+  //               child: ListTile(
+  //                 title: Text(
+  //                   '${masterFiles[index][_orderBy]} ${masterFiles[index]['sy_status'] == 1 ? "(Currently Active)" : ""}',
+  //                   style: const TextStyle(color: Colors.white),
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //     );
+  //   }
+  // }
 }

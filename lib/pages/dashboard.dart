@@ -79,6 +79,7 @@ class _DashboardState extends State<Dashboard> {
       case 0:
         return const DashboardMain();
       case 1:
+        //scholar list dapat diri
         return const AddScholar();
       case 2:
         return const UserProfile();

@@ -131,11 +131,11 @@ class _MyDrawerState extends State<MyDrawer> {
                 selectedTileColor:
                     Theme.of(context).colorScheme.onPrimaryContainer,
                 leading: const Icon(
-                  Icons.person_add_alt,
+                  Icons.list,
                   color: Colors.white,
                 ),
                 title: const Text(
-                  "Add Scholar",
+                  "Scholar List",
                   style: TextStyle(
                     color: Colors.white,
                   ),
