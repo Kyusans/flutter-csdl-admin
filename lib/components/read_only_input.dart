@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class ReadOnlyInput extends StatefulWidget {
-  final String initialValue;
   final String labelText;
+  final String initialValue;
   const ReadOnlyInput({
     Key? key,
-    required this.initialValue,
     required this.labelText,
+    required this.initialValue,
   }) : super(key: key);
 
   @override

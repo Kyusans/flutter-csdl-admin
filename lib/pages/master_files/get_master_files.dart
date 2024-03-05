@@ -243,6 +243,10 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                                 if (res.body == "1") {
                                   ShowAlert().showAlert(
                                       "success", "Successfully activated");
+                                  setState(() {
+                                    _selectedMasterFile = {};
+                                    _hasSelected = false;
+                                  });
                                   await _refreshData();
                                 } else {
                                   ShowAlert()
@@ -459,11 +463,13 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
 
   Widget selectedAdmin() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           ReadOnlyInput(
-            initialValue: _selectedMasterFile["adm_name"],
+            initialValue: _selectedMasterFile[_masterFileName],
             labelText: "Full Name",
           )
         ],
@@ -472,30 +478,178 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
   }
 
   Widget selectedDepartment() {
-    return const Text("Selected Department");
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          ReadOnlyInput(
+            initialValue: _selectedMasterFile[_masterFileName],
+            labelText: "Department name",
+          )
+        ],
+      ),
+    );
   }
 
   Widget selectedSchoolYear() {
-    return const Text("Selected School Year");
+    return Padding(
+      key: UniqueKey(),
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          ReadOnlyInput(
+            initialValue: _selectedMasterFile[_masterFileName],
+            labelText: "School Year",
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              _selectedMasterFile["sy_status"] == 1
+                  ? MyButton(
+                      buttonText: "Already Active",
+                      buttonSize: 8,
+                      color: Colors.grey,
+                      onPressed: () {},
+                    )
+                  : MyButton(
+                      buttonText: "Set Active",
+                      buttonSize: 8,
+                      color: Theme.of(context).colorScheme.tertiary,
+                      onPressed: () {
+                        _handleSetActive(
+                          _selectedMasterFile["sy_id"],
+                          _selectedMasterFile["sy_name"],
+                        );
+                      },
+                    ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget selectedSupervisor() {
-    return const Text("Selected Supervisor");
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          ReadOnlyInput(
+            initialValue: _selectedMasterFile[_masterFileName],
+            labelText: "Full name",
+          ),
+          const SizedBox(height: 10),
+          ReadOnlyInput(
+            initialValue: _selectedMasterFile["supM_email"],
+            labelText: "Email",
+          ),
+        ],
+      ),
+    );
   }
 
   Widget selectedCourse() {
-    return const Text("Selected Course");
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          ReadOnlyInput(
+            initialValue: _selectedMasterFile[_masterFileName],
+            labelText: "Course name",
+          ),
+        ],
+      ),
+    );
   }
 
   Widget selectedScholarshipType() {
-    return const Text("Selected Scholarship Type");
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          ReadOnlyInput(
+            initialValue: _selectedMasterFile[_masterFileName],
+            labelText: "Scholarship type",
+          ),
+        ],
+      ),
+    );
   }
 
   Widget selectedOfficeMaster() {
-    return const Text("Selected Office Master");
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          _selectedMasterFile["off_type_id"] == 1
+              ? ReadOnlyInput(
+                  initialValue: _selectedMasterFile[_masterFileName],
+                  labelText: "Office name",
+                )
+              : Column(
+                  children: [
+                    ReadOnlyInput(
+                      labelText: "Class name",
+                      initialValue: _selectedMasterFile[_masterFileName],
+                    ),
+                    const SizedBox(height: 16),
+                    ReadOnlyInput(
+                      labelText: "Subject code",
+                      initialValue: _selectedMasterFile["off_subject_code"],
+                    ),
+                    const SizedBox(height: 16),
+                    ReadOnlyInput(
+                      labelText: "Descriptive title",
+                      initialValue:
+                          _selectedMasterFile["off_descriptive_title"],
+                    ),
+                    const SizedBox(height: 16),
+                    ReadOnlyInput(
+                      labelText: "Section",
+                      initialValue: _selectedMasterFile["off_section"],
+                    ),
+                    const SizedBox(height: 16),
+                    ReadOnlyInput(
+                      labelText: "Room",
+                      initialValue: _selectedMasterFile["off_room"],
+                    )
+                  ],
+                ),
+        ],
+      ),
+    );
   }
 
   Widget selectedScholarshipSubType() {
-    return const Text("Selected Scholarship Sub Type");
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          ReadOnlyInput(
+            initialValue: _selectedMasterFile[_masterFileName],
+            labelText: "Scholarship sub type name",
+          ),
+          const SizedBox(height: 16),
+          ReadOnlyInput(
+            labelText: "Max hours",
+            initialValue: _selectedMasterFile["stype_max_hours"],
+          )
+        ],
+      ),
+    );
   }
 }
