@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:excel/excel.dart';
@@ -80,3 +79,100 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+// masterfiles slideable
+
+  // Widget masterFilesList() {
+  //   if (masterFiles.isEmpty) {
+  //     return const Center(
+  //       child: Text(
+  //         "No data found",
+  //         style: TextStyle(
+  //           color: Colors.white,
+  //         ),
+  //       ),
+  //     );
+  //   } else {
+  //     return ListView.builder(
+  //       itemCount: masterFiles.length,
+  //       shrinkWrap: true,
+  //       itemBuilder: (context, index) {
+  //         bool isAdminList = _title == "Administrators";
+  //         bool isSchoolYearList = _title == "School Year";
+  //         bool isCurrentUser = masterFiles[index]["adm_employee_id"] == _userId;
+  //         return Padding(
+  //           padding: const EdgeInsets.only(bottom: 8.0),
+  //           child: Slidable(
+  //             startActionPane: isAdminList
+  //                 ? ActionPane(motion: const BehindMotion(), children: [
+  //                     SlidableAction(
+  //                       onPressed: (context) {},
+  //                       backgroundColor: const Color(0xFFFE4A49),
+  //                       label: isCurrentUser
+  //                           ? "You cant change your personal details here"
+  //                           : "You cant change his/her personal details",
+  //                     )
+  //                   ])
+  //                 : ActionPane(
+  //                     motion: const BehindMotion(),
+  //                     children: [
+  //                       !isSchoolYearList
+  //                           ? SlidableAction(
+  //                               onPressed: (context) {
+  //                                 // delete mo to
+  //                               },
+  //                               backgroundColor: const Color(0xFFFE4A49),
+  //                               foregroundColor: Colors.white,
+  //                               icon: Icons.delete,
+  //                               label: 'Delete',
+  //                             )
+  //                           : SlidableAction(
+  //                               onPressed: (context) {
+  //                                 if (masterFiles[index]["sy_status"] == 1) {
+  //                                   ShowAlert()
+  //                                       .showAlert("info", "Already Active");
+  //                                 } else {
+  //                                   _handleSetActive(
+  //                                       masterFiles[index]["sy_id"],
+  //                                       masterFiles[index]["sy_name"]);
+  //                                 }
+  //                               },
+  //                               backgroundColor: Theme.of(context)
+  //                                   .colorScheme
+  //                                   .onPrimaryContainer,
+  //                               foregroundColor: Colors.white,
+  //                               icon: masterFiles[index]["sy_status"] == 1
+  //                                   ? Icons.check_circle_outline
+  //                                   : Icons.check_outlined,
+  //                               label: masterFiles[index]["sy_status"] == 1
+  //                                   ? 'Already Active'
+  //                                   : 'Set active',
+  //                             ),
+  //                       SlidableAction(
+  //                         onPressed: (context) {
+  //                           _handleUpdateMasterfiles(_title, _masterfileId);
+  //                           print(masterFiles[index]["adm_id"]);
+  //                         },
+  //                         backgroundColor:
+  //                             Theme.of(context).colorScheme.onInverseSurface,
+  //                         icon: Icons.update,
+  //                         label: 'Update',
+  //                       ),
+  //                     ],
+  //                   ),
+  //             child: Container(
+  //               color: Theme.of(context).colorScheme.tertiary,
+  //               padding: const EdgeInsets.all(8),
+  //               child: ListTile(
+  //                 title: Text(
+  //                   '${masterFiles[index][_masterFileName]} ${masterFiles[index]['sy_status'] == 1 ? "(Currently Active)" : ""}',
+  //                   style: const TextStyle(color: Colors.white),
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //     );
+  //   }
+  // }

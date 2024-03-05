@@ -2,10 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_csdl_admin/components/loading_spinner.dart';
 import 'package:flutter_csdl_admin/components/my_button.dart';
-import 'package:flutter_csdl_admin/components/my_textfield.dart';
+import 'package:flutter_csdl_admin/components/read_only_input.dart';
 import 'package:flutter_csdl_admin/local_storage.dart';
 import 'package:flutter_csdl_admin/pages/master_files/update_masterfiles/update_masterfiles.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:flutter_csdl_admin/session_storage.dart';
 import 'package:http/http.dart' as http;
@@ -27,16 +26,16 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
   late LocalStorage _localStorage;
   int _selectedIndex = 0;
   List<dynamic> masterFiles = [];
+  Map<String, dynamic> _selectedMasterFile = {};
   String _title = "";
   String _tableName = "";
-  String _orderBy = "";
+  String _masterFileName = "";
   String _masterfileId = "";
   String _userId = "";
   bool _isSubmitting = false;
   bool _isLoading = true;
-  int _currentPage = 1;
-  int _pageSize = 10;
-  bool _isFetching = false;
+  bool _hasSelected = false;
+  // bool _isFetching = false;
 
   @override
   void initState() {
@@ -50,49 +49,49 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
         case 0:
           _title = "Administrators";
           _tableName = "tbl_admin";
-          _orderBy = "adm_name";
+          _masterFileName = "adm_name";
           _masterfileId = "adm_id";
           break;
         case 1:
           _title = "Department";
           _tableName = "tbl_departments";
-          _orderBy = "dept_name";
+          _masterFileName = "dept_name";
           _masterfileId = "dept_id";
           break;
         case 2:
           _title = "School Year";
           _tableName = "tbl_sy";
-          _orderBy = "sy_name";
+          _masterFileName = "sy_name";
           _masterfileId = "st_id";
           break;
         case 3:
           _title = "Supervisors";
           _tableName = "tbl_supervisors_master";
-          _orderBy = "supM_name";
+          _masterFileName = "supM_name";
           _masterfileId = "supM_id";
           break;
         case 4:
           _title = "Course";
           _tableName = "tbl_course";
-          _orderBy = "crs_name";
+          _masterFileName = "crs_name";
           _masterfileId = "crs_id";
           break;
         case 5:
           _title = "Scholarship Type";
           _tableName = "tbl_scholarship_type";
-          _orderBy = "type_name";
+          _masterFileName = "type_name";
           _masterfileId = "type_id";
           break;
         case 6:
           _title = "Office Master";
           _tableName = "tbl_office_master";
-          _orderBy = "off_name";
+          _masterFileName = "off_name";
           _masterfileId = "off_id";
           break;
         default:
           _title = "Scholarship Sub Type";
           _tableName = "tbl_scholarship_sub_type";
-          _orderBy = "stype_name";
+          _masterFileName = "stype_name";
           _masterfileId = "stype_id";
       }
     });
@@ -144,7 +143,7 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
       var url = Uri.parse("${SessionStorage.url}admin.php");
       Map<String, dynamic> jsonData = {
         "tableName": _tableName,
-        "orderBy": _orderBy,
+        "orderBy": _masterFileName,
       };
       Map<String, dynamic> requestBody = {
         "json": jsonEncode(jsonData),
@@ -317,6 +316,19 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                       ],
                     )
                   : searchMasterFiles(),
+              const SizedBox(height: 16),
+              _hasSelected
+                  ? Expanded(
+                      child: SizedBox(
+                        key: UniqueKey(),
+                        width: Get.width * 0.9,
+                        child: Card(
+                          color: Theme.of(context).colorScheme.onInverseSurface,
+                          child: selectedMasterFile(),
+                        ),
+                      ),
+                    )
+                  : Container(),
             ],
           ),
         ),
@@ -354,8 +366,8 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                 optionsBuilder: (TextEditingValue textEditingValue) {
                   return Future.value(
                     masterFiles
-                        .map<String>(
-                            (dynamic value) => value[_orderBy].toString())
+                        .map<String>((dynamic value) =>
+                            value[_masterFileName].toString())
                         .where((String value) => value.toLowerCase().contains(
                               textEditingValue.text.toLowerCase(),
                             )),
@@ -363,9 +375,15 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
                 },
                 onSelected: (String selectedValue) {
                   var selectedObject = masterFiles.firstWhere(
-                    (element) => element[_orderBy].toString() == selectedValue,
+                    (element) =>
+                        element[_masterFileName].toString() == selectedValue,
                   );
                   print(selectedObject);
+                  setState(() {
+                    _hasSelected = true;
+                    _selectedMasterFile = selectedObject;
+                  });
+                  print("selectedMasterFile ${_selectedMasterFile}");
                 },
                 fieldViewBuilder: (context, textEditingController, focusNode,
                     onFieldSubmitted) {
@@ -418,98 +436,66 @@ class _GetMasterFilesState extends State<GetMasterFiles> {
     );
   }
 
-  // Widget masterFilesList() {
-  //   if (masterFiles.isEmpty) {
-  //     return const Center(
-  //       child: Text(
-  //         "No data found",
-  //         style: TextStyle(
-  //           color: Colors.white,
-  //         ),
-  //       ),
-  //     );
-  //   } else {
-  //     return ListView.builder(
-  //       itemCount: masterFiles.length,
-  //       shrinkWrap: true,
-  //       itemBuilder: (context, index) {
-  //         bool isAdminList = _title == "Administrators";
-  //         bool isSchoolYearList = _title == "School Year";
-  //         bool isCurrentUser = masterFiles[index]["adm_employee_id"] == _userId;
-  //         return Padding(
-  //           padding: const EdgeInsets.only(bottom: 8.0),
-  //           child: Slidable(
-  //             startActionPane: isAdminList
-  //                 ? ActionPane(motion: const BehindMotion(), children: [
-  //                     SlidableAction(
-  //                       onPressed: (context) {},
-  //                       backgroundColor: const Color(0xFFFE4A49),
-  //                       label: isCurrentUser
-  //                           ? "You cant change your personal details here"
-  //                           : "You cant change his/her personal details",
-  //                     )
-  //                   ])
-  //                 : ActionPane(
-  //                     motion: const BehindMotion(),
-  //                     children: [
-  //                       !isSchoolYearList
-  //                           ? SlidableAction(
-  //                               onPressed: (context) {
-  //                                 // delete mo to
-  //                               },
-  //                               backgroundColor: const Color(0xFFFE4A49),
-  //                               foregroundColor: Colors.white,
-  //                               icon: Icons.delete,
-  //                               label: 'Delete',
-  //                             )
-  //                           : SlidableAction(
-  //                               onPressed: (context) {
-  //                                 if (masterFiles[index]["sy_status"] == 1) {
-  //                                   ShowAlert()
-  //                                       .showAlert("info", "Already Active");
-  //                                 } else {
-  //                                   _handleSetActive(
-  //                                       masterFiles[index]["sy_id"],
-  //                                       masterFiles[index]["sy_name"]);
-  //                                 }
-  //                               },
-  //                               backgroundColor: Theme.of(context)
-  //                                   .colorScheme
-  //                                   .onPrimaryContainer,
-  //                               foregroundColor: Colors.white,
-  //                               icon: masterFiles[index]["sy_status"] == 1
-  //                                   ? Icons.check_circle_outline
-  //                                   : Icons.check_outlined,
-  //                               label: masterFiles[index]["sy_status"] == 1
-  //                                   ? 'Already Active'
-  //                                   : 'Set active',
-  //                             ),
-  //                       SlidableAction(
-  //                         onPressed: (context) {
-  //                           _handleUpdateMasterfiles(_title, _masterfileId);
-  //                           print(masterFiles[index]["adm_id"]);
-  //                         },
-  //                         backgroundColor:
-  //                             Theme.of(context).colorScheme.onInverseSurface,
-  //                         icon: Icons.update,
-  //                         label: 'Update',
-  //                       ),
-  //                     ],
-  //                   ),
-  //             child: Container(
-  //               color: Theme.of(context).colorScheme.tertiary,
-  //               padding: const EdgeInsets.all(8),
-  //               child: ListTile(
-  //                 title: Text(
-  //                   '${masterFiles[index][_orderBy]} ${masterFiles[index]['sy_status'] == 1 ? "(Currently Active)" : ""}',
-  //                   style: const TextStyle(color: Colors.white),
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //         );
-  //       },
-  //     );
-  //   }
-  // }
+  Widget selectedMasterFile() {
+    switch (_selectedIndex) {
+      case 0:
+        return selectedAdmin();
+      case 1:
+        return selectedDepartment();
+      case 2:
+        return selectedSchoolYear();
+      case 3:
+        return selectedSupervisor();
+      case 4:
+        return selectedCourse();
+      case 5:
+        return selectedScholarshipType();
+      case 6:
+        return selectedOfficeMaster();
+      default:
+        return selectedScholarshipSubType();
+    }
+  }
+
+  Widget selectedAdmin() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          ReadOnlyInput(
+            initialValue: _selectedMasterFile["adm_name"],
+            labelText: "Full Name",
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget selectedDepartment() {
+    return const Text("Selected Department");
+  }
+
+  Widget selectedSchoolYear() {
+    return const Text("Selected School Year");
+  }
+
+  Widget selectedSupervisor() {
+    return const Text("Selected Supervisor");
+  }
+
+  Widget selectedCourse() {
+    return const Text("Selected Course");
+  }
+
+  Widget selectedScholarshipType() {
+    return const Text("Selected Scholarship Type");
+  }
+
+  Widget selectedOfficeMaster() {
+    return const Text("Selected Office Master");
+  }
+
+  Widget selectedScholarshipSubType() {
+    return const Text("Selected Scholarship Sub Type");
+  }
 }
